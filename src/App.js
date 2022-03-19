@@ -4,6 +4,8 @@ import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { Profiles } from './components/SelectProfiles';
 
+//App View
+
 function App() {
   return (
   <Tabs variant='soft-rounded' colorScheme='green'>
