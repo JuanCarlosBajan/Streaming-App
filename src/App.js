@@ -1,6 +1,6 @@
 import './App.css';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
-import { Login } from './components/Login';
+import Login from './components/Login';
 import { Register } from './components/Register';
 import { Profiles } from './components/SelectProfiles';
 
