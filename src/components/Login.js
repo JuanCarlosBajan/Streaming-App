@@ -1,10 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import InputInfo from './InputInfo'
 import { Heading, Button, useColorModeValue } from '@chakra-ui/react'
 
 // Login View
 
 const Login = () => {
+
+        let xhr = new XMLHttpRequest();
+
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
+
+
         const colors = {
             primary: '#5E2BFF',
             primaryvariant1: '#531FFF',
@@ -56,6 +63,49 @@ const Login = () => {
             }
         };
 
+        const returnEmail = (data) => {
+            setEmail(data)
+        }
+        const returnPassword = (data) => {
+            setPassword(data)
+        }
+
+        const getUsers = ()  => {
+            const URL = 'http://localhost:8080/api/users';
+            const otherPram = {
+                method:"GET"
+            }
+            fetch(URL,otherPram)
+            .then(response => console.log( response.json()))
+            .then(error=>{console.log(error);})
+        }
+
+        const postUser = () => {
+            const URL = 'http://localhost:8080/api/auth/login';
+
+            let Data = {email: email,
+                        password: password};
+
+            const otherPram = {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify(Data),
+            }
+
+            fetch(URL,otherPram)
+            .then(response => response.json())
+            .then(data => {
+            console.log('Success:', data);
+            })
+            .catch((error) => {
+            console.error('Error:', error);
+            });
+
+
+        }
+
         return (
             <div style={styles.provisionalBackgorund}>
                 <div style={styles.outerContainer}>
@@ -63,10 +113,12 @@ const Login = () => {
                         <div style={styles.titleContainer}>
                             <Heading style={styles.title}>Login</Heading>
                         </div>
-                        <InputInfo title='Correo' type='email'/>
-                        <InputInfo title='Contraseña' type='password'/>
+                        <InputInfo fun={returnEmail} title='Correo' type='email'/>
+                        <InputInfo fun={returnPassword} title='Contraseña' type='password'/>
                         <div style={styles.innerContainer}>
-                            <Button backgroundColor= {colors.primary}
+                            <Button 
+                                onClick={postUser}
+                                backgroundColor= {colors.primary}
                                 transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
                                 color= {colors.white}
                                 width='100%'

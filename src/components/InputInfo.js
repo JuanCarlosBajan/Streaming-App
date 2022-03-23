@@ -6,6 +6,10 @@ const InputInfo = (props) => {
 
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
+    //const [value, setValue] = React.useState('')
+    const handleChange = (event) => {
+        props.fun(event.target.value)
+    }
 
     const colors = {
         primary: '#5E2BFF',
@@ -48,7 +52,7 @@ const InputInfo = (props) => {
                     pointerEvents={props.type === 'email' ? 'none' : 'pointer'}
                     children={icon}
                     />
-                    <Input focusBorderColor={colors.primary} type={type} placeholder={props.type === 'email' ? 'Ingresa tu Correo Electrónico' : 'Ingresa tu Contraseña'} />
+                    <Input onChange={handleChange} focusBorderColor={colors.primary} type={type} placeholder={props.type === 'email' ? 'Ingresa tu Correo Electrónico' : 'Ingresa tu Contraseña'} />
                 </InputGroup>
 
         </div>
