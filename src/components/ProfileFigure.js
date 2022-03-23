@@ -1,18 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { VStack, Text } from '@chakra-ui/react';
 
-function ProfileFigure() {
+import { colors } from '../utils/colors'
+
+function ProfileFigure({ name }) {
+
     const styles = {
         mainDiv: {
             'width': '150px',
             'height': '150px',
-            'background-color': "#000",
-            'border-radius': '100%'
+            'background': 'linear-gradient(135deg, rgba(33,0,143,0.2) 0%, rgba(94,43,255,0.5) 100%)',
+            'borderRadius': '100%',
         }
     }
     return (
-        <div style={styles.mainDiv}>
+        <VStack spacing="18px">
+            <div style={styles.mainDiv}>
 
-        </div>
+            </div>
+            <Text fontWeight="bold">{name}</Text>
+        </VStack>
+
     )
 }
 
