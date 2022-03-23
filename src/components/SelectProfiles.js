@@ -4,6 +4,7 @@ import React from 'react'
 
 export const Profiles = () => {
     return (
+        // Testing git 
         <div>Profiles</div>
     );
 }
