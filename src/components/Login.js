@@ -6,8 +6,8 @@ import { Heading, Button, useToast } from '@chakra-ui/react'
 
 const Login = ({ onSuccess }) => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState(''); // Email state
+    const [password, setPassword] = useState('');   // Password state
     let info
 
 
