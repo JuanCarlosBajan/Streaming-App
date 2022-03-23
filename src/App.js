@@ -8,24 +8,24 @@ import { Profiles } from './components/SelectProfiles';
 
 function App() {
   return (
-  <Tabs variant='soft-rounded' colorScheme='green'>
-    <TabList mb='1em'>
-      <Tab>Login</Tab>
-      <Tab>Register</Tab>
-      <Tab>Select Profiles</Tab>
-    </TabList>
-    <TabPanels>
-      <TabPanel>
-        <Login/>
-      </TabPanel>
-      <TabPanel>
-        <Register/>
-      </TabPanel>
-      <TabPanel>
-        <Profiles/>
-      </TabPanel>
-    </TabPanels>
-  </Tabs>
+    <Tabs variant='soft-rounded' colorScheme='green'>
+      <TabList mb='1em'>
+        <Tab>Login</Tab>
+        <Tab>Register</Tab>
+        <Tab>Select Profiles</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>
+          <Login />
+        </TabPanel>
+        <TabPanel>
+          <Register />
+        </TabPanel>
+        <TabPanel>
+          <Profiles />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 }
 
