@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Login = () => {
+export const Login = ({ onSuccess }) => {
     return (
         <div>LOGIN</div>
     );
