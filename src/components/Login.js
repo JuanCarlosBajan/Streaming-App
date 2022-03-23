@@ -4,7 +4,7 @@ import { Heading, Button, useToast } from '@chakra-ui/react'
 
 // Login View
 
-const Login = ({ onSuccess }) => {
+const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -107,9 +107,7 @@ const Login = ({ onSuccess }) => {
                         position: 'top',
                         status: 'success',
                         isClosable: true,
-                    });
-
-                    onSuccess(data.user[0])
+                    })
                 } else {
                     data.errors.forEach(element => {
                         toast({
