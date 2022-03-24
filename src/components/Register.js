@@ -21,10 +21,6 @@ export const Register = () => {
             backgroundColor: colors.white,
             display: 'flex',
             alignItems: 'center',
-
-            position: 'absolute',
-            left: '40px',
-            overflow: 'auto',
         },
         innerContainer: {
             padding: '10px',
