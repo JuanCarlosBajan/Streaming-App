@@ -13,6 +13,7 @@ export const Register = () => {
         white: '#FFFF',
     }
 
+
     const styles = {
         outerContainer: {
             width: '500px',
@@ -29,8 +30,9 @@ export const Register = () => {
             width: '100%',
             height: '100vh',
             display: 'flex',
-            alignItems: 'start',
-            justifyContent: 'start',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: colors.gradient,
         },
         title: {
             color: colors.primary,
@@ -50,7 +52,46 @@ export const Register = () => {
         infoContainer: {
             width: '100%',
             height: 'auto',
-        }
+        },
+        // outerContainer: {
+        //     width: '500px',
+        //     height: '500px',
+        //     borderRadius: '30px',
+        //     padding: '30px',
+        //     backgroundColor: colors.white,
+        //     display: 'flex',
+        //     alignItems: 'center',
+        // },
+        // innerContainer: {
+        //     padding: '10px',
+        // },
+        // provisionalBackgorund: {
+        //     width: '100%',
+        //     height: '100vh',
+        //     display: 'flex',
+        //     alignItems: 'center',
+        //     justifyContent: 'center',
+        //     background: colors.gradient,
+        // },
+        // title: {
+        //     color: colors.primary,
+        //     textAlign: 'center',
+        //     padding: '10px',
+        // },
+        // button: {
+        //     backgroundColor: colors.primary,
+        //     transition: 'all 0.2s cubic-bezier(.08,.52,.52,1)',
+        //     color: colors.white,
+        //     width: '100%',
+        // },
+        // titleContainer: {
+        //     width: '100%',
+        //     marginBottom: '20px',
+        // },
+        // infoContainer: {
+        //     width: '100%',
+        //     height: 'auto',
+        // }
     };
 
 
