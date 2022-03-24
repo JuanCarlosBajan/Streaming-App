@@ -21,7 +21,7 @@ export const Register = () => {
             backgroundColor: colors.white,
             display: 'flex',
             alignItems: 'center',
-            boxShadow: '5px 5px 5px lightblue',
+
             position: 'absolute',
             left: '40px',
             overflow: 'auto',
