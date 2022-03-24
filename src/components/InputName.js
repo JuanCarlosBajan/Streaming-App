@@ -1,10 +1,10 @@
 import { EmailIcon } from '@chakra-ui/icons';
 import { InputGroup, InputLeftElement, Input, FormLabel } from '@chakra-ui/react';
 
-const InputName = (props) => {
+const InputName = ({ fun, ...props }) => {
 
     const handleChange = (event) => {
-        props.fun(event.target.value)
+        fun(event.target.value)
     }
 
     const colors = {

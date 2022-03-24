@@ -57,6 +57,22 @@ export const Register = () => {
     };
 
 
+    const setName = (name) => {
+        // console.log(name);
+    }
+
+    const setEmail = (email) => {
+        // console.log(name);
+    }
+
+    const setPassword = (password) => {
+
+    }
+
+    const setRepeatPassword = (repeatedPassword) => {
+
+    }
+
     return (
         <div style={styles.provisionalBackgorund}>
             <div style={styles.outerContainer}>
@@ -64,10 +80,10 @@ export const Register = () => {
                     <div style={styles.titleContainer}>
                         <Heading style={styles.title}>Sign up</Heading>
                     </div>
-                    <InputName title='Nombre' type='name' />
-                    <InputInfo title='Correo' type='email' />
-                    <InputInfo title='Contraseña' type='password' />
-                    <InputInfo title='Confirmar contraseña' type='password' />
+                    <InputName title='Nombre' type='name' fun={setName} />
+                    <InputInfo title='Correo' type='email' fun={setEmail} />
+                    <InputInfo title='Contraseña' type='password' fun={setPassword} />
+                    <InputInfo title='Confirmar contraseña' type='password' fun={setRepeatPassword} />
 
                     <div style={styles.innerContainer}>
                         <Button
