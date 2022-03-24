@@ -139,6 +139,7 @@ const Login = ({ onSuccess }) => {
                     <InputInfo fun={returnPassword} title='Contraseña' type='password' />
                     <div style={styles.innerContainer}>
                         <Button
+                            disabled={email.length === 0 || password.length === 0}
                             onClick={postUser}
                             backgroundColor={colors.primary}
                             transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
