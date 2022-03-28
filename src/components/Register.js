@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import InputInfo from './InputInfo'
-import InputName from './InputName'
+import Inputs from './Inputs'
 import { Heading, Button, useToast, AbsoluteCenter } from '@chakra-ui/react'
+import './scrollBar.css'
 
 export const Register = ({ onSuccess }) => {
 
@@ -9,6 +10,8 @@ export const Register = ({ onSuccess }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [userName, setUserName] = useState('');
     let info
 
     const colors = {
@@ -24,11 +27,11 @@ export const Register = ({ onSuccess }) => {
     const styles = {
         outerContainer: {
             width: '500px',
+            height: '495px',
             borderRadius: '30px',
             padding: '30px',
             backgroundColor: colors.white,
-            display: 'flex',
-            alignItems: 'center',
+            overflowY: 'scroll',
         },
         innerContainer: {
             padding: '10px',
@@ -51,6 +54,7 @@ export const Register = ({ onSuccess }) => {
             transition: 'all 0.2s cubic-bezier(.08,.52,.52,1)',
             color: colors.white,
             width: '100%',
+            height: '100%',
         },
         titleContainer: {
             width: '100%',
@@ -75,6 +79,14 @@ export const Register = ({ onSuccess }) => {
     const returnRepeatPassword = (data) => {
         setRepeatPassword(data)
     }
+    const returnLastName = (data) => {
+        setLastName(data)
+    }
+    const returnUserName = (data) => {
+        setUserName(data)
+    }
+
+
 
     const toast = useToast()
 
@@ -83,8 +95,8 @@ export const Register = ({ onSuccess }) => {
 
         let Data = {
             name: name,
-            lastName: 'Rodriguez',
-            user: 'usuario21',
+            lastName: lastName,
+            user: userName,
             email: email,
             password: password,
 
@@ -101,7 +113,7 @@ export const Register = ({ onSuccess }) => {
         fetch(URL, otherPram)
             .then(response => response.json())
             .then(data => {
-                if (name.length === 0 || email.length === 0 || password.length === 0 || repeatPassword.length === 0) {
+                if (name.length === 0 || email.length === 0 || password.length === 0 || repeatPassword.length === 0 || userName.length === 0 || lastName.lenght === 0) {
                     toast({
                         title: 'No has ingresado todos tus datos',
                         position: 'top',
@@ -152,10 +164,12 @@ export const Register = ({ onSuccess }) => {
                     <div style={styles.titleContainer}>
                         <Heading style={styles.title}>Sign up</Heading>
                     </div>
-                    <InputName title='Nombre' type='name' fun={returnName} />
-                    <InputInfo title='Correo' type='email' fun={returnEmail} />
-                    <InputInfo title='Contraseña' type='password' fun={returnPassword} />
-                    <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword} />
+                    <Inputs title='Nombre' type='name' fun={returnName} message='Ingresa tu Nombre' />
+                    <Inputs title='Apellidos' type='name' fun={returnLastName} message='Ingresa tus Apellidos' />
+                    <Inputs title='Nombre de usuario' type='name' fun={returnUserName} message='Ingresa tu Nombre de Usuario' />
+                    <InputInfo title='Correo' type='email' fun={returnEmail}  />
+                    <InputInfo title='Contraseña' type='password' fun={returnPassword}  />
+                    <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword}  />
 
                     <div style={styles.innerContainer}>
                         <Button
