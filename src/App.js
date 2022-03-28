@@ -9,9 +9,14 @@ import { useState } from 'react';
 
 function App() {
   const [user, setUser] = useState({});
+  const [registUser, setRegistUser] = useState({});
 
   const userLogInSuccess = (user) => {
     setUser(user);
+  }
+
+  const RegisterSuccess = (user) => {
+    setRegistUser(registUser);
   }
 
   return (
@@ -26,7 +31,7 @@ function App() {
           <Login onSuccess={userLogInSuccess} />
         </TabPanel>
         <TabPanel>
-          <Register />
+          <Register onSuccess={RegisterSuccess}/>
         </TabPanel>
         <TabPanel >
           <Profiles user={user} />

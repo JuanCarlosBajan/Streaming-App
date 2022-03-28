@@ -3,7 +3,13 @@ import InputInfo from './InputInfo'
 import InputName from './InputName'
 import { Heading, Button, useToast, AbsoluteCenter } from '@chakra-ui/react'
 
-export const Register = () => {
+export const Register = ({ onSuccess }) => {
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
+    let info
 
     const colors = {
         primary: '#5E2BFF',
@@ -57,6 +63,7 @@ export const Register = () => {
     };
 
 
+    /*
     const setName = (name) => {
         // console.log(name);
     }
@@ -72,6 +79,71 @@ export const Register = () => {
     const setRepeatPassword = (repeatedPassword) => {
 
     }
+    */
+
+    const returnName = (data) => {
+        setName(data)
+    }
+    const returnEmail = (data) => {
+        setEmail(data)
+    }
+    const returnPassword = (data) => {
+        setPassword(data)
+    }
+    const returnRepeatPassword = (data) => {
+        setRepeatPassword(data)
+    }
+
+    const toast = useToast()
+
+    const postUser = () => {
+        const URL = 'http://localhost:8080/api/auth/register';
+
+        let Data = {
+            name: name,
+            lastName: 'Rodriguez',
+            user: 'usuario21',
+            email: email,
+            password: password,
+
+        };
+
+        const otherPram = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(Data),
+        }
+
+        fetch(URL, otherPram)
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    info = data.user
+                    toast({
+                        title: 'Te has registrado correctamente ' + info.user,
+                        position: 'top',
+                        status: 'success',
+                        isClosable: true,
+                    });
+
+                    onSuccess(data.user[0])
+                } else {
+                    data.errors.forEach(element => {
+                        toast({
+                            title: element,
+                            position: 'top',
+                            status: 'error',
+                            isClosable: true,
+                        })
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 
     return (
         <div style={styles.provisionalBackgorund}>
@@ -80,13 +152,14 @@ export const Register = () => {
                     <div style={styles.titleContainer}>
                         <Heading style={styles.title}>Sign up</Heading>
                     </div>
-                    <InputName title='Nombre' type='name' fun={setName} />
-                    <InputInfo title='Correo' type='email' fun={setEmail} />
-                    <InputInfo title='Contraseña' type='password' fun={setPassword} />
-                    <InputInfo title='Confirmar contraseña' type='password' fun={setRepeatPassword} />
+                    <InputName title='Nombre' type='name' fun={returnName} />
+                    <InputInfo title='Correo' type='email' fun={returnEmail} />
+                    <InputInfo title='Contraseña' type='password' fun={returnPassword} />
+                    <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword} />
 
                     <div style={styles.innerContainer}>
                         <Button
+                            onClick={postUser}
                             backgroundColor={colors.primary}
                             transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
                             color={colors.white}

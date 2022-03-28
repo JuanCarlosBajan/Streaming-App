@@ -124,8 +124,6 @@ const Login = ({ onSuccess }) => {
             .catch((error) => {
                 console.error('Error:', error);
             });
-
-
     }
 
     return (
