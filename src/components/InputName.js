@@ -29,7 +29,6 @@ const InputName = ({ fun, ...props }) => {
         <div style={styles.outerContainer}>
             <FormLabel color={colors.primary}>{props.title}</FormLabel>
             <InputGroup>
-
                 <Input onChange={handleChange} focusBorderColor={colors.primary} placeholder='Ingresa tu Nombre' />
             </InputGroup>
 

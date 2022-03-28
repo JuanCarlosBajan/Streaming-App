@@ -63,24 +63,6 @@ export const Register = ({ onSuccess }) => {
     };
 
 
-    /*
-    const setName = (name) => {
-        // console.log(name);
-    }
-
-    const setEmail = (email) => {
-        // console.log(name);
-    }
-
-    const setPassword = (password) => {
-
-    }
-
-    const setRepeatPassword = (repeatedPassword) => {
-
-    }
-    */
-
     const returnName = (data) => {
         setName(data)
     }
@@ -119,7 +101,25 @@ export const Register = ({ onSuccess }) => {
         fetch(URL, otherPram)
             .then(response => response.json())
             .then(data => {
-                if (data.ok) {
+                if (name.length === 0 || email.length === 0 || password.length === 0 || repeatPassword.length === 0) {
+                    toast({
+                        title: 'No has ingresado todos tus datos',
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                    return;
+                }
+                else if(password != repeatPassword){
+                    toast({
+                        title: 'Las contraseñas no coinciden',
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                    return;
+                }
+                else if (data.ok) {
                     info = data.user
                     toast({
                         title: 'Te has registrado correctamente ' + info.user,
