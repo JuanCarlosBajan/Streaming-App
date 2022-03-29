@@ -9,15 +9,11 @@ import { useState } from 'react';
 
 function App() {
   const [user, setUser] = useState({});
-  const [registUser, setRegistUser] = useState({});
 
   const userLogInSuccess = (user) => {
     setUser(user);
   }
 
-  const RegisterSuccess = (user) => {
-    setRegistUser(registUser);
-  }
 
   return (
     <Tabs variant='soft-rounded' colorScheme='green' isLazy={true}>
@@ -31,7 +27,7 @@ function App() {
           <Login onSuccess={userLogInSuccess} />
         </TabPanel>
         <TabPanel>
-          <Register onSuccess={RegisterSuccess}/>
+          <Register onSuccess={userLogInSuccess}/>
         </TabPanel>
         <TabPanel >
           <Profiles user={user} />

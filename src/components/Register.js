@@ -110,28 +110,29 @@ export const Register = ({ onSuccess }) => {
             body: JSON.stringify(Data),
         }
 
+        if (name.length === 0 || email.length === 0 || password.length === 0 || repeatPassword.length === 0 || userName.length === 0 || lastName.lenght === 0) {
+            toast({
+                title: 'No has ingresado todos tus datos',
+                position: 'top',
+                status: 'error',
+                isClosable: true,
+            })
+            return;
+        }
+        else if(password != repeatPassword){
+            toast({
+                title: 'Las contraseñas no coinciden',
+                position: 'top',
+                status: 'error',
+                isClosable: true,
+            })
+            return;
+        }
+
         fetch(URL, otherPram)
             .then(response => response.json())
             .then(data => {
-                if (name.length === 0 || email.length === 0 || password.length === 0 || repeatPassword.length === 0 || userName.length === 0 || lastName.lenght === 0) {
-                    toast({
-                        title: 'No has ingresado todos tus datos',
-                        position: 'top',
-                        status: 'error',
-                        isClosable: true,
-                    })
-                    return;
-                }
-                else if(password != repeatPassword){
-                    toast({
-                        title: 'Las contraseñas no coinciden',
-                        position: 'top',
-                        status: 'error',
-                        isClosable: true,
-                    })
-                    return;
-                }
-                else if (data.ok) {
+                if (data.ok) {
                     info = data.user
                     toast({
                         title: 'Te has registrado correctamente ' + info.user,
@@ -140,7 +141,7 @@ export const Register = ({ onSuccess }) => {
                         isClosable: true,
                     });
 
-                    onSuccess(data.user[0])
+                    onSuccess(info.user)
                 } else {
                     data.errors.forEach(element => {
                         toast({
@@ -159,7 +160,7 @@ export const Register = ({ onSuccess }) => {
 
     return (
         <div style={styles.provisionalBackgorund}>
-            <div style={styles.outerContainer}>
+            <div style={styles.outerContainer} className='container'>
                 <div style={styles.infoContainer}>
                     <div style={styles.titleContainer}>
                         <Heading style={styles.title}>Sign up</Heading>
