@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import { VStack, Text } from '@chakra-ui/react';
 
-import { colors } from '../utils/colors'
+import { VStack, Text } from '@chakra-ui/react';
 
 function ProfileFigure({ name }) {
 

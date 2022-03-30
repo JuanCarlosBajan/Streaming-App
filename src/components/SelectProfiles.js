@@ -1,5 +1,4 @@
-import { AddIcon } from '@chakra-ui/icons';
-import { Box, Container, Heading, HStack, Stack, Text, VStack, useToast } from '@chakra-ui/react';
+import { Container, Heading, HStack, Text, VStack, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { colors } from '../utils/colors';
 import CreateProfileButton from './CreateProfileButton';
@@ -87,7 +86,7 @@ export const Profiles = ({ user = {} }) => {
             return;
         }
         getProfiles();
-    }, []);
+    });
 
     return (
         <Container textAlign="center">
