@@ -14,6 +14,7 @@ function App() {
     setUser(user);
   }
 
+
   return (
     <Tabs variant='soft-rounded' colorScheme='green' isLazy={true}>
       <TabList mb='1em'>
@@ -26,7 +27,7 @@ function App() {
           <Login onSuccess={userLogInSuccess} />
         </TabPanel>
         <TabPanel>
-          <Register />
+          <Register onSuccess={userLogInSuccess}/>
         </TabPanel>
         <TabPanel >
           <Profiles user={user} />
