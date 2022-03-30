@@ -1,0 +1,19 @@
+.profile__button {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(
+    135deg,
+    rgba(33, 0, 143, 0.2) 0%,
+    rgba(94, 43, 255, 0.2) 50%
+  );
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.profile__button:hover {
+  cursor: pointer;
+  transform: translateY(-5px);
+}
