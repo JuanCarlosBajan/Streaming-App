@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import InputInfo from './InputInfo'
 import Inputs from './Inputs'
-import { Heading, Button, useToast, AbsoluteCenter } from '@chakra-ui/react'
+import PlanOption from './PlanOption'
+import { Heading, Button, useToast, FormLabel } from '@chakra-ui/react'
 import './scrollBar.css'
 
 export const Register = ({ onSuccess }) => {
@@ -12,6 +13,7 @@ export const Register = ({ onSuccess }) => {
     const [repeatPassword, setRepeatPassword] = useState('');
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
+    const [plan, setPlan] = useState('');
     let info
 
     const colors = {
@@ -64,6 +66,9 @@ export const Register = ({ onSuccess }) => {
             width: '100%',
             height: 'auto',
         },
+        divPlan: {
+            padding: '10px',
+        }
     };
 
 
@@ -85,7 +90,9 @@ export const Register = ({ onSuccess }) => {
     const returnUserName = (data) => {
         setUserName(data)
     }
-
+    const returnPlan = (data) => {
+        setPlan(data)
+    }
 
 
     const toast = useToast()
@@ -99,7 +106,7 @@ export const Register = ({ onSuccess }) => {
             user: userName,
             email: email,
             password: password,
-
+            plan: plan,
         };
 
         const otherPram = {
@@ -171,7 +178,10 @@ export const Register = ({ onSuccess }) => {
                     <InputInfo title='Correo' type='email' fun={returnEmail}  />
                     <InputInfo title='Contraseña' type='password' fun={returnPassword}  />
                     <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword}  />
-
+                    <div className='divPlan' style={styles.divPlan}>
+                    <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
+                    <PlanOption style={styles.divPlan} fun={returnPlan}/>
+                    </div>
                     <div style={styles.innerContainer}>
                         <Button
                             onClick={postUser}
@@ -196,6 +206,8 @@ export const Register = ({ onSuccess }) => {
                     </div>
                 </div>
             </div>
+            <radioBtn/>
         </div>
+        
     );
 }

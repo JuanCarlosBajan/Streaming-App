@@ -28,9 +28,9 @@ const Inputs = ({ fun, ...props }) => {
     return (
         <div style={styles.outerContainer}>
             <FormLabel color={colors.primary}>{props.title}</FormLabel>
-            <InputGroup>
+            
                 <Input onChange={handleChange} focusBorderColor={colors.primary} placeholder={props.message} />
-            </InputGroup>
+            
 
         </div>
     );
