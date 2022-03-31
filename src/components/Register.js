@@ -109,6 +109,7 @@ export const Register = ({ onSuccess }) => {
             plan: plan,
         };
 
+
         const otherPram = {
             method: "POST",
             headers: {

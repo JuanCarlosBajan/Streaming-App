@@ -1,16 +1,21 @@
 import { Select } from '@chakra-ui/react'
 
-const PlanOption = ({ optionChange }) => {
+const PlanOption = (props) => {
 
     const colors = {
         primary: '#5E2BFF',
     }
 
+    const handleChange = (event) => {
+        props.fun(event.target.value)
+    }
+
     return (
-        <Select focusBorderColor={colors.primary} onChange={(opt) => { console.log(opt.target.value) }}>
-            <option value='basic'>Gratis</option>
-            <option value='standard'>Standard</option>
-            <option value='advanced'>Advanced</option>
+
+        <Select focusBorderColor={colors.primary} onChange={handleChange}>
+            <option value='basic'>Basico</option>
+            <option value='standard'>Estándar</option>
+            <option value='advanced'>Avanzado</option>
         </Select>
     )
 }
