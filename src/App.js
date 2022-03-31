@@ -12,9 +12,9 @@ import { Route, Routes } from 'react-router-dom';
 function App() {
   const [user, setUser] = useState({});
 
-  const userLogInSuccess = (user) => {
-    console.log(user);
+  const userLogInSuccess = (user, token = '') => {
     setUser(user);
+    localStorage.setItem('token', token); // Save the token on the local storage
   }
 
 
