@@ -13,7 +13,7 @@ export const Register = ({ onSuccess }) => {
     const [repeatPassword, setRepeatPassword] = useState('');
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
-    const [plan, setPlan] = useState('');
+    const [plan, setPlan] = useState('basic');
     let info
 
     const colors = {
@@ -149,7 +149,7 @@ export const Register = ({ onSuccess }) => {
                         isClosable: true,
                     });
 
-                    onSuccess(info.user)
+                    onSuccess(info);
                 } else {
                     data.errors.forEach(element => {
                         toast({

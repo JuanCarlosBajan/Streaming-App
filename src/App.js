@@ -11,6 +11,7 @@ function App() {
   const [user, setUser] = useState({});
 
   const userLogInSuccess = (user) => {
+    console.log(user);
     setUser(user);
   }
 
@@ -27,7 +28,7 @@ function App() {
           <Login onSuccess={userLogInSuccess} />
         </TabPanel>
         <TabPanel>
-          <Register onSuccess={userLogInSuccess}/>
+          <Register onSuccess={userLogInSuccess} />
         </TabPanel>
         <TabPanel >
           <Profiles user={user} />
