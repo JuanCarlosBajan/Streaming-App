@@ -17,3 +17,16 @@
   cursor: pointer;
   transform: translateY(-5px);
 }
+
+.container::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #b497f9;
+  border-radius: 100vw;
+}
+
+.container::-webkit-scrollbar-track {
+  margin-block: 1.4em;
+}

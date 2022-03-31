@@ -1,8 +1,8 @@
 import { Container, Heading, HStack, Text, VStack, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
-import { colors } from '../utils/colors';
-import CreateProfileButton from './CreateProfileButton';
-import ProfileFigure from './ProfileFigure';
+import { colors } from '../../utils/colors';
+import CreateProfileButton from '../CreateProfileButton';
+import ProfileFigure from '../ProfileFigure';
 
 //Profiles View
 
