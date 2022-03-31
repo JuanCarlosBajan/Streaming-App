@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import InputInfo from './InputInfo'
+import InputInfo from '../InputInfo'
 import { Heading, Button, useToast } from '@chakra-ui/react'
 
 // Login View

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import InputInfo from './InputInfo'
-import Inputs from './Inputs'
-import PlanOption from './PlanOption'
+import InputInfo from '../InputInfo'
+import Inputs from '../Inputs'
+import PlanOption from '../PlanOption'
 import { Heading, Button, useToast, FormLabel } from '@chakra-ui/react'
-import './scrollBar.css'
 
 export const Register = ({ onSuccess }) => {
 
