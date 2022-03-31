@@ -126,7 +126,7 @@ export const Register = ({ onSuccess }) => {
             })
             return;
         }
-        else if(password != repeatPassword){
+        else if (password != repeatPassword) {
             toast({
                 title: 'Las contraseñas no coinciden',
                 position: 'top',
@@ -175,12 +175,12 @@ export const Register = ({ onSuccess }) => {
                     <Inputs title='Nombre' type='name' fun={returnName} message='Ingresa tu Nombre' />
                     <Inputs title='Apellidos' type='name' fun={returnLastName} message='Ingresa tus Apellidos' />
                     <Inputs title='Nombre de usuario' type='name' fun={returnUserName} message='Ingresa tu Nombre de Usuario' />
-                    <InputInfo title='Correo' type='email' fun={returnEmail}  />
-                    <InputInfo title='Contraseña' type='password' fun={returnPassword}  />
-                    <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword}  />
+                    <InputInfo title='Correo' type='email' fun={returnEmail} />
+                    <InputInfo title='Contraseña' type='password' fun={returnPassword} />
+                    <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword} />
                     <div className='divPlan' style={styles.divPlan}>
-                    <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
-                    <PlanOption style={styles.divPlan} fun={returnPlan}/>
+                        <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
+                        <PlanOption style={styles.divPlan} fun={returnPlan} />
                     </div>
                     <div style={styles.innerContainer}>
                         <Button
@@ -206,8 +206,8 @@ export const Register = ({ onSuccess }) => {
                     </div>
                 </div>
             </div>
-            <radioBtn/>
+
         </div>
-        
+
     );
 }
