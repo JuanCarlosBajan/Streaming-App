@@ -108,6 +108,7 @@ export const Register = ({ onSuccess }) => {
             password: password,
             plan: plan,
         };
+        
 
         const otherPram = {
             method: "POST",
@@ -181,6 +182,7 @@ export const Register = ({ onSuccess }) => {
                     <div className='divPlan' style={styles.divPlan}>
                     <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
                     <PlanOption style={styles.divPlan} fun={returnPlan}/>
+                    <p>{plan}</p>
                     </div>
                     <div style={styles.innerContainer}>
                         <Button
