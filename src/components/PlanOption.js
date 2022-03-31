@@ -9,13 +9,13 @@ const PlanOption = (props) => {
     const handleChange = (event) => {
         props.fun(event.target.value)
     }
-        
+
     return (
-        
+
         <Select focusBorderColor={colors.primary} onChange={handleChange}>
-        <option value='basic'>basic</option>
-        <option value='standard'>standard</option>
-        <option value='advanced'>advanced</option>
+            <option value='basic'>Basico</option>
+            <option value='standard'>Estándar</option>
+            <option value='advanced'>Avanzado</option>
         </Select>
     )
 }

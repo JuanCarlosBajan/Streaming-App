@@ -6,8 +6,8 @@ import { Heading, Button, useToast } from '@chakra-ui/react'
 
 const Login = ({ onSuccess }) => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState(''); // Email state
+    const [password, setPassword] = useState('');   // Password state
     let info
 
 
@@ -137,6 +137,7 @@ const Login = ({ onSuccess }) => {
                     <InputInfo fun={returnPassword} title='Contraseña' type='password' />
                     <div style={styles.innerContainer}>
                         <Button
+                            disabled={email.length === 0 || password.length === 0}
                             onClick={postUser}
                             backgroundColor={colors.primary}
                             transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
