@@ -1,7 +1,7 @@
 import { EmailIcon } from '@chakra-ui/icons';
 import { InputGroup, InputLeftElement, Input, FormLabel } from '@chakra-ui/react';
 
-const InputName = ({ fun, ...props }) => {
+const Inputs = ({ fun, ...props }) => {
 
     const handleChange = (event) => {
         fun(event.target.value)
@@ -28,14 +28,11 @@ const InputName = ({ fun, ...props }) => {
     return (
         <div style={styles.outerContainer}>
             <FormLabel color={colors.primary}>{props.title}</FormLabel>
-            <InputGroup>
-
-                <Input onChange={handleChange} focusBorderColor={colors.primary} placeholder='Ingresa tu Nombre' />
-            </InputGroup>
+            <Input onChange={handleChange} focusBorderColor={colors.primary} placeholder={props.message} />
 
         </div>
     );
 
 }
 
-export default InputName;
+export default Inputs;

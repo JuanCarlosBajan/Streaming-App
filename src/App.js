@@ -11,8 +11,10 @@ function App() {
   const [user, setUser] = useState({});
 
   const userLogInSuccess = (user) => {
+    console.log(user);
     setUser(user);
   }
+
 
   return (
     <Tabs variant='soft-rounded' colorScheme='green' isLazy={true}>
@@ -26,7 +28,7 @@ function App() {
           <Login onSuccess={userLogInSuccess} />
         </TabPanel>
         <TabPanel>
-          <Register />
+          <Register onSuccess={userLogInSuccess} />
         </TabPanel>
         <TabPanel >
           <Profiles user={user} />

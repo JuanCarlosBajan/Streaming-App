@@ -1,9 +1,20 @@
 import React, { useState } from 'react'
 import InputInfo from './InputInfo'
-import InputName from './InputName'
-import { Heading, Button, useToast, AbsoluteCenter } from '@chakra-ui/react'
+import Inputs from './Inputs'
+import PlanOption from './PlanOption'
+import { Heading, Button, useToast, FormLabel } from '@chakra-ui/react'
+import './scrollBar.css'
 
-export const Register = () => {
+export const Register = ({ onSuccess }) => {
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [userName, setUserName] = useState('');
+    const [plan, setPlan] = useState('basic');
+    let info
 
     const colors = {
         primary: '#5E2BFF',
@@ -18,11 +29,11 @@ export const Register = () => {
     const styles = {
         outerContainer: {
             width: '500px',
+            height: '495px',
             borderRadius: '30px',
             padding: '30px',
             backgroundColor: colors.white,
-            display: 'flex',
-            alignItems: 'center',
+            overflowY: 'scroll',
         },
         innerContainer: {
             padding: '10px',
@@ -45,6 +56,7 @@ export const Register = () => {
             transition: 'all 0.2s cubic-bezier(.08,.52,.52,1)',
             color: colors.white,
             width: '100%',
+            height: '100%',
         },
         titleContainer: {
             width: '100%',
@@ -54,39 +66,126 @@ export const Register = () => {
             width: '100%',
             height: 'auto',
         },
+        divPlan: {
+            padding: '10px',
+        }
     };
 
 
-    const setName = (name) => {
-        // console.log(name);
+    const returnName = (data) => {
+        setName(data)
+    }
+    const returnEmail = (data) => {
+        setEmail(data)
+    }
+    const returnPassword = (data) => {
+        setPassword(data)
+    }
+    const returnRepeatPassword = (data) => {
+        setRepeatPassword(data)
+    }
+    const returnLastName = (data) => {
+        setLastName(data)
+    }
+    const returnUserName = (data) => {
+        setUserName(data)
+    }
+    const returnPlan = (data) => {
+        setPlan(data)
     }
 
-    const setEmail = (email) => {
-        // console.log(name);
-    }
 
-    const setPassword = (password) => {
+    const toast = useToast()
 
-    }
+    const postUser = () => {
+        const URL = 'http://localhost:8080/api/auth/register';
 
-    const setRepeatPassword = (repeatedPassword) => {
+        let Data = {
+            name: name,
+            lastName: lastName,
+            user: userName,
+            email: email,
+            password: password,
+            plan: plan,
+        };
 
+
+        const otherPram = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(Data),
+        }
+
+        if (name.length === 0 || email.length === 0 || password.length === 0 || repeatPassword.length === 0 || userName.length === 0 || lastName.lenght === 0) {
+            toast({
+                title: 'No has ingresado todos tus datos',
+                position: 'top',
+                status: 'error',
+                isClosable: true,
+            })
+            return;
+        }
+        else if (password != repeatPassword) {
+            toast({
+                title: 'Las contraseñas no coinciden',
+                position: 'top',
+                status: 'error',
+                isClosable: true,
+            })
+            return;
+        }
+
+        fetch(URL, otherPram)
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    info = data.user
+                    toast({
+                        title: 'Te has registrado correctamente ' + info.user,
+                        position: 'top',
+                        status: 'success',
+                        isClosable: true,
+                    });
+
+                    onSuccess(info);
+                } else {
+                    data.errors.forEach(element => {
+                        toast({
+                            title: element,
+                            position: 'top',
+                            status: 'error',
+                            isClosable: true,
+                        })
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
 
     return (
         <div style={styles.provisionalBackgorund}>
-            <div style={styles.outerContainer}>
+            <div style={styles.outerContainer} className='container'>
                 <div style={styles.infoContainer}>
                     <div style={styles.titleContainer}>
                         <Heading style={styles.title}>Sign up</Heading>
                     </div>
-                    <InputName title='Nombre' type='name' fun={setName} />
-                    <InputInfo title='Correo' type='email' fun={setEmail} />
-                    <InputInfo title='Contraseña' type='password' fun={setPassword} />
-                    <InputInfo title='Confirmar contraseña' type='password' fun={setRepeatPassword} />
-
+                    <Inputs title='Nombre' type='name' fun={returnName} message='Ingresa tu Nombre' />
+                    <Inputs title='Apellidos' type='name' fun={returnLastName} message='Ingresa tus Apellidos' />
+                    <Inputs title='Nombre de usuario' type='name' fun={returnUserName} message='Ingresa tu Nombre de Usuario' />
+                    <InputInfo title='Correo' type='email' fun={returnEmail} />
+                    <InputInfo title='Contraseña' type='password' fun={returnPassword} />
+                    <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword} />
+                    <div className='divPlan' style={styles.divPlan}>
+                        <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
+                        <PlanOption style={styles.divPlan} fun={returnPlan} />
+                    </div>
                     <div style={styles.innerContainer}>
                         <Button
+                            onClick={postUser}
                             backgroundColor={colors.primary}
                             transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
                             color={colors.white}
@@ -108,6 +207,8 @@ export const Register = () => {
                     </div>
                 </div>
             </div>
+
         </div>
+
     );
 }
