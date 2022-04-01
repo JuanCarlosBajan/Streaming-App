@@ -4,13 +4,11 @@ import { decodeToken } from "../utils/decodeToken";
  * Gets the current user from the token stored
  */
 export const getCurrentUser = () => {
-    let a = [3, 3, 3];
-
     const token = localStorage.getItem('token');
     if (!token) {
         return null;
     }
-    const userCode = decodeToken(token).uid;
+    const userCode = decodeToken(token).userCode;
     if (!userCode) {
         return null;
     }
