@@ -109,7 +109,7 @@ const Login = ({ onSuccess }) => {
                         isClosable: true,
                     });
 
-                    onSuccess(data.user[0])
+                    onSuccess(data.user[0], data.token)
                 } else {
                     data.errors.forEach(element => {
                         toast({
