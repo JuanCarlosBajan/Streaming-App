@@ -4,6 +4,8 @@ import Login from './components/Login';
 import { Register } from './components/Register';
 import { Profiles } from './components/SelectProfiles';
 import { useState } from 'react';
+import { Content } from './components/Content';
+
 
 //App View
 
@@ -22,6 +24,7 @@ function App() {
         <Tab>Login</Tab>
         <Tab >Register</Tab>
         <Tab>Select Profiles</Tab>
+        <Tab>Movies And Series</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -33,6 +36,11 @@ function App() {
         <TabPanel >
           <Profiles user={user} />
         </TabPanel>
+          <Content/>
+        <TabPanel>
+
+        </TabPanel>
+
       </TabPanels>
     </Tabs>
   );

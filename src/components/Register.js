@@ -108,7 +108,7 @@ export const Register = ({ onSuccess }) => {
             password: password,
             plan: plan,
         };
-
+        
 
         const otherPram = {
             method: "POST",
