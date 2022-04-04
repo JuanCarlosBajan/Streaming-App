@@ -7,6 +7,7 @@ import { Profiles } from './components/pages/SelectProfiles';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from './services/user';
+import Search from './components/pages/Search';
 
 //App View
 
@@ -41,6 +42,7 @@ function App() {
       <Route path='/profiles' element={<Profiles user={user} />}></Route>
       <Route path='/register' element={<Register onSuccess={userLogInSuccess} />}></Route>
       <Route path='/movies' element={<Movies />}></Route>
+      <Route path='/search' element={<Search />}></Route>
     </Routes>
     // <Tabs variant='soft-rounded' colorScheme='green' isLazy={true}>
     //   <TabList mb='1em'>

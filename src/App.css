@@ -36,3 +36,24 @@ p {
 .container::-webkit-scrollbar-track {
   margin-block: 1.4em;
 }
+
+.search__bar {
+  padding: 20px;
+}
+
+.search__results {
+  padding: 20px;
+  display: flex;
+  /* justify-content: space-between; */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 100px;
+}
+.content-item {
+  display: inline-block;
+}
+
+.content-item__image {
+  width: 120px;
+  height: 200px;
+}
