@@ -1,7 +1,7 @@
 import './App.css';
 import { Register } from './components/pages/Register';
 import Login from './components/pages/Login';
-import Movies from './components/pages/Movies'
+import {Movies} from './components/pages/Movies'
 import { Profiles } from './components/pages/SelectProfiles';
 
 import { useEffect, useState } from 'react';
