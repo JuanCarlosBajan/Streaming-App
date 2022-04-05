@@ -32,6 +32,7 @@ function App() {
 
   const userLogInSuccess = (user, token = '') => {
     setUser(user);
+
     localStorage.setItem('token', JSON.stringify(token)); // Save the token on the local storage
     navigate('/profiles', { replace: true }); // Navigate to the profiles
   }
