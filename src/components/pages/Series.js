@@ -22,8 +22,11 @@ export const Series = () => {
         const getSeries = async () => {
             const data = await getAllSeries();
             if (data.ok) {
-                await getFavorites();
-                setSeries(data.series);
+                if (favorites.length === 0) {
+                    await getFavorites();
+                    setSeries(data.series);
+
+                }
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -37,23 +40,24 @@ export const Series = () => {
 
         }
 
-        const getFavorites = async () => {
-            const data = await getFavoriteSeries(localStorage.getItem('profileCode'));
-            if (data.ok) {
-                setFavorites(data.series);
-            } else {
-                data.errors.forEach(element => {
-                    toast({
-                        title: element,
-                        position: 'top',
-                        status: 'error',
-                        isClosable: true,
-                    })
-                });
-            }
-        }
         getSeries();    // Fetch series from server
     }, []);
+
+    const getFavorites = async () => {
+        const data = await getFavoriteSeries(localStorage.getItem('profileCode'));
+        if (data.ok) {
+            setFavorites(data.series);
+        } else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
 
     const isFavorite = (seriesCode) => {
         const favoriteCodes = favorites.map(f => f.seriesCode);
@@ -62,10 +66,42 @@ export const Series = () => {
 
     return (
         <>
+            {
+                favorites.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Tus Series Favoritas
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+
+                            {favorites.map((element, index) => (
+                                <SwiperSlide key={index}>
+                                    <ContentItem type={"series"}
+                                        contentCode={element.seriesCode}
+                                        favorite={isFavorite(element.seriesCode)}
+                                        onFavoriteClick={() => {
+                                            getFavorites()
+                                        }}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+
+
+                    </div>
+                </> : ''
+            }
             {Object.keys(series).map(genre => {
                 return (
                     <div className='container' key={genre}>
-                        <FormLabel>
+                        <FormLabel style={{ textTransform: "capitalize" }}>
                             {genre}
                         </FormLabel>
                         <Swiper
@@ -79,6 +115,7 @@ export const Series = () => {
                                 <SwiperSlide key={`${genre}-${index}`}>
                                     <ContentItem type={"series"}
                                         contentCode={element.seriesCode}
+                                        onFavoriteClick={() => { getFavorites() }}
                                         favorite={isFavorite(element.seriesCode)}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
