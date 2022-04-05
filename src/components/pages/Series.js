@@ -7,7 +7,7 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { getAllSeries } from '../../services/content';
+import { getAllSeries, getFavoriteSeries } from '../../services/content';
 
 
 
@@ -16,13 +16,14 @@ export const Series = () => {
     const toast = useToast();
 
     const [series, setSeries] = useState({});
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
         const getSeries = async () => {
             const data = await getAllSeries();
             if (data.ok) {
+                await getFavorites();
                 setSeries(data.series);
-                console.log(series);
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -35,8 +36,29 @@ export const Series = () => {
             }
 
         }
+
+        const getFavorites = async () => {
+            const data = await getFavoriteSeries(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setFavorites(data.series);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
         getSeries();    // Fetch series from server
     }, []);
+
+    const isFavorite = (seriesCode) => {
+        const favoriteCodes = favorites.map(f => f.seriesCode);
+        return favoriteCodes.includes(seriesCode);
+    }
 
     return (
         <>
@@ -46,7 +68,6 @@ export const Series = () => {
                         <FormLabel>
                             {genre}
                         </FormLabel>
-
                         <Swiper
                             slidesPerView={6}
                             spaceBetween={40}
@@ -58,7 +79,7 @@ export const Series = () => {
                                 <SwiperSlide key={`${genre}-${index}`}>
                                     <ContentItem type={"series"}
                                         contentCode={element.seriesCode}
-                                        favorite={false}
+                                        favorite={isFavorite(element.seriesCode)}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
                                     />
