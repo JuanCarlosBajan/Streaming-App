@@ -19,9 +19,7 @@ function ContentItem({
     <VStack className="content-item">
       <img src={coverUrl} alt={title} className="content-item__image" />
       <HStack>
-        <h2>
-          {title} {contentCode}
-        </h2>
+        <h2>{title}</h2>
         {favorite ? (
           <AiFillHeart
             onClick={() => {
