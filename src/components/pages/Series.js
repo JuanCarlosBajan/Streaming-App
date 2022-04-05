@@ -38,24 +38,6 @@ export const Series = () => {
         getSeries();    // Fetch series from server
     }, []);
 
-    /*
-    useEffect(() => {
-        const getSeries = async () => {
-            const seriesFromServer = await fetchSeries()
-            setSeries(seriesFromServer)
-        }
-        getSeries()
-    }, [])
-
-    const fetchSeries = async () => {
-        const res = await fetch('http://localhost:8080/api/content/series')
-        const data = await res.json()
-
-        //console.log(data)
-        return data
-    }
-    */
-
     return (
         <>
             {Object.keys(series).map(genre => {
@@ -74,7 +56,7 @@ export const Series = () => {
 
                             {series[genre].map((element, index) => (
                                 <SwiperSlide key={`${genre}-${index}`}>
-                                    <ContentItem coverUrl={element.coverUrl} title={element.title} />
+                                    <ContentItem favorite={false} coverUrl={element.coverUrl} title={element.title} />
                                 </SwiperSlide>
                             ))}
                         </Swiper>
