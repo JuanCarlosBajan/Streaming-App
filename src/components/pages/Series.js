@@ -56,17 +56,6 @@ export const Series = () => {
     }
     */
 
-    const List = ["https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg"]
-
     return (
         <>
             {Object.keys(series).map(genre => {
