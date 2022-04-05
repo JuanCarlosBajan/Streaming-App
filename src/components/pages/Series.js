@@ -39,29 +39,42 @@ export const Series = () => {
             }
 
         }
+        const getFavorites = async () => {
+            const data = await getFavoriteSeries(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setFavorites(data.series);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
 
         getSeries();    // Fetch series from server
     }, []);
 
-    const getFavorites = async () => {
-        const data = await getFavoriteSeries(localStorage.getItem('profileCode'));
-        if (data.ok) {
-            setFavorites(data.series);
-        } else {
-            data.errors.forEach(element => {
-                toast({
-                    title: element,
-                    position: 'top',
-                    status: 'error',
-                    isClosable: true,
-                })
-            });
-        }
-    }
 
     const isFavorite = (seriesCode) => {
         const favoriteCodes = favorites.map(f => f.seriesCode);
         return favoriteCodes.includes(seriesCode);
+    }
+
+    /**
+     * Handle the favorite click button tap
+     * @param {string} type 
+     */
+    const handleOnFavoriteClick = (type, seriesData) => {
+        if (type === "add") {
+            setFavorites([...favorites, seriesData])
+        } else if (type === "remove") {
+            setFavorites(favorites.filter(favorite => favorite.seriesCode !== seriesData.seriesCode))
+            console.log(favorites);
+        }
     }
 
     return (
@@ -78,23 +91,18 @@ export const Series = () => {
                             slidesPerGroup={2}
                             navigation={true}
                             modules={[Navigation]}>
-
                             {favorites.map((element, index) => (
                                 <SwiperSlide key={index}>
                                     <ContentItem type={"series"}
                                         contentCode={element.seriesCode}
-                                        favorite={isFavorite(element.seriesCode)}
-                                        onFavoriteClick={() => {
-                                            getFavorites()
-                                        }}
+                                        favorite={true}
+                                        onFavoriteClick={handleOnFavoriteClick}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
                                     />
                                 </SwiperSlide>
                             ))}
                         </Swiper>
-
-
                     </div>
                 </> : ''
             }
@@ -113,13 +121,22 @@ export const Series = () => {
 
                             {series[genre].map((element, index) => (
                                 <SwiperSlide key={`${genre}-${index}`}>
-                                    <ContentItem type={"series"}
-                                        contentCode={element.seriesCode}
-                                        onFavoriteClick={() => { getFavorites() }}
-                                        favorite={isFavorite(element.seriesCode)}
-                                        coverUrl={element.coverUrl}
-                                        title={element.title}
-                                    />
+                                    {favorites.map(fav => fav.seriesCode).includes(element.seriesCode) ?
+                                        <ContentItem type={"series"}
+                                            contentCode={element.seriesCode}
+                                            onFavoriteClick={handleOnFavoriteClick}
+                                            favorite={true}
+                                            coverUrl={element.coverUrl}
+                                            title={element.title}
+                                        />
+
+                                        : <ContentItem type={"series"}
+                                            contentCode={element.seriesCode}
+                                            onFavoriteClick={handleOnFavoriteClick}
+                                            favorite={false}
+                                            coverUrl={element.coverUrl}
+                                            title={element.title}
+                                        />}
                                 </SwiperSlide>
                             ))}
                         </Swiper>

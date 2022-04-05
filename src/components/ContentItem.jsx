@@ -12,7 +12,7 @@ function ContentItem({
   title,
   contentCode,
   favorite = true,
-  onFavoriteClick = () => {},
+  onFavoriteClick = (type) => {},
   type,
 }) {
   const [isFavorite, setFavorite] = useState(favorite);
@@ -37,7 +37,7 @@ function ContentItem({
     );
     if (result.ok) {
       setFavorite(!isFavorite);
-      onFavoriteClick();
+      onFavoriteClick("add", { title, coverUrl, seriesCode: contentCode });
     }
   };
 
@@ -61,7 +61,7 @@ function ContentItem({
     );
     if (result.ok) {
       setFavorite(!isFavorite);
-      onFavoriteClick();
+      onFavoriteClick("remove", { title, coverUrl, seriesCode: contentCode });
     }
   };
 
