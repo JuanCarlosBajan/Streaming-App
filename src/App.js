@@ -1,13 +1,14 @@
 import './App.css';
 import { Register } from './components/pages/Register';
 import Login from './components/pages/Login';
-import {Movies} from './components/pages/Movies'
+import { Movies } from './components/pages/Movies'
 import { Profiles } from './components/pages/SelectProfiles';
 
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from './services/user';
 import Search from './components/pages/Search';
+import { Series } from './components/pages/Series';
 
 //App View
 
@@ -42,6 +43,7 @@ function App() {
       <Route path='/profiles' element={<Profiles user={user} />}></Route>
       <Route path='/register' element={<Register onSuccess={userLogInSuccess} />}></Route>
       <Route path='/movies' element={<Movies />}></Route>
+      <Route path='/series' element={<Series />}></Route>
       <Route path='/search' element={<Search />}></Route>
     </Routes>
     // <Tabs variant='soft-rounded' colorScheme='green' isLazy={true}>
