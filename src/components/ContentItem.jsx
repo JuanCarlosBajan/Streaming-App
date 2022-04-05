@@ -10,70 +10,22 @@ function ContentItem({
   coverUrl,
   onClick,
   title,
-  contentCode,
   favorite = true,
-  onFavoriteClick = (type) => {},
   type,
+  toggleFavorite,
+  contentCode,
 }) {
-  const [isFavorite, setFavorite] = useState(favorite);
-
-  /**
-   * Adds an item to the favorite list
-   */
-  const addToFavorites = async () => {
-    if (type === "series") {
-      addToFavoritesSeries(contentCode);
-    }
-  };
-
-  /**
-   * Add to a favorite series
-   * @param {number} seriesCode
-   */
-  const addToFavoritesSeries = async (seriesCode) => {
-    const result = await addFavoriteSeries(
-      localStorage.getItem("profileCode"),
-      seriesCode
-    );
-    if (result.ok) {
-      setFavorite(!isFavorite);
-      onFavoriteClick("add", { title, coverUrl, seriesCode: contentCode });
-    }
-  };
-
-  /**
-   * Removes a series from the favorites
-   */
-  const removeFromFavorites = async () => {
-    if (type === "series") {
-      removeFromFavoritesSeries(contentCode);
-    }
-  };
-
-  /**
-   * Removes a series from the favorites
-   * @param {number} seriesCode
-   */
-  const removeFromFavoritesSeries = async (seriesCode) => {
-    const result = await removeFavoriteSeries(
-      localStorage.getItem("profileCode"),
-      seriesCode
-    );
-    if (result.ok) {
-      setFavorite(!isFavorite);
-      onFavoriteClick("remove", { title, coverUrl, seriesCode: contentCode });
-    }
-  };
-
   return (
     <VStack className="content-item">
       <img src={coverUrl} alt={title} className="content-item__image" />
       <HStack>
-        <h2>{title}</h2>
-        {isFavorite ? (
+        <h2>
+          {title} {contentCode}
+        </h2>
+        {favorite ? (
           <AiFillHeart
             onClick={() => {
-              removeFromFavorites();
+              toggleFavorite(contentCode, { title, coverUrl });
             }}
             style={{
               color: colors.primaryvariant1,
@@ -83,7 +35,7 @@ function ContentItem({
         ) : (
           <AiOutlineHeart
             onClick={() => {
-              addToFavorites();
+              toggleFavorite(contentCode, { title, coverUrl });
             }}
             style={{
               color: colors.primaryvariant1,

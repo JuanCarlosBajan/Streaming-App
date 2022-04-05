@@ -7,14 +7,13 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { getAllSeries, getFavoriteSeries } from '../../services/content';
+import { addFavoriteSeries, getAllSeries, getFavoriteSeries, removeFavoriteSeries } from '../../services/content';
 
 
 
 export const Series = () => {
 
     const toast = useToast();
-
     const [series, setSeries] = useState({});
     const [favorites, setFavorites] = useState([]);
 
@@ -39,6 +38,8 @@ export const Series = () => {
             }
 
         }
+
+
         const getFavorites = async () => {
             const data = await getFavoriteSeries(localStorage.getItem('profileCode'));
             if (data.ok) {
@@ -58,24 +59,25 @@ export const Series = () => {
         getSeries();    // Fetch series from server
     }, []);
 
-
-    const isFavorite = (seriesCode) => {
-        const favoriteCodes = favorites.map(f => f.seriesCode);
-        return favoriteCodes.includes(seriesCode);
-    }
-
     /**
-     * Handle the favorite click button tap
-     * @param {string} type 
+     * Toggle the favorite status for an item
      */
-    const handleOnFavoriteClick = (type, seriesData) => {
-        if (type === "add") {
-            setFavorites([...favorites, seriesData])
-        } else if (type === "remove") {
-            setFavorites(favorites.filter(favorite => favorite.seriesCode !== seriesData.seriesCode))
-            console.log(favorites);
+    const toggleFavorite = async (seriesCode, { title, coverUrl }) => {
+        const isAlreadyFavorite = favorites.map(fav => fav.seriesCode).includes(seriesCode);
+        if (!isAlreadyFavorite) {
+            const data = await addFavoriteSeries(localStorage.getItem('profileCode'), seriesCode);
+            if (data.ok) {
+                // add the series to the favorite
+                setFavorites([...favorites, { title, coverUrl, seriesCode }])
+            }
+        } else {
+            const data = await removeFavoriteSeries(localStorage.getItem('profileCode'), seriesCode);
+            if (data.ok) {
+                setFavorites(favorites.filter(fav => fav.seriesCode !== seriesCode));
+            }
         }
     }
+
 
     return (
         <>
@@ -96,7 +98,7 @@ export const Series = () => {
                                     <ContentItem type={"series"}
                                         contentCode={element.seriesCode}
                                         favorite={true}
-                                        onFavoriteClick={handleOnFavoriteClick}
+                                        toggleFavorite={toggleFavorite}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
                                     />
@@ -121,22 +123,13 @@ export const Series = () => {
 
                             {series[genre].map((element, index) => (
                                 <SwiperSlide key={`${genre}-${index}`}>
-                                    {favorites.map(fav => fav.seriesCode).includes(element.seriesCode) ?
-                                        <ContentItem type={"series"}
-                                            contentCode={element.seriesCode}
-                                            onFavoriteClick={handleOnFavoriteClick}
-                                            favorite={true}
-                                            coverUrl={element.coverUrl}
-                                            title={element.title}
-                                        />
-
-                                        : <ContentItem type={"series"}
-                                            contentCode={element.seriesCode}
-                                            onFavoriteClick={handleOnFavoriteClick}
-                                            favorite={false}
-                                            coverUrl={element.coverUrl}
-                                            title={element.title}
-                                        />}
+                                    <ContentItem type={"series"}
+                                        contentCode={element.seriesCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
                                 </SwiperSlide>
                             ))}
                         </Swiper>
