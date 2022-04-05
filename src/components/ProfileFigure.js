@@ -1,7 +1,7 @@
 
 import { VStack, Text } from '@chakra-ui/react';
 
-function ProfileFigure({ name }) {
+function ProfileFigure({ name, onClick }) {
 
     const styles = {
         mainDiv: {
@@ -12,7 +12,7 @@ function ProfileFigure({ name }) {
         }
     }
     return (
-        <VStack spacing="18px">
+        <VStack spacing="18px" onClick={onClick}>
             <div style={styles.mainDiv}>
 
             </div>

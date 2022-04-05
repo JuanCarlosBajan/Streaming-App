@@ -12,7 +12,7 @@ import "swiper/css/navigation";
 
 export const Movies = () => {
 
-    const [series, setSeries] = useState([]) 
+    const [series, setSeries] = useState([])
 
     /*
     useEffect(() => {
@@ -32,59 +32,59 @@ export const Movies = () => {
     }
     */
 
-    const List = ["https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg", 
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg", 
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg"] 
+    const List = ["https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
+        "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg"]
 
     return (
         <>
             <div className="container">
-            <FormLabel> Movies </FormLabel>
-            <Swiper
-                slidesPerView={6}
-                spaceBetween={40}
-                slidesPerGroup={2}
-                navigation={true} 
-                modules={[Navigation]}
-                className="mySwiper">
+                <FormLabel> Movies </FormLabel>
+                <Swiper
+                    slidesPerView={6}
+                    spaceBetween={40}
+                    slidesPerGroup={2}
+                    navigation={true}
+                    modules={[Navigation]}
+                    className="mySwiper">
 
-            {List.map((element, index) => (
-                <SwiperSlide key={index}>
-                    <ContentItem coverUrl={element} title={"movie"} />
-                </SwiperSlide>
-            ))}
-            </Swiper>    
-        </div>
-                
-        <br></br>
+                    {List.map((element, index) => (
+                        <SwiperSlide key={index}>
+                            <ContentItem coverUrl={element} title={"movie"} />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </div>
 
-        <div className="container">
-            <FormLabel> Series </FormLabel>
-            <Swiper
-                slidesPerView={6}
-                spaceBetween={40}
-                slidesPerGroup={2}
-                navigation={true} 
-                modules={[Navigation]}
-                className="mySwiper">
+            <br></br>
 
-            {List.map((element, index) => (
-                <SwiperSlide key={index}>
-                    <ContentItem coverUrl={element} title={"movie"} />
-                </SwiperSlide>
-            ))}
-            </Swiper>    
-        </div>
+            <div className="container">
+                <FormLabel> Series </FormLabel>
+                <Swiper
+                    slidesPerView={6}
+                    spaceBetween={40}
+                    slidesPerGroup={2}
+                    navigation={true}
+                    modules={[Navigation]}
+                    className="mySwiper">
+
+                    {List.map((element, index) => (
+                        <SwiperSlide key={index}>
+                            <ContentItem coverUrl={element} title={"movie"} />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </div>
 
         </>
-        
+
 
     );
 }

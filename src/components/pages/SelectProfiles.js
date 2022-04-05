@@ -7,7 +7,7 @@ import ProfileFigure from '../ProfileFigure';
 
 //Profiles View
 
-export const Profiles = ({ user = {} }) => {
+export const Profiles = ({ user = {}, onProfileSelect }) => {
     // ChakraUI
     const toast = useToast();
     // State
@@ -60,10 +60,11 @@ export const Profiles = ({ user = {} }) => {
             </VStack>
             <HStack spacing="24px" marginTop="42px" justifyContent="center">
                 {profiles.map(profile => {
-                    return <ProfileFigure key={profile.profileCode} name={profile.name}></ProfileFigure>
+                    return <ProfileFigure onClick={
+                        () => { onProfileSelect(profile.profileCode) }
+                    } key={profile.profileCode} name={profile.name}></ProfileFigure>
                 })}
                 {Object.values(user).length !== 0 && profiles.length < 8 ? <CreateProfileButton onProfileCreated={addProfile} /> : ''}
-
 
 
             </HStack>

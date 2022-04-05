@@ -56,7 +56,12 @@ export const Series = () => {
 
                             {series[genre].map((element, index) => (
                                 <SwiperSlide key={`${genre}-${index}`}>
-                                    <ContentItem favorite={false} coverUrl={element.coverUrl} title={element.title} />
+                                    <ContentItem type={"series"}
+                                        contentCode={element.seriesCode}
+                                        favorite={false}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
                                 </SwiperSlide>
                             ))}
                         </Swiper>
