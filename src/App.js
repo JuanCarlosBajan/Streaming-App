@@ -19,14 +19,20 @@ function App() {
 
   useEffect(() => {
     const currentUser = getCurrentUser();
+    const profileCode = localStorage.getItem('profileCode');
     if (!currentUser && (location.pathname !== '/' && location.pathname !== '/register')) {
       navigate('/')
     } else if (Object.keys(user).length === 0 && currentUser) {
-      setUser(currentUser);
+      const currentUserObj = profileCode ? { ...currentUser, profileCode } : { ...currentUser };
+      setUser(currentUserObj);
     }
-    if ((location.pathname === '/' || location.pathname === '/register') && currentUser) {
+
+    if (((location.pathname === '/' || location.pathname === '/register') && currentUser)) {
+      navigate('/profiles', { replace: true }); // Navigate to the profiles
+    } else if (((location.pathname !== '/profiles') && !profileCode && currentUser)) {
       navigate('/profiles', { replace: true }); // Navigate to the profiles
     }
+
 
   }, [user, location, navigate]);
 
@@ -37,34 +43,27 @@ function App() {
     navigate('/profiles', { replace: true }); // Navigate to the profiles
   }
 
+  /**
+   * Select an user on the system
+   * @param {number} profileCode 
+   */
+  const profileSelected = (profileCode) => {
+    localStorage.setItem('profileCode', profileCode);
+    setUser({
+      ...user,
+      profileCode
+    });
+  }
 
   return (
     <Routes>
       <Route path='/' element={<Login onSuccess={userLogInSuccess} />}></Route>
-      <Route path='/profiles' element={<Profiles user={user} />}></Route>
+      <Route path='/profiles' element={<Profiles user={user} onProfileSelect={profileSelected} />}></Route>
       <Route path='/register' element={<Register onSuccess={userLogInSuccess} />}></Route>
       <Route path='/movies' element={<Movies />}></Route>
       <Route path='/series' element={<Series />}></Route>
       <Route path='/search' element={<Search />}></Route>
     </Routes>
-    // <Tabs variant='soft-rounded' colorScheme='green' isLazy={true}>
-    //   <TabList mb='1em'>
-    //     <Tab>Login</Tab>
-    //     <Tab >Register</Tab>
-    //     <Tab>Select Profiles</Tab>
-    //   </TabList>
-    //   <TabPanels>
-    //     <TabPanel>
-    //       <Login onSuccess={userLogInSuccess} />
-    //     </TabPanel>
-    //     <TabPanel>
-    //       <Register onSuccess={userLogInSuccess} />
-    //     </TabPanel>
-    //     <TabPanel >
-    //       <Profiles user={user} />
-    //     </TabPanel>
-    //   </TabPanels>
-    // </Tabs>
   );
 }
 

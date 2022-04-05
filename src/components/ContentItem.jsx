@@ -1,11 +1,47 @@
-import { VStack } from "@chakra-ui/react";
-import React from "react";
+import { HStack, VStack } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { colors } from "../utils/colors";
 
-function ContentItem({ coverUrl, onClick, title }) {
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useState } from "react";
+import { addFavoriteSeries, removeFavoriteSeries } from "../services/content";
+
+function ContentItem({
+  coverUrl,
+  onClick,
+  title,
+  favorite = true,
+  type,
+  toggleFavorite,
+  contentCode,
+}) {
   return (
     <VStack className="content-item">
       <img src={coverUrl} alt={title} className="content-item__image" />
-      <h2>{title}</h2>
+      <HStack>
+        <h2>{title}</h2>
+        {favorite ? (
+          <AiFillHeart
+            onClick={() => {
+              toggleFavorite(contentCode, { title, coverUrl });
+            }}
+            style={{
+              color: colors.primaryvariant1,
+              fontSize: 30,
+            }}
+          />
+        ) : (
+          <AiOutlineHeart
+            onClick={() => {
+              toggleFavorite(contentCode, { title, coverUrl });
+            }}
+            style={{
+              color: colors.primaryvariant1,
+              fontSize: 30,
+            }}
+          />
+        )}
+      </HStack>
     </VStack>
   );
 }

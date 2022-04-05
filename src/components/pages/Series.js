@@ -7,22 +7,25 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { getAllSeries } from '../../services/content';
+import { addFavoriteSeries, getAllSeries, getFavoriteSeries, removeFavoriteSeries } from '../../services/content';
 
 
 
 export const Series = () => {
 
     const toast = useToast();
-
     const [series, setSeries] = useState({});
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
         const getSeries = async () => {
             const data = await getAllSeries();
             if (data.ok) {
-                setSeries(data.series);
-                console.log(series);
+                if (favorites.length === 0) {
+                    await getFavorites();
+                    setSeries(data.series);
+
+                }
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -35,36 +38,82 @@ export const Series = () => {
             }
 
         }
+
+
+        const getFavorites = async () => {
+            const data = await getFavoriteSeries(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setFavorites(data.series);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
+
         getSeries();    // Fetch series from server
     }, []);
 
-    /*
-    useEffect(() => {
-        const getSeries = async () => {
-            const seriesFromServer = await fetchSeries()
-            setSeries(seriesFromServer)
+    /**
+     * Toggle the favorite status for an item
+     */
+    const toggleFavorite = async (seriesCode, { title, coverUrl }) => {
+        const isAlreadyFavorite = favorites.map(fav => fav.seriesCode).includes(seriesCode);
+        if (!isAlreadyFavorite) {
+            const data = await addFavoriteSeries(localStorage.getItem('profileCode'), seriesCode);
+            if (data.ok) {
+                // add the series to the favorite
+                setFavorites([...favorites, { title, coverUrl, seriesCode }])
+            }
+        } else {
+            const data = await removeFavoriteSeries(localStorage.getItem('profileCode'), seriesCode);
+            if (data.ok) {
+                setFavorites(favorites.filter(fav => fav.seriesCode !== seriesCode));
+            }
         }
-        getSeries()
-    }, [])
-
-    const fetchSeries = async () => {
-        const res = await fetch('http://localhost:8080/api/content/series')
-        const data = await res.json()
-
-        //console.log(data)
-        return data
     }
-    */
+
 
     return (
         <>
+            {
+                favorites.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Tus Series Favoritas
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+                            {favorites.map((element, index) => (
+                                <SwiperSlide key={index}>
+                                    <ContentItem type={"series"}
+                                        contentCode={element.seriesCode}
+                                        favorite={true}
+                                        toggleFavorite={toggleFavorite}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </> : ''
+            }
             {Object.keys(series).map(genre => {
                 return (
                     <div className='container' key={genre}>
-                        <FormLabel>
+                        <FormLabel style={{ textTransform: "capitalize" }}>
                             {genre}
                         </FormLabel>
-
                         <Swiper
                             slidesPerView={6}
                             spaceBetween={40}
@@ -74,7 +123,13 @@ export const Series = () => {
 
                             {series[genre].map((element, index) => (
                                 <SwiperSlide key={`${genre}-${index}`}>
-                                    <ContentItem coverUrl={element.coverUrl} title={element.title} />
+                                    <ContentItem type={"series"}
+                                        contentCode={element.seriesCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
                                 </SwiperSlide>
                             ))}
                         </Swiper>
