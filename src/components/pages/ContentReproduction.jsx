@@ -25,7 +25,7 @@ function ContentReproduction() {
   const [episodes, setEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState([]);
   const [adTime, setAdTime] = useState();
-  let adInterval = null;
+  let [adInterval, setAdInterval] = useState();
   const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
@@ -51,7 +51,6 @@ function ContentReproduction() {
         const frequency = data.user.plan.adFrequency;
         setAdTime(frequency);
         if (frequency > 0) {
-          resetAdInterval();
           createAdInterval(frequency);
         }
       }
@@ -89,18 +88,21 @@ function ContentReproduction() {
    * @param {number} minutes
    */
   const createAdInterval = (minutes) => {
-    adInterval = setInterval(() => {
-      console.log("ANUNCIO!");
-      if (!showAd) {
-        setShowAd(true);
-      }
-    }, 1000);
+    clearInterval();
+    setAdInterval(
+      setInterval(() => {
+        if (!showAd) {
+          setShowAd(true);
+        }
+      }, minutes * 15000)
+    );
   };
 
   /**
    * Clear the interval
    */
   const resetAdInterval = () => {
+    console.log(adInterval);
     clearInterval(adInterval);
   };
 
@@ -167,6 +169,7 @@ function ContentReproduction() {
         isOpen={showAd}
         handleClose={() => {
           setShowAd(false);
+          createAdInterval(adTime);
         }}
       />
     </>
