@@ -63,7 +63,6 @@ p {
   height: 100%;
 }
 
-
 .swiper-slide {
   text-align: center;
   font-size: 18px;
@@ -91,25 +90,21 @@ p {
 }
 
 .container img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
-:root{
-    --swiper-theme-color: #fff;
+:root {
+  --swiper-theme-color: #fff;
 }
 
 .container .swiper-wrapper {
-    padding: 20px 0;
-    padding-bottom: 0;
-    padding-top: 0;
+  padding: 20px 0;
+  padding-bottom: 0;
+  padding-top: 0;
 }
 
 .container .swiper-slide {
-    transition: 250ms all;
-}
-
-.container .swiper-slide :hover {
-    transform: scale(1.2);
-    z-index: 1;
+  z-index: 1;
+  transition: 250ms all;
 }
