@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getMovie, getSeries } from "../../services/content";
 import { getCurrentUser, getUser } from "../../services/user";
+import AdPopup from "../AdPopup";
 
 function useQuery() {
   const { search } = useLocation();
@@ -23,7 +24,9 @@ function ContentReproduction() {
 
   const [episodes, setEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState([]);
-  const [adTime, setAdTime] = useState(null);
+  const [adTime, setAdTime] = useState();
+  let adInterval = null;
+  const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
     const getSeriesInfo = async () => {
@@ -45,8 +48,12 @@ function ContentReproduction() {
     const getUserInfo = async () => {
       const data = await getUser(getCurrentUser().userCode);
       if (data.ok) {
-        setAdTime(data.user.plan.adFrequency);
-        console.log(data.user.plan.adFrequency);
+        const frequency = data.user.plan.adFrequency;
+        setAdTime(frequency);
+        if (frequency > 0) {
+          resetAdInterval();
+          createAdInterval(frequency);
+        }
       }
     };
     const getMovieInfo = async () => {
@@ -66,7 +73,6 @@ function ContentReproduction() {
     };
 
     const type = query.get("type");
-    getUserInfo(); // Get the user information
     setType(type);
     if (type === "series") {
       getSeriesInfo();
@@ -75,7 +81,28 @@ function ContentReproduction() {
     } else {
       goBack();
     }
+    getUserInfo(); // Get the user information
   }, []);
+
+  /**
+   * Sets a time interval
+   * @param {number} minutes
+   */
+  const createAdInterval = (minutes) => {
+    adInterval = setInterval(() => {
+      console.log("ANUNCIO!");
+      if (!showAd) {
+        setShowAd(true);
+      }
+    }, 1000);
+  };
+
+  /**
+   * Clear the interval
+   */
+  const resetAdInterval = () => {
+    clearInterval(adInterval);
+  };
 
   /**
    * Go to the previous state
@@ -136,6 +163,12 @@ function ContentReproduction() {
           )}
         </Center>
       </Container>
+      <AdPopup
+        isOpen={showAd}
+        handleClose={() => {
+          setShowAd(false);
+        }}
+      />
     </>
   );
 }
