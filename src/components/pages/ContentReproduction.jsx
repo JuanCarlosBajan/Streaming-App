@@ -14,6 +14,7 @@ function ContentReproduction() {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [src, setSrc] = useState("");
+  const [publishedAt, setPublishedAt] = useState();
 
   useEffect(() => {
     const getSeriesInfo = async () => {
