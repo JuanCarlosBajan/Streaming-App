@@ -25,7 +25,7 @@ function ContentReproduction() {
   const [episodes, setEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState([]);
   const [adTime, setAdTime] = useState();
-  let [adInterval, setAdInterval] = useState();
+  let [intervalId, setIntervalId] = useState(0);
   const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
@@ -88,22 +88,22 @@ function ContentReproduction() {
    * @param {number} minutes
    */
   const createAdInterval = (minutes) => {
-    clearInterval();
-    setAdInterval(
-      setInterval(() => {
-        if (!showAd) {
-          setShowAd(true);
-        }
-      }, minutes * 15000)
-    );
+    // clearInterval(intervalId);
+    const i = setInterval(function () {
+      if (!showAd) {
+        setShowAd(true);
+      }
+    }, 1000 * minutes);
+    setIntervalId(i);
   };
 
   /**
    * Clear the interval
    */
   const resetAdInterval = () => {
-    console.log(adInterval);
-    clearInterval(adInterval);
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
   };
 
   /**
@@ -151,11 +151,11 @@ function ContentReproduction() {
         )}
 
         <Center className="content__video">
-          {src !== "" ? (
+          {src !== "" && !showAd ? (
             <iframe
               width="560"
               height="315"
-              src="https://www.youtube.com/embed/iyFe0M0zQ0g"
+              src={src}
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -169,7 +169,6 @@ function ContentReproduction() {
         isOpen={showAd}
         handleClose={() => {
           setShowAd(false);
-          createAdInterval(adTime);
         }}
       />
     </>
