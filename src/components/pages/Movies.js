@@ -1,5 +1,5 @@
-import { FormLabel } from '@chakra-ui/react';
-import React, { useRef, useState, useEffect } from "react";
+import { FormLabel, useToast } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import ContentItem from "../ContentItem"
@@ -7,84 +7,63 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
+import { getAllMovies } from '../../services/content';
 
 
 
 export const Movies = () => {
 
-    const [series, setSeries] = useState([]) 
+    const toast = useToast();
+    const [movies, setMovies] = useState({});
 
-    /*
     useEffect(() => {
-        const getSeries = async () => {
-            const seriesFromServer = await fetchSeries()
-            setSeries(seriesFromServer)
+        const getMovies = async () => {
+            const data = await getAllMovies();
+            if (data.ok) {
+                setMovies(data.movies);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+
         }
-        getSeries()
-    }, [])
+        getMovies();    
+    }, []);
 
-    const fetchSeries = async () => {
-        const res = await fetch('http://localhost:8080/api/content/series')
-        const data = await res.json()
-
-        //console.log(data)
-        return data
-    }
-    */
-
-    const List = ["https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg", 
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg", 
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg",
-                  "https://i.pinimg.com/564x/81/7c/90/817c90de6a9c8c670ffb72fdaafebba8.jpg"] 
 
     return (
         <>
-            <div className="container">
-            <FormLabel> Movies </FormLabel>
-            <Swiper
-                slidesPerView={6}
-                spaceBetween={40}
-                slidesPerGroup={2}
-                navigation={true} 
-                modules={[Navigation]}
-                className="mySwiper">
+            {Object.keys(movies).map(genre => {
+                return (
+                    <div className='container' key={genre}>
+                        <FormLabel>
+                            {genre}
+                        </FormLabel>
 
-            {List.map((element, index) => (
-                <SwiperSlide key={index}>
-                    <ContentItem coverUrl={element} title={"movie"} />
-                </SwiperSlide>
-            ))}
-            </Swiper>    
-        </div>
-                
-        <br></br>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
 
-        <div className="container">
-            <FormLabel> Series </FormLabel>
-            <Swiper
-                slidesPerView={6}
-                spaceBetween={40}
-                slidesPerGroup={2}
-                navigation={true} 
-                modules={[Navigation]}
-                className="mySwiper">
-
-            {List.map((element, index) => (
-                <SwiperSlide key={index}>
-                    <ContentItem coverUrl={element} title={"movie"} />
-                </SwiperSlide>
-            ))}
-            </Swiper>    
-        </div>
-
+                            {movies[genre].map((element, index) => (
+                                <SwiperSlide key={`${genre}-${index}`}>
+                                    <ContentItem coverUrl={element.coverUrl} title={element.title} />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                )
+            })}
         </>
-        
+
 
     );
 }
