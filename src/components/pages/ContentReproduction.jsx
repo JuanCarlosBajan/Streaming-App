@@ -2,6 +2,7 @@ import { Center, Container, HStack, Select, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getMovie, getSeries } from "../../services/content";
+import { getCurrentUser, getUser } from "../../services/user";
 
 function useQuery() {
   const { search } = useLocation();
@@ -22,6 +23,7 @@ function ContentReproduction() {
 
   const [episodes, setEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState([]);
+  const [adTime, setAdTime] = useState(null);
 
   useEffect(() => {
     const getSeriesInfo = async () => {
@@ -40,6 +42,13 @@ function ContentReproduction() {
         goBack();
       }
     };
+    const getUserInfo = async () => {
+      const data = await getUser(getCurrentUser().userCode);
+      if (data.ok) {
+        setAdTime(data.user.plan.adFrequency);
+        console.log(data.user.plan.adFrequency);
+      }
+    };
     const getMovieInfo = async () => {
       const contentCode = query.get("code");
       if (!type || !contentCode) {
@@ -55,7 +64,9 @@ function ContentReproduction() {
         goBack();
       }
     };
+
     const type = query.get("type");
+    getUserInfo(); // Get the user information
     setType(type);
     if (type === "series") {
       getSeriesInfo();

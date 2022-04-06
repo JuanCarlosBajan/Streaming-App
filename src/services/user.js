@@ -12,7 +12,6 @@ export const getCurrentUser = () => {
     if (!userCode) {
         return null;
     }
-
     return { userCode };
 }
 
@@ -26,6 +25,19 @@ fds
  */
 export const getUserProfiles = async (userCode) => {
     const res = await fetch(`http://localhost:8080/api/users/${userCode}/profiles`, {
+        headers: headers(),
+    });
+    const data = await res.json();
+    return data
+}
+
+/**
+ * Gets a single user
+ * @param {number} userCode 
+ * @returns 
+ */
+export const getUser = async (userCode) => {
+    const res = await fetch(`http://localhost:8080/api/users/${userCode}`, {
         headers: headers(),
     });
     const data = await res.json();
