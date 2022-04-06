@@ -1,7 +1,7 @@
 import { Center, Container, HStack, Select, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getSeries } from "../../services/content";
+import { getMovie, getSeries } from "../../services/content";
 
 function useQuery() {
   const { search } = useLocation();
@@ -18,6 +18,7 @@ function ContentReproduction() {
   const [description, setDescription] = useState();
   const [src, setSrc] = useState("");
   const [publishedAt, setPublishedAt] = useState("");
+  const [studio, setStudio] = useState("");
 
   const [episodes, setEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState([]);
@@ -25,30 +26,44 @@ function ContentReproduction() {
   useEffect(() => {
     const getSeriesInfo = async () => {
       const contentCode = query.get("code");
-      const type = query.get("type");
       if (!type || !contentCode) {
         goBack();
       }
-      let data = {};
-
-      if (type === "series") {
-        data = await getSeries(contentCode);
-      } else if (type === "movies") {
-      } else {
-        goBack();
-      }
-
+      const data = await getSeries(contentCode);
       if (data.ok) {
         setTitle(data.series.title);
         setDescription(data.series.description);
         setEpisodes(data.series.episodes);
         setPublishedAt(new Date(data.series.publishedAt).toLocaleDateString());
+        setStudio(data.series.studio.name);
       } else {
         goBack();
       }
-      setType(type);
     };
-    getSeriesInfo();
+    const getMovieInfo = async () => {
+      const contentCode = query.get("code");
+      if (!type || !contentCode) {
+        goBack();
+      }
+      const data = await getMovie(contentCode);
+      if (data.ok) {
+        setTitle(data.series.title);
+        setDescription(data.series.description);
+        setPublishedAt(new Date(data.series.publishedAt).toLocaleDateString());
+        setStudio(data.series.studio.name);
+      } else {
+        goBack();
+      }
+    };
+    const type = query.get("type");
+    setType(type);
+    if (type === "series") {
+      getSeriesInfo();
+    } else if (type === "movies") {
+      getMovieInfo();
+    } else {
+      goBack();
+    }
   }, []);
 
   /**
@@ -65,7 +80,7 @@ function ContentReproduction() {
         <Text textAlign={"justify"}>{description}</Text>
         <HStack>
           <Text fontWeight={"bold"}>Estudio</Text>
-          <Text>Colocar aqui Estudio</Text>
+          <Text>{studio}</Text>
         </HStack>
         <HStack>
           <Text fontWeight={"bold"}>Actores</Text>
@@ -87,7 +102,7 @@ function ContentReproduction() {
           >
             {episodes.map((episode) => (
               <option value={episode.episodeCode} key={episode.episodeCode}>
-                {episode.name}
+                {episode.season} - {episode.name}
               </option>
             ))}
           </Select>

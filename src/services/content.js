@@ -83,3 +83,15 @@ export const getSeries = async (seriesCode) => {
     const data = await res.json();
     return data
 }
+
+
+/**
+ * Gets a single movie
+ * @param {number} movieCode 
+ * @returns 
+ */
+export const getMovie = async (movieCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/movies/single/${movieCode}`);
+    const data = await res.json();
+    return data
+}
