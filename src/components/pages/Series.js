@@ -102,7 +102,7 @@ export const Series = () => {
                             modules={[Navigation]}>
                             {favorites.map((element, index) => (
                                 <SwiperSlide key={index}>
-                                    <ContentItem type={"series"}
+                                    <ContentItem
                                         contentCode={element.seriesCode}
                                         favorite={true}
                                         onClick={reproduceSeries}

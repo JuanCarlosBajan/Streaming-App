@@ -1,6 +1,6 @@
-import { Center, Container, HStack, Text } from "@chakra-ui/react";
+import { Center, Container, HStack, Select, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getSeries } from "../../services/content";
 
 function useQuery() {
@@ -11,25 +11,52 @@ function useQuery() {
 
 function ContentReproduction() {
   const query = useQuery();
+  const navigate = useNavigate();
+
+  const [type, setType] = useState("");
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [src, setSrc] = useState("");
-  const [publishedAt, setPublishedAt] = useState();
+  const [publishedAt, setPublishedAt] = useState("");
+
+  const [episodes, setEpisodes] = useState([]);
+  const [selectedEpisode, setSelectedEpisode] = useState([]);
 
   useEffect(() => {
     const getSeriesInfo = async () => {
-      const seriesCode = query.get("code");
-      const data = await getSeries(seriesCode);
+      const contentCode = query.get("code");
+      const type = query.get("type");
+      if (!type || !contentCode) {
+        goBack();
+      }
+      let data = {};
+
+      if (type === "series") {
+        data = await getSeries(contentCode);
+      } else if (type === "movies") {
+      } else {
+        goBack();
+      }
+
       if (data.ok) {
-        console.log(data);
         setTitle(data.series.title);
         setDescription(data.series.description);
-        setSrc(data.series.episodes[0].url);
+        setEpisodes(data.series.episodes);
+        setPublishedAt(new Date(data.series.publishedAt).toLocaleDateString());
       } else {
+        goBack();
       }
+      setType(type);
     };
     getSeriesInfo();
   }, []);
+
+  /**
+   * Go to the previous state
+   */
+  const goBack = () => {
+    navigate("/movies");
+  };
 
   return (
     <>
@@ -48,6 +75,25 @@ function ContentReproduction() {
           <Text fontWeight={"bold"}>Fecha de estreno</Text>
           <Text>{publishedAt}</Text>
         </HStack>
+        {type === "series" ? (
+          <Select
+            placeholder="Selecciona un episodio"
+            onChange={($event) => {
+              const episode = episodes.find(
+                (ep) => ep.episodeCode === $event.target.value
+              );
+              setSrc(episode ? episode.url : "");
+            }}
+          >
+            {episodes.map((episode) => (
+              <option value={episode.episodeCode} key={episode.episodeCode}>
+                {episode.name}
+              </option>
+            ))}
+          </Select>
+        ) : (
+          ""
+        )}
 
         <Center className="content__video">
           {src !== "" ? (

@@ -11,7 +11,6 @@ function ContentItem({
   onClick,
   title,
   favorite = true,
-  type,
   toggleFavorite,
   contentCode,
 }) {
