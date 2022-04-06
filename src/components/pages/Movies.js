@@ -7,7 +7,7 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { getAllMovies } from '../../services/content';
+import { addFavoriteMovies, getAllMovies, getFavoriteMovies, removeFavoriteMovies } from '../../services/content';
 
 
 
@@ -15,12 +15,17 @@ export const Movies = () => {
 
     const toast = useToast();
     const [movies, setMovies] = useState({});
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
         const getMovies = async () => {
             const data = await getAllMovies();
             if (data.ok) {
-                setMovies(data.movies);
+                if (favorites.length === 0) {
+                    await getFavorites();
+                    setMovies(data.movies);
+
+                }
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -33,19 +38,83 @@ export const Movies = () => {
             }
 
         }
-        getMovies();    
+
+
+        const getFavorites = async () => {
+            const data = await getFavoriteMovies(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setFavorites(data.movies);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
+
+        getMovies();    // Fetch movies from server
     }, []);
+
+    /**
+     * Toggle the favorite status for an item
+     */
+    const toggleFavorite = async (movieCode, { title, coverUrl }) => {
+
+        const isAlreadyFavorite = favorites.map(fav => fav.movieCode).includes(movieCode);
+        
+        if (!isAlreadyFavorite) {
+            const data = await addFavoriteMovies(localStorage.getItem('profileCode'), movieCode);
+            if (data.ok) {
+                setFavorites([...favorites, { title, coverUrl, movieCode }])
+            }
+        } else {
+            const data = await removeFavoriteMovies(localStorage.getItem('profileCode'), movieCode);
+            if (data.ok) {
+                setFavorites(favorites.filter(fav => fav.movieCode !== movieCode));
+            }
+        }
+    }
 
 
     return (
         <>
+            {
+                favorites.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Tus Movies Favoritas
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+                            {favorites.map((element, index) => (
+                                <SwiperSlide key={index}>
+                                    <ContentItem type={"movies"}
+                                        contentCode={element.movieCode}
+                                        favorite={true}
+                                        toggleFavorite={toggleFavorite}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </> : ''
+            }
             {Object.keys(movies).map(genre => {
                 return (
                     <div className='container' key={genre}>
-                        <FormLabel>
+                        <FormLabel style={{ textTransform: "capitalize" }}>
                             {genre}
                         </FormLabel>
-
                         <Swiper
                             slidesPerView={6}
                             spaceBetween={40}
@@ -55,10 +124,18 @@ export const Movies = () => {
 
                             {movies[genre].map((element, index) => (
                                 <SwiperSlide key={`${genre}-${index}`}>
-                                    <ContentItem coverUrl={element.coverUrl} title={element.title} />
+                                    <ContentItem type={"movies"}
+                                        contentCode={element.movieCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.movieCode).includes(element.movieCode)}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
                                 </SwiperSlide>
                             ))}
                         </Swiper>
+
+
                     </div>
                 )
             })}
