@@ -11,13 +11,19 @@ function ContentItem({
   onClick,
   title,
   favorite = true,
-  type,
   toggleFavorite,
   contentCode,
 }) {
   return (
     <VStack className="content-item">
-      <img src={coverUrl} alt={title} className="content-item__image" />
+      <img
+        src={coverUrl}
+        onClick={() => {
+          onClick(contentCode);
+        }}
+        alt={title}
+        className="content-item__image"
+      />
       <HStack>
         <h2>{title}</h2>
         {favorite ? (

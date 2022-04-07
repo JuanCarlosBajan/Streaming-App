@@ -9,6 +9,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from './services/user';
 import Search from './components/pages/Search';
 import { Series } from './components/pages/Series';
+import ContentReproduction from './components/pages/ContentReproduction';
 
 //App View
 
@@ -63,6 +64,7 @@ function App() {
       <Route path='/movies' element={<Movies />}></Route>
       <Route path='/series' element={<Series />}></Route>
       <Route path='/search' element={<Search />}></Route>
+      <Route path='/watch' element={<ContentReproduction />}></Route>
     </Routes>
   );
 }

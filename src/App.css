@@ -108,3 +108,7 @@ p {
   z-index: 1;
   transition: 250ms all;
 }
+
+.content__video {
+  margin-top: 20px;
+}

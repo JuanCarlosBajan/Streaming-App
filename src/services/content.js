@@ -113,3 +113,26 @@ const headers = () => {
         "Content-Type": "application/json",
     };
 }
+
+/**
+ * Gets a single series
+ * @param {number} seriesCode 
+ * @returns 
+ */
+export const getSeries = async (seriesCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/series/single/${seriesCode}`);
+    const data = await res.json();
+    return data
+}
+
+
+/**
+ * Gets a single movie
+ * @param {number} movieCode 
+ * @returns 
+ */
+export const getMovie = async (movieCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/movies/single/${movieCode}`);
+    const data = await res.json();
+    return data
+}

@@ -8,6 +8,7 @@ import ContentItem from "../ContentItem"
 import "swiper/css";
 import "swiper/css/navigation";
 import { addFavoriteSeries, getAllSeries, getFavoriteSeries, removeFavoriteSeries } from '../../services/content';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -16,6 +17,7 @@ export const Series = () => {
     const toast = useToast();
     const [series, setSeries] = useState({});
     const [favorites, setFavorites] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getSeries = async () => {
@@ -79,6 +81,11 @@ export const Series = () => {
     }
 
 
+    const reproduceSeries = (seriesCode) => {
+        console.log('reproducing', seriesCode);
+        navigate(`/watch?type=series&code=${seriesCode}`)
+    }
+
     return (
         <>
             {
@@ -95,9 +102,10 @@ export const Series = () => {
                             modules={[Navigation]}>
                             {favorites.map((element, index) => (
                                 <SwiperSlide key={index}>
-                                    <ContentItem type={"series"}
+                                    <ContentItem
                                         contentCode={element.seriesCode}
                                         favorite={true}
+                                        onClick={reproduceSeries}
                                         toggleFavorite={toggleFavorite}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
@@ -124,6 +132,7 @@ export const Series = () => {
                             {series[genre].map((element, index) => (
                                 <SwiperSlide key={`${genre}-${index}`}>
                                     <ContentItem type={"series"}
+                                        onClick={reproduceSeries}
                                         contentCode={element.seriesCode}
                                         toggleFavorite={toggleFavorite}
                                         favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
