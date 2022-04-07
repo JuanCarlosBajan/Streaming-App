@@ -107,7 +107,7 @@ export const Register = ({ onSuccess }) => {
             password: password,
             plan: plan,
         };
-        
+
 
         const otherPram = {
             method: "POST",
@@ -147,8 +147,7 @@ export const Register = ({ onSuccess }) => {
                         status: 'success',
                         isClosable: true,
                     });
-
-                    onSuccess(info);
+                    onSuccess(info, data.token);
                 } else {
                     data.errors.forEach(element => {
                         toast({
