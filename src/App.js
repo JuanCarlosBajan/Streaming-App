@@ -55,6 +55,7 @@ function App() {
       ...user,
       profileCode
     });
+    navigate('/movies');
   }
 
   return (
