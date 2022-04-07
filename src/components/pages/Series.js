@@ -82,7 +82,6 @@ export const Series = () => {
 
 
     const reproduceSeries = (seriesCode) => {
-        console.log('reproducing', seriesCode);
         navigate(`/watch?type=series&code=${seriesCode}`)
     }
 
