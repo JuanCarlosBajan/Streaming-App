@@ -23,9 +23,8 @@ function ContentReproduction() {
   const [studio, setStudio] = useState("");
 
   const [episodes, setEpisodes] = useState([]);
-  const [selectedEpisode, setSelectedEpisode] = useState([]);
+
   const [adTime, setAdTime] = useState();
-  let [intervalId, setIntervalId] = useState(0);
   const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
@@ -50,9 +49,6 @@ function ContentReproduction() {
       if (data.ok) {
         const frequency = data.user.plan.adFrequency;
         setAdTime(frequency);
-        if (frequency > 0) {
-          createAdInterval(frequency);
-        }
       }
     };
     const getMovieInfo = async () => {
@@ -87,23 +83,11 @@ function ContentReproduction() {
    * Sets a time interval
    * @param {number} minutes
    */
-  const createAdInterval = (minutes) => {
-    // clearInterval(intervalId);
-    const i = setInterval(function () {
-      if (!showAd) {
-        setShowAd(true);
-      }
+  const createAdTimeout = (minutes) => {
+    const i = setTimeout(function () {
+      setShowAd(true);
+      clearTimeout(i);
     }, 1000 * minutes);
-    setIntervalId(i);
-  };
-
-  /**
-   * Clear the interval
-   */
-  const resetAdInterval = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
   };
 
   /**
@@ -138,6 +122,9 @@ function ContentReproduction() {
                 (ep) => ep.episodeCode === $event.target.value
               );
               setSrc(episode ? episode.url : "");
+              if (adTime > 0) {
+                createAdTimeout(adTime);
+              }
             }}
           >
             {episodes.map((episode) => (
@@ -169,6 +156,9 @@ function ContentReproduction() {
         isOpen={showAd}
         handleClose={() => {
           setShowAd(false);
+          if (adTime > 0) {
+            createAdTimeout(adTime);
+          }
         }}
       />
     </>
