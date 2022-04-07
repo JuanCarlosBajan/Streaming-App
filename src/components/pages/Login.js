@@ -108,7 +108,6 @@ const Login = ({ onSuccess }) => {
                         status: 'success',
                         isClosable: true,
                     });
-
                     onSuccess(data.user[0], data.token)
                 } else {
                     data.errors.forEach(element => {
