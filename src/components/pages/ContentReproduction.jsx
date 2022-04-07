@@ -28,6 +28,9 @@ function ContentReproduction() {
   const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
+    const type = query.get("type");
+    setType(type);
+
     const getSeriesInfo = async () => {
       const contentCode = query.get("code");
       if (!type || !contentCode) {
@@ -49,6 +52,9 @@ function ContentReproduction() {
       if (data.ok) {
         const frequency = data.user.plan.adFrequency;
         setAdTime(frequency);
+        if (type === "movie" && frequency !== 0) {
+          createAdTimeout(frequency);
+        }
       }
     };
     const getMovieInfo = async () => {
@@ -58,20 +64,19 @@ function ContentReproduction() {
       }
       const data = await getMovie(contentCode);
       if (data.ok) {
-        setTitle(data.series.title);
-        setDescription(data.series.description);
-        setPublishedAt(new Date(data.series.publishedAt).toLocaleDateString());
-        setStudio(data.series.studio.name);
+        setTitle(data.movie.title);
+        setDescription(data.movie.description);
+        setPublishedAt(new Date(data.movie.publishedAt).toLocaleDateString());
+        setStudio(data.movie.studio.name);
+        setSrc(data.movie.url);
       } else {
         goBack();
       }
     };
 
-    const type = query.get("type");
-    setType(type);
     if (type === "series") {
       getSeriesInfo();
-    } else if (type === "movies") {
+    } else if (type === "movie") {
       getMovieInfo();
     } else {
       goBack();
