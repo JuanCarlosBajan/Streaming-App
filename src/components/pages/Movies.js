@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { addFavoriteMovies, getAllMovies, getFavoriteMovies, removeFavoriteMovies } from '../../services/content';
 import { useNavigate } from 'react-router-dom';
+import NavMenu from '../NavMenu';
 
 
 
@@ -88,6 +89,7 @@ export const Movies = () => {
 
     return (
         <>
+
             {
                 favorites.length > 0 ? <>
                     <div className='container'>

@@ -10,6 +10,7 @@ import { getCurrentUser } from './services/user';
 import Search from './components/pages/Search';
 import { Series } from './components/pages/Series';
 import ContentReproduction from './components/pages/ContentReproduction';
+import NavMenu from './components/NavMenu';
 
 //App View
 
@@ -61,10 +62,26 @@ function App() {
       <Route path='/' element={<Login onSuccess={userLogInSuccess} />}></Route>
       <Route path='/profiles' element={<Profiles user={user} onProfileSelect={profileSelected} />}></Route>
       <Route path='/register' element={<Register onSuccess={userLogInSuccess} />}></Route>
-      <Route path='/movies' element={<Movies />}></Route>
-      <Route path='/series' element={<Series />}></Route>
-      <Route path='/search' element={<Search />}></Route>
-      <Route path='/watch' element={<ContentReproduction />}></Route>
+      <Route path='/movies' element={
+        <>
+          <NavMenu />
+          <Movies />
+        </>
+      }></Route>
+      <Route path='/series' element={<>
+        <NavMenu />
+        <Series />
+      </>}></Route>
+      <Route path='/search' element={<>
+        <NavMenu />
+        <Search />
+      </>}></Route>
+      <Route path='/watch' element={
+        <>
+          <NavMenu />
+          <ContentReproduction />
+        </>
+      }></Route>
     </Routes>
   );
 }

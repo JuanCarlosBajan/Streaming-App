@@ -112,3 +112,30 @@ p {
 .content__video {
   margin-top: 20px;
 }
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  padding: 10px 30px;
+}
+.nav__options {
+  list-style: none;
+}
+.nav__logo {
+  font-size: 2rem;
+}
+.nav__option {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #5e2bff;
+  font-weight: 600;
+}
+.nav__option:hover {
+  color: #3400e0;
+}
+.nav__option:not(:last-child) {
+  margin-right: 20px;
+}
