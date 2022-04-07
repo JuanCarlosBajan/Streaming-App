@@ -6,11 +6,12 @@ import { Profiles } from './components/pages/SelectProfiles';
 
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { getCurrentUser } from './services/user';
+import { getCurrentUser, lockProfile, unlockProfile } from './services/user';
 import Search from './components/pages/Search';
 import { Series } from './components/pages/Series';
 import ContentReproduction from './components/pages/ContentReproduction';
 import NavMenu from './components/NavMenu';
+import { useToast } from '@chakra-ui/react';
 
 //App View
 
@@ -18,6 +19,7 @@ function App() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -40,21 +42,35 @@ function App() {
 
   const userLogInSuccess = (user, token = '') => {
     setUser(user);
-
     localStorage.setItem('token', JSON.stringify(token)); // Save the token on the local storage
     navigate('/profiles', { replace: true }); // Navigate to the profiles
   }
 
   /**
    * Select an user on the system
-   * @param {number} profileCode 
+   * @param {*} profile 
    */
-  const profileSelected = (profileCode) => {
-    localStorage.setItem('profileCode', profileCode);
-    setUser({
-      ...user,
-      profileCode
-    });
+  const profileSelected = async (profile) => {
+    const currentProfile = localStorage.getItem('profileCode');
+    if (currentProfile) {
+      unlockProfile(currentProfile);  // Unlock the profile that was previously selected
+    }
+    if (!profile.signedIn || profile.profileCode === currentProfile) {
+      localStorage.setItem('profileCode', profile.profileCode);
+      lockProfile(profile.profileCode)
+      setUser({
+        ...user,
+        profileCode: profile.profileCode
+      });
+      navigate('/movies');
+    } else {
+      toast({
+        title: 'El perfil ya está viendo contenido.',
+        position: 'top',
+        status: 'error',
+        isClosable: true,
+      })
+    }
   }
 
   return (

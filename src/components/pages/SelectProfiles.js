@@ -38,7 +38,6 @@ export const Profiles = ({ user = {}, onProfileSelect }) => {
             });
         }
     }
-
     const getProfiles = async () => {
         const profilesFromServer = await getUserProfiles(user.userCode);
         if (profilesFromServer.ok === true) {
@@ -50,7 +49,7 @@ export const Profiles = ({ user = {}, onProfileSelect }) => {
         if (Object.values(user).length !== 0) {
             getProfiles();
         }
-    });
+    }, [user]);
 
     return (
         <Container textAlign="center">
@@ -61,7 +60,7 @@ export const Profiles = ({ user = {}, onProfileSelect }) => {
             <HStack spacing="24px" marginTop="42px" justifyContent="center">
                 {profiles.map(profile => {
                     return <ProfileFigure onClick={
-                        () => { onProfileSelect(profile.profileCode) }
+                        () => { onProfileSelect(profile) }
                     } key={profile.profileCode} name={profile.name}></ProfileFigure>
                 })}
                 {Object.values(user).length !== 0 && profiles.length < 8 ? <CreateProfileButton onProfileCreated={addProfile} /> : ''}

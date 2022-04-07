@@ -67,6 +67,39 @@ export const createProfile = async (userCode, name) => {
 
 }
 
+/**
+ * Activates a profile
+ * @param {number} profileCode 
+ * @returns 
+ */
+export const lockProfile = async (profileCode) => {
+    const URL = `http://localhost:8080/api/users/lock/${profileCode}`;
+    const otherPram = {
+        method: "GET",
+        headers: headers(),
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Deactivates a profile
+ * @param {number} profileCode 
+ * @returns 
+ */
+export const unlockProfile = async (profileCode) => {
+    const URL = `http://localhost:8080/api/users/unlock/${profileCode}`;
+    const otherPram = {
+        method: "GET",
+        headers: headers(),
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+
 const headers = () => {
     return {
         "Content-Type": "application/json",
