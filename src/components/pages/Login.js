@@ -69,7 +69,7 @@ const Login = ({ onSuccess }) => {
         setPassword(data)
     }
 
-    const toast = useToast()
+    const toast = useToast();
 
     const getUsers = () => {
         const URL = 'http://localhost:8080/api/users';
