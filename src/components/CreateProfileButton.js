@@ -40,10 +40,13 @@ function CreateProfileButton({ onProfileCreated, user }) {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={createProfile}>
+                        <Button colorScheme='blue'
+                            backgroundColor={colors.primary}
+                            color={colors.white}
+                            mr={3} onClick={createProfile}>
                             Crear
                         </Button>
-                        <Button variant='ghost' onClick={onClose}>Cancelar</Button>
+                        <Button onClick={onClose}>Cancelar</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
