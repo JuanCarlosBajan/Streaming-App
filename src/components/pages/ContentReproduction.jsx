@@ -1,7 +1,12 @@
 import { Center, Container, HStack, Select, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getMovie, getSeries, markMovieFinished } from "../../services/content";
+import {
+  getMovie,
+  getSeries,
+  markMovieFinished,
+  markSeriesFinished,
+} from "../../services/content";
 import { getCurrentUser, getUser } from "../../services/user";
 import AdPopup from "../AdPopup";
 import YouTube from "react-youtube";
@@ -23,6 +28,7 @@ function ContentReproduction() {
   const [src, setSrc] = useState("");
   const [publishedAt, setPublishedAt] = useState("");
   const [studio, setStudio] = useState("");
+  const [episode, setEpisode] = useState(0);
 
   const [episodes, setEpisodes] = useState([]);
 
@@ -118,10 +124,13 @@ function ContentReproduction() {
   const onContentStart = (event) => {};
 
   const onContentEnd = async (event) => {
-    const res = await markMovieFinished(
-      contentCode,
-      localStorage.getItem("profileCode")
-    );
+    console.log(type);
+    if (type === "movie") {
+      await markMovieFinished(contentCode, localStorage.getItem("profileCode"));
+    } else {
+      console.log("finished");
+      await markSeriesFinished(episode, localStorage.getItem("profileCode"));
+    }
   };
 
   const onContentPaused = (event) => {};
@@ -149,6 +158,7 @@ function ContentReproduction() {
           <Select
             placeholder="Selecciona un episodio"
             onChange={($event) => {
+              setEpisode($event.target.value);
               const episode = episodes.find(
                 (ep) => ep.episodeCode === $event.target.value
               );
@@ -171,7 +181,7 @@ function ContentReproduction() {
         <Center className="content__video">
           {src !== "" && !showAd ? (
             <YouTube
-              videoId="2g811Eo7K8U"
+              videoId={src}
               opts={opts}
               onEnd={onContentEnd}
               onPause={onContentPaused}
