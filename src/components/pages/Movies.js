@@ -7,7 +7,7 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { addFavoriteMovies, getAllMovies, getFavoriteMovies, removeFavoriteMovies } from '../../services/content';
+import { addFavoriteMovies, getAllMovies, getFavoriteMovies, getFinishedMovies, removeFavoriteMovies } from '../../services/content';
 import { useNavigate } from 'react-router-dom';
 import NavMenu from '../NavMenu';
 
@@ -18,6 +18,7 @@ export const Movies = () => {
     const toast = useToast();
     const [movies, setMovies] = useState({});
     const [favorites, setFavorites] = useState([]);
+    const [finished, setFinished] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,6 +27,7 @@ export const Movies = () => {
             if (data.ok) {
                 if (favorites.length === 0) {
                     await getFavorites();
+                    await getFinished();
                     setMovies(data.movies);
                 }
             } else {
@@ -46,6 +48,23 @@ export const Movies = () => {
             const data = await getFavoriteMovies(localStorage.getItem('profileCode'));
             if (data.ok) {
                 setFavorites(data.movies);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
+
+        const getFinished = async () => {
+            const data = await getFinishedMovies(localStorage.getItem('profileCode'));
+            console.log(data);
+            if (data.ok) {
+                setFinished(data.movies);
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -94,7 +113,7 @@ export const Movies = () => {
                 favorites.length > 0 ? <>
                     <div className='container'>
                         <FormLabel>
-                            Tus Movies Favoritas
+                            Tus Peliculas Favoritas
                         </FormLabel>
                         <Swiper
                             slidesPerView={6}
@@ -109,6 +128,35 @@ export const Movies = () => {
                                         contentCode={element.movieCode}
                                         favorite={true}
                                         toggleFavorite={toggleFavorite}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </> : ''
+            }
+
+            {
+                finished.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Ver Otra Vez
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+                            {finished.map((element, index) => (
+                                <SwiperSlide key={index}>
+                                    <ContentItem type={"movies"}
+                                        onClick={() => { reproduceMovie(element.movieCode) }}
+                                        contentCode={element.movieCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.movieCode).includes(element.movieCode)}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
                                     />
