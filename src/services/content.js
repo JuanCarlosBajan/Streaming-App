@@ -8,7 +8,7 @@ export const getAllMovies = async () => {
  * Get all series from the system
  * @returns 
  */
- export const getAllSeries = async () => {
+export const getAllSeries = async () => {
     const res = await fetch(`http://localhost:8080/api/content/series`);
     const data = await res.json();
     return data
@@ -104,15 +104,7 @@ export const getFavoriteMovies = async (profileCode) => {
     return data
 }
 
-/**
- * Headers for the system
- * @returns 
- */
-const headers = () => {
-    return {
-        "Content-Type": "application/json",
-    };
-}
+
 
 /**
  * Gets a single series
@@ -135,4 +127,75 @@ export const getMovie = async (movieCode) => {
     const res = await fetch(`http://localhost:8080/api/content/movies/single/${movieCode}`);
     const data = await res.json();
     return data
+}
+
+
+/**
+ * Mark a movie as finished
+ * @param {number} movieCode 
+ * @param {number} profileCode 
+ */
+export const markMovieFinished = async (movieCode, profileCode) => {
+    let body = {
+        movieCode
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/movies/${profileCode}/finished`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Get the finished movies for a profile
+ * @param {number} profileCode 
+ */
+export const getFinishedMovies = async (profileCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/movies/${profileCode}/finished`);
+    const data = await res.json();
+    return data;
+}
+
+
+/**
+ * Get finished series for a profile
+ * @param {*} profileCode 
+ */
+export const getFinishedSeries = async (profileCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/finished`);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Mark a series as finished
+ * @param {*} episodeCode 
+ * @param {*} profileCode 
+ * @returns 
+ */
+export const markSeriesFinished = async (episodeCode, profileCode) => {
+    let body = {
+        episodeCode
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/finished`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Headers for the system
+ * @returns 
+ */
+const headers = () => {
+    return {
+        "Content-Type": "application/json",
+    };
 }

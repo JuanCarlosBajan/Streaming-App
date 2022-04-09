@@ -1,9 +1,10 @@
 import { Center, Container, HStack, Select, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getMovie, getSeries } from "../../services/content";
+import { getMovie, getSeries, markMovieFinished } from "../../services/content";
 import { getCurrentUser, getUser } from "../../services/user";
 import AdPopup from "../AdPopup";
+import YouTube from "react-youtube";
 
 function useQuery() {
   const { search } = useLocation();
@@ -16,6 +17,7 @@ function ContentReproduction() {
   const navigate = useNavigate();
 
   const [type, setType] = useState("");
+  const [contentCode, setContentCode] = useState("");
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [src, setSrc] = useState("");
@@ -27,12 +29,22 @@ function ContentReproduction() {
   const [adTime, setAdTime] = useState();
   const [showAd, setShowAd] = useState(false);
 
+  const opts = {
+    height: "390",
+    width: "640",
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 1,
+    },
+  };
+
   useEffect(() => {
     const type = query.get("type");
+    const contentCode = query.get("code");
+    setContentCode(contentCode);
     setType(type);
 
     const getSeriesInfo = async () => {
-      const contentCode = query.get("code");
       if (!type || !contentCode) {
         goBack();
       }
@@ -102,6 +114,20 @@ function ContentReproduction() {
     navigate("/movies");
   };
 
+  // BEGIN CONTENT EVENTS
+  const onContentStart = (event) => {};
+
+  const onContentEnd = async (event) => {
+    const res = await markMovieFinished(
+      contentCode,
+      localStorage.getItem("profileCode")
+    );
+  };
+
+  const onContentPaused = (event) => {};
+
+  // END CONTENT EVENTS
+
   return (
     <>
       <Container maxW={"1000px"}>
@@ -144,14 +170,13 @@ function ContentReproduction() {
 
         <Center className="content__video">
           {src !== "" && !showAd ? (
-            <iframe
-              width="560"
-              height="315"
-              src={src}
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <YouTube
+              videoId="2g811Eo7K8U"
+              opts={opts}
+              onEnd={onContentEnd}
+              onPause={onContentPaused}
+              onPlay={onContentStart}
+            />
           ) : (
             ""
           )}
