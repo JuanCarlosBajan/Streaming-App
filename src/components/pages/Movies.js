@@ -7,7 +7,7 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { addFavoriteMovies, getAllMovies, getFavoriteMovies, getFinishedMovies, removeFavoriteMovies } from '../../services/content';
+import { addFavoriteMovies, getAllMovies, getFavoriteMovies, getFinishedMovies, getInProgressMovies, removeFavoriteMovies } from '../../services/content';
 import { useNavigate } from 'react-router-dom';
 import NavMenu from '../NavMenu';
 
@@ -19,6 +19,7 @@ export const Movies = () => {
     const [movies, setMovies] = useState({});
     const [favorites, setFavorites] = useState([]);
     const [finished, setFinished] = useState([]);
+    const [inProgess, setInProgress] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,6 +29,7 @@ export const Movies = () => {
                 if (favorites.length === 0) {
                     await getFavorites();
                     await getFinished();
+                    await getInProgress();
                     setMovies(data.movies);
                 }
             } else {
@@ -60,9 +62,24 @@ export const Movies = () => {
             }
         }
 
+        const getInProgress = async () => {
+            const data = await getInProgressMovies(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setInProgress(data.movies);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
+
         const getFinished = async () => {
             const data = await getFinishedMovies(localStorage.getItem('profileCode'));
-            console.log(data);
             if (data.ok) {
                 setFinished(data.movies);
             } else {
@@ -138,6 +155,34 @@ export const Movies = () => {
                 </> : ''
             }
 
+            {
+                inProgess.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Termina de ver
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+                            {inProgess.map((element, index) => (
+                                <SwiperSlide key={index}>
+                                    <ContentItem type={"movies"}
+                                        onClick={() => { reproduceMovie(element.movieCode) }}
+                                        contentCode={element.movieCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.movieCode).includes(element.movieCode)}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </> : ''
+            }
             {
                 finished.length > 0 ? <>
                     <div className='container'>

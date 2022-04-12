@@ -5,6 +5,8 @@ import {
   getMovie,
   getSeries,
   markMovieFinished,
+  markMovieStarted,
+  markSeriesAsStarted,
   markSeriesFinished,
 } from "../../services/content";
 import { getCurrentUser, getUser } from "../../services/user";
@@ -34,6 +36,8 @@ function ContentReproduction() {
 
   const [adTime, setAdTime] = useState();
   const [showAd, setShowAd] = useState(false);
+
+  const [started, setStarted] = useState(false);
 
   const opts = {
     height: "390",
@@ -121,14 +125,24 @@ function ContentReproduction() {
   };
 
   // BEGIN CONTENT EVENTS
-  const onContentStart = (event) => {};
+  const onContentStart = async (event) => {
+    if (!started) {
+      if (type === "movie") {
+        await markMovieStarted(
+          contentCode,
+          localStorage.getItem("profileCode")
+        );
+      } else {
+        await markSeriesAsStarted(episode, localStorage.getItem("profileCode"));
+      }
+      setStarted(true);
+    }
+  };
 
   const onContentEnd = async (event) => {
-    console.log(type);
     if (type === "movie") {
       await markMovieFinished(contentCode, localStorage.getItem("profileCode"));
     } else {
-      console.log("finished");
       await markSeriesFinished(episode, localStorage.getItem("profileCode"));
     }
   };
@@ -163,6 +177,7 @@ function ContentReproduction() {
                 (ep) => ep.episodeCode === $event.target.value
               );
               setSrc(episode ? episode.url : "");
+              setStarted(false);
               if (adTime > 0) {
                 createAdTimeout(adTime);
               }
@@ -185,7 +200,7 @@ function ContentReproduction() {
               opts={opts}
               onEnd={onContentEnd}
               onPause={onContentPaused}
-              onPlay={onContentStart}
+              onStateChange={onContentStart}
             />
           ) : (
             ""
