@@ -44,7 +44,7 @@ function ContentReproduction() {
     width: "640",
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
+      autoplay: 0,
     },
   };
 
@@ -207,15 +207,21 @@ function ContentReproduction() {
           )}
         </Center>
       </Container>
-      <AdPopup
-        isOpen={showAd}
-        handleClose={() => {
-          setShowAd(false);
-          if (adTime > 0) {
-            createAdTimeout(adTime);
-          }
-        }}
-      />
+      {showAd ? (
+        <AdPopup
+          isOpen={showAd}
+          contentType={type}
+          contentCode={contentCode}
+          handleClose={() => {
+            setShowAd(false);
+            if (adTime > 0) {
+              createAdTimeout(adTime);
+            }
+          }}
+        />
+      ) : (
+        ""
+      )}
     </>
   );
 }
