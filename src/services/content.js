@@ -159,6 +159,36 @@ export const getFinishedMovies = async (profileCode) => {
     return data;
 }
 
+/**
+ * Mark a movie as started
+ * @param {number} movieCode 
+ * @param {number} profileCode 
+ */
+export const markMovieStarted = async (movieCode, profileCode) => {
+    let body = {
+        movieCode
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/movies/${profileCode}/started`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Get the finished movies for a profile
+ * @param {number} profileCode 
+ */
+export const getInProgressMovies = async (profileCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/movies/${profileCode}/in-progress`);
+    const data = await res.json();
+    return data;
+}
+
+
 
 /**
  * Get finished series for a profile
@@ -186,6 +216,37 @@ export const markSeriesFinished = async (episodeCode, profileCode) => {
         body: JSON.stringify(body),
     }
     const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/finished`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Mark a series as started
+ * @param {*} episodeCode 
+ * @param {*} profileCode 
+ * @returns 
+ */
+export const markSeriesAsStarted = async (episodeCode, profileCode) => {
+    let body = {
+        episodeCode
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/started`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+
+/**
+ * Get the in progress series for a profile
+ * @param {number} profileCode 
+ */
+export const getInProgressSeries = async (profileCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/in-progress`);
     const data = await res.json();
     return data;
 }

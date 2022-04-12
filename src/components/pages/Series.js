@@ -7,7 +7,7 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { addFavoriteSeries, getAllSeries, getFavoriteSeries, getFinishedSeries, removeFavoriteSeries } from '../../services/content';
+import { addFavoriteSeries, getAllSeries, getFavoriteSeries, getFinishedSeries, getInProgressSeries, removeFavoriteSeries } from '../../services/content';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -18,6 +18,7 @@ export const Series = () => {
     const [series, setSeries] = useState({});
     const [favorites, setFavorites] = useState([]);
     const [finished, setFinished] = useState([]);
+    const [inProgress, setInProgress] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,6 +28,7 @@ export const Series = () => {
                 if (favorites.length === 0) {
                     await getFavorites();
                     await getFinished();
+                    await getInProgress();
                     setSeries(data.series);
 
                 }
@@ -48,6 +50,22 @@ export const Series = () => {
 
             if (data.ok) {
                 setFinished(data.series);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
+
+        const getInProgress = async () => {
+            const data = await getInProgressSeries(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setInProgress(data.series);
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -125,6 +143,35 @@ export const Series = () => {
                                         favorite={true}
                                         onClick={reproduceSeries}
                                         toggleFavorite={toggleFavorite}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </> : ''
+            }
+            {
+                inProgress.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Termina de ver
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+
+                            {inProgress.map((element, index) => (
+                                <SwiperSlide key={`${index}`}>
+                                    <ContentItem type={"series"}
+                                        onClick={reproduceSeries}
+                                        contentCode={element.seriesCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
                                     />
