@@ -60,8 +60,7 @@ function Search() {
         <ContentItem key={index}
           onClick={() => { reproduceMovie(element.movieCode) }}
           contentCode={element.movieCode}
-          favorite={true}
-          
+          search={true}          
           coverUrl={element.coverUrl}
           title={element.title}/>
     ))}

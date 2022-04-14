@@ -145,6 +145,7 @@ export const Series = () => {
                                         toggleFavorite={toggleFavorite}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
+                                        search={false}
                                     />
                                 </SwiperSlide>
                             ))}
@@ -174,6 +175,7 @@ export const Series = () => {
                                         favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
+                                        search={false}
                                     />
                                 </SwiperSlide>
                             ))}
@@ -203,6 +205,7 @@ export const Series = () => {
                                         favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
+                                        search={false}
                                     />
                                 </SwiperSlide>
                             ))}
@@ -232,6 +235,7 @@ export const Series = () => {
                                         favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
                                         coverUrl={element.coverUrl}
                                         title={element.title}
+                                        search={false}
                                     />
                                 </SwiperSlide>
                             ))}

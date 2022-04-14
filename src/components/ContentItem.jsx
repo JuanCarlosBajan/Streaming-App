@@ -13,8 +13,36 @@ function ContentItem({
   favorite = true,
   toggleFavorite,
   contentCode,
+  search
   //poner otro parametro pa ver si se muestra o no lo de fav
 }) {
+
+  const favFunct = () => {
+    return (
+      favorite ? (
+        <AiFillHeart
+          onClick={() => {
+            toggleFavorite(contentCode, { title, coverUrl });
+          }}
+          style={{
+            color: colors.primaryvariant1,
+            fontSize: 30,
+          }}
+        />
+      ) : (
+        <AiOutlineHeart
+          onClick={() => {
+            toggleFavorite(contentCode, { title, coverUrl });
+          }}
+          style={{
+            color: colors.primaryvariant1,
+            fontSize: 30,
+          }}
+        />
+      )
+    )
+  }
+
   return (
     <VStack className="content-item">
       <img
@@ -28,27 +56,7 @@ function ContentItem({
       <HStack>
         <h2>{title}</h2> {/*  */}
         
-        {favorite ? (
-          <AiFillHeart
-            onClick={() => {
-              toggleFavorite(contentCode, { title, coverUrl });
-            }}
-            style={{
-              color: colors.primaryvariant1,
-              fontSize: 30,
-            }}
-          />
-        ) : (
-          <AiOutlineHeart
-            onClick={() => {
-              toggleFavorite(contentCode, { title, coverUrl });
-            }}
-            style={{
-              color: colors.primaryvariant1,
-              fontSize: 30,
-            }}
-          />
-        )}
+        {search ? '' : favFunct()}
       </HStack>
     </VStack>
   );
