@@ -237,8 +237,6 @@ export const Movies = () => {
                                 </SwiperSlide>
                             ))}
                         </Swiper>
-
-
                     </div>
                 )
             })}

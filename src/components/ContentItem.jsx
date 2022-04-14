@@ -9,10 +9,11 @@ import { addFavoriteSeries, removeFavoriteSeries } from "../services/content";
 function ContentItem({
   coverUrl,
   onClick,
-  title,
+  title,   
   favorite = true,
   toggleFavorite,
   contentCode,
+  //poner otro parametro pa ver si se muestra o no lo de fav
 }) {
   return (
     <VStack className="content-item">
@@ -25,7 +26,8 @@ function ContentItem({
         className="content-item__image"
       />
       <HStack>
-        <h2>{title}</h2>
+        <h2>{title}</h2> {/*  */}
+        
         {favorite ? (
           <AiFillHeart
             onClick={() => {
