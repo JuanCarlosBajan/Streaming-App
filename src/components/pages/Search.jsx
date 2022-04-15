@@ -53,7 +53,7 @@ function Search() {
       navigate(`/watch?type=movie&code=${movieCode}`)
   }
 
-  const showData = (infoMS, userInputData) => {
+  const showData = (infoMS) => {
     if(infoMS.length > 0){
       return(
         infoMS.map((element, index) => 
@@ -68,19 +68,15 @@ function Search() {
       return(
         <p>No hay resultados.</p>
       )}
-    else if( !(infoMS.length > 0) && userInputData.length === 0 ){
-      <p>Busca algo.</p>
-    }
   }
  
-
-
   return (
       <>
       <div className="search__bar">
         <InputGroup>
           <InputLeftElement pointerEvents={"none"} children={<Search2Icon />} />
             <Input 
+              focusBorderColor={'#5E2BFF'}
               placeholder="Busca por título, género, actor o director"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}>
@@ -89,8 +85,8 @@ function Search() {
       </div>
 
       <div className="search__results">         
-         {showData(info, userInput)}
-      </div>       
+         {(userInput.length > 0) ? (showData(info)) : []} 
+      </div>        
       </>
 
 
