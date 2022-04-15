@@ -22,16 +22,17 @@ function AdPopup({ isOpen, handleClose, contentCode, contentType }) {
   const [title, setTitle] = useState("");
   const [advertiser, setAdvertiser] = useState("");
   useEffect(() => {
-    console.log("open");
     const getAd = async () => {
       let resp =
         contentType === "movie"
           ? await getMovieAd(contentCode)
           : await getSeriesAd(contentCode);
       if (resp.ok) {
-        setUrl(resp.ad.url);
-        setAdvertiser(resp.ad.name);
-        setTitle(resp.ad.title);
+        if (resp.ad) {
+          setUrl(resp.ad.url);
+          setAdvertiser(resp.ad.name);
+          setTitle(resp.ad.title);
+        }
       } else {
         console.log("error loading add");
       }
@@ -61,11 +62,17 @@ function AdPopup({ isOpen, handleClose, contentCode, contentType }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {advertiser} - {title}
+            {title ? `${advertiser}  -  ${title}` : "¡Mejora tu cuenta!"}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Center>{url ? <YouTube opts={opts} videoId={url} /> : ""}</Center>
+            <Center>
+              {url ? (
+                <YouTube opts={opts} videoId={url} />
+              ) : (
+                "Un plan premium te evita ver anuncios."
+              )}
+            </Center>
           </ModalBody>
         </ModalContent>
       </Modal>
