@@ -7,7 +7,7 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { addFavoriteSeries, getAllSeries, getFavoriteSeries, getFinishedSeries, getInProgressSeries, removeFavoriteSeries } from '../../services/content';
+import { addFavoriteSeries, getAllSeries, getFavoriteSeries, getFeaturedSeries, getFinishedSeries, getInProgressSeries, removeFavoriteSeries } from '../../services/content';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -19,6 +19,7 @@ export const Series = () => {
     const [favorites, setFavorites] = useState([]);
     const [finished, setFinished] = useState([]);
     const [inProgress, setInProgress] = useState([]);
+    const [featured, setFeatured] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,6 +30,7 @@ export const Series = () => {
                     await getFavorites();
                     await getFinished();
                     await getInProgress();
+                    await getFeatured();
                     setSeries(data.series);
 
                 }
@@ -50,6 +52,22 @@ export const Series = () => {
 
             if (data.ok) {
                 setFinished(data.series);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
+
+        const getFeatured = async () => {
+            const data = await getFeaturedSeries(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setFeatured(data.series);
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -195,6 +213,35 @@ export const Series = () => {
                             modules={[Navigation]}>
 
                             {finished.map((element, index) => (
+                                <SwiperSlide key={`${index}`}>
+                                    <ContentItem type={"series"}
+                                        onClick={reproduceSeries}
+                                        contentCode={element.seriesCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.seriesCode).includes(element.seriesCode)}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </> : ''
+            }
+            {
+                featured.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Recomendadas
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+
+                            {featured.map((element, index) => (
                                 <SwiperSlide key={`${index}`}>
                                     <ContentItem type={"series"}
                                         onClick={reproduceSeries}
