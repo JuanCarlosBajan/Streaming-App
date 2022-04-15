@@ -32,6 +32,7 @@ function NavMenu() {
         <li className="nav__option">
           <Link to={"/series"}>Series</Link>
         </li>
+
         <li className="nav__option">
           <Link to={"/search"}>Busqueda</Link>
         </li>

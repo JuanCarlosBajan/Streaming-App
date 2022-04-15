@@ -7,7 +7,7 @@ import ContentItem from "../ContentItem"
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { addFavoriteMovies, getAllMovies, getFavoriteMovies, getFinishedMovies, getInProgressMovies, removeFavoriteMovies } from '../../services/content';
+import { addFavoriteMovies, getAllMovies, getFavoriteMovies, getFinishedMovies, getInProgressMovies, removeFavoriteMovies, getFeaturedMovies } from '../../services/content';
 import { useNavigate } from 'react-router-dom';
 import NavMenu from '../NavMenu';
 
@@ -20,6 +20,7 @@ export const Movies = () => {
     const [favorites, setFavorites] = useState([]);
     const [finished, setFinished] = useState([]);
     const [inProgess, setInProgress] = useState([]);
+    const [featured, setFeatured] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,6 +31,7 @@ export const Movies = () => {
                     await getFavorites();
                     await getFinished();
                     await getInProgress();
+                    await getFeatured();
                     setMovies(data.movies);
                 }
             } else {
@@ -66,6 +68,22 @@ export const Movies = () => {
             const data = await getInProgressMovies(localStorage.getItem('profileCode'));
             if (data.ok) {
                 setInProgress(data.movies);
+            } else {
+                data.errors.forEach(element => {
+                    toast({
+                        title: element,
+                        position: 'top',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                });
+            }
+        }
+
+        const getFeatured = async () => {
+            const data = await getFeaturedMovies(localStorage.getItem('profileCode'));
+            if (data.ok) {
+                setFeatured(data.movies);
             } else {
                 data.errors.forEach(element => {
                     toast({
@@ -196,6 +214,34 @@ export const Movies = () => {
                             navigation={true}
                             modules={[Navigation]}>
                             {finished.map((element, index) => (
+                                <SwiperSlide key={index}>
+                                    <ContentItem type={"movies"}
+                                        onClick={() => { reproduceMovie(element.movieCode) }}
+                                        contentCode={element.movieCode}
+                                        toggleFavorite={toggleFavorite}
+                                        favorite={favorites.map(fav => fav.movieCode).includes(element.movieCode)}
+                                        coverUrl={element.coverUrl}
+                                        title={element.title}
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </> : ''
+            }
+            {
+                featured.length > 0 ? <>
+                    <div className='container'>
+                        <FormLabel>
+                            Recomendadas
+                        </FormLabel>
+                        <Swiper
+                            slidesPerView={6}
+                            spaceBetween={40}
+                            slidesPerGroup={2}
+                            navigation={true}
+                            modules={[Navigation]}>
+                            {featured.map((element, index) => (
                                 <SwiperSlide key={index}>
                                     <ContentItem type={"movies"}
                                         onClick={() => { reproduceMovie(element.movieCode) }}

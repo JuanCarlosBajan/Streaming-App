@@ -252,6 +252,30 @@ export const getInProgressSeries = async (profileCode) => {
 }
 
 /**
+ * Get the featured movies for this profile
+ * @param {number} profileCode 
+ * @returns 
+ */
+export const getFeaturedMovies = async (profileCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/movies/${profileCode}/featured`);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Get the featured series for this profile
+ * @param {number} profileCode 
+ * @returns 
+ */
+export const getFeaturedSeries = async (profileCode) => {
+    const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/featured`);
+    const data = await res.json();
+    return data;
+}
+
+
+
+/**
  * Headers for the system
  * @returns 
  */
