@@ -14,6 +14,13 @@ export const getAllSeries = async () => {
     return data
 }
 
+export const getResult = async (userInput) => {
+    const res = await fetch(`http://localhost:8080/api/content/${userInput}/search`);
+                            //api/content/f/search
+    const data = await res.json();
+    return data
+}
+
 //addFavoriteMovies, getAllMovies, getFavoriteMovies, removeFavoriteMovies
 
 /**
@@ -71,6 +78,8 @@ export const removeFavoriteSeries = async (profileCode, seriesCode) => {
     const data = await res.json();
     return data;
 }
+
+
 
 export const removeFavoriteMovies = async (profileCode, movieCode) => {
     const URL = `http://localhost:8080/api/content/movies/${profileCode}/favorites`;
