@@ -1,0 +1,141 @@
+/*
+*/
+.profile__button {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(
+    135deg,
+    rgba(33, 0, 143, 0.2) 0%,
+    rgba(94, 43, 255, 0.2) 50%
+  );
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+div,
+p {
+}
+
+.profile__button:hover {
+  cursor: pointer;
+  transform: translateY(-5px);
+}
+
+.container::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #b497f9;
+  border-radius: 100vw;
+}
+
+.container::-webkit-scrollbar-track {
+  margin-block: 1.4em;
+}
+
+.search__bar {
+  padding: 20px;
+}
+
+.search__results {
+  padding: 20px;
+  display: flex;
+  /* justify-content: space-between; */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 100px;
+}
+.content-item {
+  display: inline-block;
+}
+
+.content-item__image {
+  width: 120px;
+  height: 200px;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 200px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.container img {
+  max-width: 100%;
+  height: auto;
+}
+
+:root {
+  --swiper-theme-color: #fff;
+}
+
+.container .swiper-wrapper {
+  padding: 20px 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.container .swiper-slide {
+  z-index: 1;
+  transition: 250ms all;
+}
+
+.content__video {
+  margin-top: 20px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  padding: 10px 30px;
+}
+.nav__options {
+  list-style: none;
+}
+.nav__logo {
+  font-size: 2rem;
+}
+.nav__option {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #5e2bff;
+  font-weight: 600;
+}
+.nav__option:hover {
+  color: #3400e0;
+}
+.nav__option:not(:last-child) {
+  margin-right: 20px;
+}

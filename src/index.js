@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 //Chackra Provider
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { BrowserRouter } from 'react-router-dom';
 
 const colors = {
   brand: {
@@ -19,7 +20,9 @@ const theme = extendTheme({ colors })
 
 ReactDOM.render(
   <ChakraProvider theme={theme}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ChakraProvider>,
   document.getElementById('root')
 );
