@@ -47,14 +47,6 @@ const ManageContent = () => {
             alignItems: 'center',
             justifyContent: 'center',
         },
-        
-        button: {
-            backgroundColor: colors.primary,
-            transition: 'all 0.2s cubic-bezier(.08,.52,.52,1)',
-            color: colors.white,
-            width: '100%',
-            height: '100%',
-        },
         titleContainer: {
             width: '100%',
             marginBottom: '20px',
@@ -62,9 +54,6 @@ const ManageContent = () => {
         infoContainer: {
             width: '100%',
             height: 'auto',
-        },
-        divPlan: {
-            padding: '10px',
         },
         tableContainer: {
             padding: '40px'
