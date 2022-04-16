@@ -31,7 +31,10 @@ function ContentReproduction() {
   const [publishedAt, setPublishedAt] = useState("");
   const [studio, setStudio] = useState("");
   const [episode, setEpisode] = useState(0);
-
+  const [actors, setActors] = useState([]);
+  const [director, setDirector] = useState();
+  const [awards, setAwards] = useState([]);
+  
   const [episodes, setEpisodes] = useState([]);
 
   const [adTime, setAdTime] = useState();
@@ -91,6 +94,9 @@ function ContentReproduction() {
         setPublishedAt(new Date(data.movie.publishedAt).toLocaleDateString());
         setStudio(data.movie.studio.name);
         setSrc(data.movie.url);
+        setActors(data.movie.actors);
+        setDirector(data.movie.director);
+        setAwards(data.movie.awards);
       } else {
         goBack();
       }
@@ -157,12 +163,22 @@ function ContentReproduction() {
         <Text fontSize={"5xl"}>{title}</Text>
         <Text textAlign={"justify"}>{description}</Text>
         <HStack>
+          <Text fontWeight={"bold"}>Director</Text>
+          <Text>{director? (director.name + ' ' + director.lastName): ''}</Text>
+        </HStack>
+        <HStack>
           <Text fontWeight={"bold"}>Estudio</Text>
           <Text>{studio}</Text>
         </HStack>
         <HStack>
           <Text fontWeight={"bold"}>Actores</Text>
-          <Text>Colocar aqui actores principales</Text>
+          <Text>{actors.map((value,index) => {
+            return value.name + ' ' + value.lastName + (index === actors.length-1? '. ': ', ')})}</Text>
+        </HStack>
+        <HStack>
+          <Text fontWeight={"bold"}>Premios</Text>
+          <Text>{awards.map((value,index) => {
+            return value.name  + (index === awards.length-1? '. ': ', ')})}</Text>
         </HStack>
         <HStack>
           <Text fontWeight={"bold"}>Fecha de estreno</Text>
