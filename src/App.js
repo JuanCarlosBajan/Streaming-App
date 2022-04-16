@@ -10,6 +10,7 @@ import { getCurrentUser, lockProfile, unlockProfile } from './services/user';
 import Search from './components/pages/Search';
 import { Series } from './components/pages/Series';
 import ContentReproduction from './components/pages/ContentReproduction';
+import UserConfig from './components/pages/userConfig';
 import NavMenu from './components/NavMenu';
 import { useToast } from '@chakra-ui/react';
 
@@ -96,6 +97,12 @@ function App() {
         <>
           <NavMenu />
           <ContentReproduction />
+        </>
+      }></Route>
+      <Route path='/cuenta' element={
+        <>
+          <NavMenu />
+          <UserConfig user={user}/>
         </>
       }></Route>
     </Routes>

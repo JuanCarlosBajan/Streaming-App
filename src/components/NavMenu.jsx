@@ -41,7 +41,11 @@ function NavMenu() {
             Opciones
           </MenuButton>
           <MenuList zIndex={10000}>
-            <MenuItem>Cuenta</MenuItem>
+            <MenuItem
+            onClick={() => {
+              navigate("/cuenta");
+            }}
+            >Cuenta</MenuItem>
             <MenuItem
               onClick={() => {
                 navigate("/profiles");
