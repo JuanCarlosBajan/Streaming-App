@@ -12,66 +12,77 @@ const ModificationForm = ({option}) => {
         gradient: 'linear-gradient(135deg, rgba(33,0,143,1) 0%, rgba(94,43,255,0.6811099439775911) 100%)',
         soft: '#d9cbf9'
   }
+
+  const styles = {
+    outerContainer: {
+        width: '100%',
+        height: 'auto',
+        padding: '10px',
+        borderRadius: '10px',
+    },
+  }
     
   return (
-    <>
-        <FormLabel color={colors.primary}>Titulo </FormLabel>
-        <InputGroup>
+    <>  
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Titulo </FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese titulo' />
-        </InputGroup>
-        <br/>
-        <FormLabel color={colors.primary}>Estudio de grabación</FormLabel>
-        <InputGroup>
+        </div>
+        
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Estudio de grabación</FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese el estudio de grabación' />
-        </InputGroup>
-        <br/>
-        <FormLabel color={colors.primary}>Fecha de publicación</FormLabel>
-        <InputGroup>
+        </div>
+        
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Fecha de publicación</FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese la fecha de publicación' />
-        </InputGroup>
-        <br/>
-        <FormLabel color={colors.primary}>Género</FormLabel>
-        <InputGroup>
+        </div>
+        
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Género</FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese género ' />
-        </InputGroup>
-        <br/>
-        <FormLabel color={colors.primary}>Director</FormLabel>
-        <InputGroup>
+        </div>
+        
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Director</FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese director' />
-        </InputGroup>
-        <br/>
-        <FormLabel color={colors.primary}>Descripción</FormLabel>
-        <InputGroup>
+        </div>
+        
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Descripción</FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese descripción ' />
-        </InputGroup>
-        <br/>
-        <FormLabel color={colors.primary}>Link de la imagen de la portada</FormLabel>
-        <InputGroup>
+        </div>
+        
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Link de la imagen de la portada</FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese link de portada' />
-        </InputGroup>
-        <br/>
-        <FormLabel color={colors.primary}>Categoria</FormLabel>
-        <InputGroup>
+        </div>
+        
+        <div style={styles.outerContainer}>
+            <FormLabel color={colors.primary}>Categoria</FormLabel>
             <Input  focusBorderColor={colors.primary} placeholder='Ingrese categoria' />
-        </InputGroup>
+        </div>
+            
         
         {
             (option === 'serie') ? (
             <>
-            <FormLabel color={colors.primary}>Cantidad de episodios</FormLabel>
-            <InputGroup>
-                <Input  focusBorderColor={colors.primary} placeholder='Ingrese cantidad de episodios' />
-            </InputGroup>
-            <br/>
-            <FormLabel color={colors.primary}>Cantidad de temporadas</FormLabel>
-            <InputGroup>
-            <Input  focusBorderColor={colors.primary} placeholder='Ingrese cantidad de temporadas' />
-            </InputGroup>
-            <br/>
-            <FormLabel color={colors.primary}>Info de episodios</FormLabel>
-            <InputGroup>
-                <Input  focusBorderColor={colors.primary} placeholder='Info de episodios' />
-            </InputGroup>
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Cantidad de episodios</FormLabel>
+                    <Input  focusBorderColor={colors.primary} placeholder='Ingrese cantidad de episodios' />
+                </div>
+        
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Cantidad de temporadas</FormLabel>
+                    <Input  focusBorderColor={colors.primary} placeholder='Ingrese cantidad de temporadas' />
+                </div>
+                
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Info de episodios</FormLabel>
+                    <Input  focusBorderColor={colors.primary} placeholder='Info de episodios' />
+                </div>
+            
             </> ) : ''
         }
       
