@@ -1,16 +1,17 @@
-
-
 import React, {useState} from 'react'
-import {Table, Thead, Tbody, Tr, Th, Td, TableContainer, background} from '@chakra-ui/react'
+import {Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
 import TableComponent from "../TableComponent"
+import ModificationForm from "../ModificationForm"
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure} from '@chakra-ui/react'
 
 
 const ManageContent = () => {
     
     const [option, setOption] = useState('');
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const colors = {
         primary: '#5E2BFF',
@@ -83,15 +84,35 @@ const ManageContent = () => {
                             <Td> test </Td>
                             <Td> https://es.web.img3.acsta.net/medias/nmedia/18/84/50/16/20084857.jpg </Td>
                             <Td> pg </Td>
-                            <Td> <a> <BiPencil/></a> </Td>
-                            <Td> <a> <BiTrash/></a></Td>
+                            <Td>  
+                                <BiPencil onClick={onOpen}/>  
+                                <Modal isOpen={isOpen} onClose={onClose}>
+                                    <ModalOverlay />
+                                    <ModalContent>
+                                    <ModalHeader>Modificar Pelicula</ModalHeader>
+                                    <ModalCloseButton /> 
+                                    <ModalBody>
+                                        <ModificationForm />
+                                    </ModalBody>
+
+                                    <ModalFooter>
+                                        
+                                        <Button color= {colors.primary}>Modificar</Button>
+                                    </ModalFooter>
+                                    </ModalContent>
+                                </Modal>
+
+                            </Td>
+                            <Td>  
+                                <BiTrash onClick={() => {console.log('borrando ...')}}/> 
+                            </Td>
                         </Tr>
                     </Tbody>
                 </Table>
             </TableContainer>) :
 
             (<TableContainer>
-                <Table variant='simple'>
+                <Table variant='simple' size='md'>
                     <Thead>
                         <Tr>
                             <Th> serie </Th>
@@ -122,8 +143,27 @@ const ManageContent = () => {
                             <Td> 279 </Td>
                             <Td> 12 </Td>
                             <Td> Infoo </Td>
-                            <Td>  <BiPencil/>  </Td>
-                            <Td>  <BiTrash/> </Td>
+                            <Td>  
+                                <BiPencil onClick={onOpen}/>  
+                                <Modal isOpen={isOpen} onClose={onClose}>
+                                    <ModalOverlay />
+                                    <ModalContent>
+                                    <ModalHeader>Modificar Serie</ModalHeader>
+                                    <ModalCloseButton /> 
+                                    <ModalBody>
+                                        <ModificationForm option={'serie'}/>
+                                    </ModalBody>
+
+                                    <ModalFooter>         
+                                        <Button color= {colors.primary}>Modificar</Button>
+                                    </ModalFooter>
+                                    </ModalContent>
+                                </Modal>
+
+                            </Td>
+                            <Td>    
+                                <BiTrash onClick={() => {console.log('borrando ...')}}/> 
+                            </Td>
                         </Tr>
                     </Tbody>
                 </Table>
