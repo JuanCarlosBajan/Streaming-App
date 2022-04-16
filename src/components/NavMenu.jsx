@@ -35,6 +35,9 @@ function NavMenu() {
         <li className="nav__option">
           <Link to={"/search"}>Busqueda</Link>
         </li>
+        <li className="nav__option">
+          <Link to={"/manageContent"}> Administrar </Link>
+        </li>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
             Opciones
