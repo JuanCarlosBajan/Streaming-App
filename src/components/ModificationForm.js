@@ -33,20 +33,25 @@ const ModificationForm = ({
     const [director, setDirector] = useState('');
     const [description, setDescription] = useState('');
     const [coverUrl, setCoverUrl] = useState('');
+    const [url, setUrl] = useState('');
+    const [season, setSeason] = useState('');
     const [category, setCategory] = useState('');
     const [duration, setDuration] = useState(0);
     const [episodeCount, setEpisodeCount] = useState(0);
     const [seasonCount, setSeasonCount] = useState(0);
 
     useEffect(() => {
-        console.log(defaultContent)
+
         if (defaultContent.title) { setTitle(defaultContent.title) };
         if (defaultContent.studioCode) setStudio(defaultContent.studioCode);
+        if (defaultContent.datePublished) setPublishedAt(defaultContent.datePublished);
         if (defaultContent.publishedAt) setPublishedAt(defaultContent.publishedAt);
         if (defaultContent.genre) setGenre(defaultContent.genre);
         if (defaultContent.directorCode) setDirector(defaultContent.directorCode);
         if (defaultContent.description) setDescription(defaultContent.description);
         if (defaultContent.coverUrl) setCoverUrl(defaultContent.coverUrl);
+        if (defaultContent.url) setUrl(defaultContent.url);
+        if (defaultContent.season) setSeason(defaultContent.season);
         if (defaultContent.categories) setCategory(defaultContent.categories);
         if (defaultContent.duraiton) { setDuration(defaultContent.duraiton); };
         if (defaultContent.episodeCount) { setEpisodeCount(defaultContent.episodeCount); };
@@ -66,7 +71,7 @@ const ModificationForm = ({
                 genre,
                 publishedAt,
                 description,
-                url: '',
+                url,
                 directorCode: Number.parseInt(director),
                 coverUrl,
                 categories: category,
@@ -88,91 +93,159 @@ const ModificationForm = ({
                 seasonCount: seasonCount,
                 rating: 5
             });
+        } else if (option === "addEpisode") {
+            await onSend({
+                name: title,
+                datePublished: publishedAt,
+                description,
+                url,
+                duration: Number.parseInt(duration),
+                season
+            });
         }
     }
 
     return (
         <>
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Titulo </FormLabel>
-                <Input
-                    focusBorderColor={colors.primary}
-                    defaultValue={defaultContent.title}
-                    placeholder='Ingrese titulo'
-                    onChange={(e) => { setTitle(e.target.value) }} />
-            </div>
+            {option === 'addEpisode' ?
+                <>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Titulo </FormLabel>
+                        <Input
+                            focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.title}
+                            placeholder='Ingrese titulo'
+                            onChange={(e) => { setTitle(e.target.value) }} />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Temporada </FormLabel>
+                        <Input
+                            focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.season}
+                            placeholder='Ingrese temporada'
+                            onChange={(e) => { setSeason(e.target.value) }} />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Duracion</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.duration}
+                            type="number"
+                            placeholder='Ingrese duracion'
+                            onChange={(e) => { setDuration(e.target.value) }}
+                        />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Fecha de publicación</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.publishedAt}
+                            placeholder='Ingrese la fecha de publicación'
+                            onChange={(e) => { setPublishedAt(e.target.value) }} />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>URL</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.url}
+                            placeholder='Ingrese la URL'
+                            onChange={(e) => { setUrl(e.target.value) }} />
+                    </div>
+                </>
+                : ''}
+            {option === 'movie' || option === 'serie' ?
+                <>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Titulo </FormLabel>
+                        <Input
+                            focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.title}
+                            placeholder='Ingrese titulo'
+                            onChange={(e) => { setTitle(e.target.value) }} />
+                    </div>
 
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Estudio de grabación</FormLabel>
-                <Input focusBorderColor={colors.primary}
-                    defaultValue={defaultContent.studioCode}
-                    placeholder='Ingrese el estudio de grabación'
-                    onChange={(e) => { setStudio(e.target.value) }} />
-            </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Estudio de grabación</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.studioCode}
+                            placeholder='Ingrese el estudio de grabación'
+                            onChange={(e) => { setStudio(e.target.value) }} />
+                    </div>
 
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Fecha de publicación</FormLabel>
-                <Input focusBorderColor={colors.primary}
-                    defaultValue={defaultContent.publishedAt}
-                    placeholder='Ingrese la fecha de publicación'
-                    onChange={(e) => { setPublishedAt(e.target.value) }} />
-            </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Fecha de publicación</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.publishedAt}
+                            placeholder='Ingrese la fecha de publicación'
+                            onChange={(e) => { setPublishedAt(e.target.value) }} />
+                    </div>
 
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Género</FormLabel>
-                <Input focusBorderColor={colors.primary}
-                    placeholder='Ingrese género '
-                    defaultValue={defaultContent.genre}
-                    onChange={(e) => { setGenre(e.target.value) }}
-                />
-            </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Género</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            placeholder='Ingrese género '
+                            defaultValue={defaultContent.genre}
+                            onChange={(e) => { setGenre(e.target.value) }}
+                        />
+                    </div>
 
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Director</FormLabel>
-                <Input focusBorderColor={colors.primary}
-                    placeholder='Ingrese director'
-                    defaultValue={defaultContent.directorCode}
-                    onChange={(e) => { setDirector(e.target.value) }}
-                />
-            </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Director</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            placeholder='Ingrese director'
+                            defaultValue={defaultContent.directorCode}
+                            onChange={(e) => { setDirector(e.target.value) }}
+                        />
+                    </div>
 
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Descripción</FormLabel>
-                <Input focusBorderColor={colors.primary}
-                    placeholder='Ingrese descripción '
-                    defaultValue={defaultContent.description}
-                    onChange={(e) => { setDescription(e.target.value) }} />
-            </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Descripción</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            placeholder='Ingrese descripción '
+                            defaultValue={defaultContent.description}
+                            onChange={(e) => { setDescription(e.target.value) }} />
+                    </div>
 
 
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Link de la imagen de la portada</FormLabel>
-                <Input focusBorderColor={colors.primary}
-                    placeholder='Ingrese link de portada'
-                    defaultValue={defaultContent.coverUrl}
-                    onChange={(e) => { setCoverUrl(e.target.value) }}
-                />
-            </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Link de la imagen de la portada</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            placeholder='Ingrese link de portada'
+                            defaultValue={defaultContent.coverUrl}
+                            onChange={(e) => { setCoverUrl(e.target.value) }}
+                        />
+                    </div>
 
-            <div style={styles.outerContainer}>
-                <FormLabel color={colors.primary}>Categoria</FormLabel>
-                <Input focusBorderColor={colors.primary}
-                    placeholder='Ingrese categoria'
-                    defaultValue={defaultContent.categories}
-                    onChange={(e) => { setCategory(e.target.value) }}
-                />
-            </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Categoria</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            placeholder='Ingrese categoria'
+                            defaultValue={defaultContent.categories}
+                            onChange={(e) => { setCategory(e.target.value) }}
+                        />
+                    </div>
+                </>
+                : ''}
+
             {option === 'movie' ? (
 
-                <div style={styles.outerContainer}>
-                    <FormLabel color={colors.primary}>Duracion</FormLabel>
-                    <Input focusBorderColor={colors.primary}
-                        defaultValue={defaultContent.duration}
-                        type="number"
-                        placeholder='Ingrese duracion'
-                        onChange={(e) => { setDuration(e.target.value) }}
-                    />
-                </div>
+                <>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Duracion</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.duration}
+                            type="number"
+                            placeholder='Ingrese duracion'
+                            onChange={(e) => { setDuration(e.target.value) }}
+                        />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>URL</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.url}
+                            placeholder='Ingrese url'
+                            onChange={(e) => { setUrl(e.target.value) }}
+                        />
+                    </div>
+                </>
+
 
             ) : ''}
 
