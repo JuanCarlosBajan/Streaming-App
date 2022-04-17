@@ -51,6 +51,12 @@ export const postAdvertisersAdmin = async (advertiser) => {
     return data;
 }
 
+export const getAdvertiserAds = async (advertiserCode) => {
+    const res = await fetch(`http://localhost:8080/api/ads/advertisers/${advertiserCode}/ads`);
+    const data = await res.json();
+    return data
+}
+
 export const modifyAdvertiserAdmin = async (advertiserCode, advertiser) => {
     const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}`;
     let bodyData = {

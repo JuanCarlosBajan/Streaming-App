@@ -2,15 +2,16 @@ import React, { useState } from 'react'
 import { Table, Tbody, Tr, Td, TableContainer, Thead, Th } from '@chakra-ui/react'
 import TableHeader from "../TableHeader"
 import ModificationForm from "../ModificationForm"
-import { BiPencil, BiTrash } from "react-icons/bi";
+import { BiPencil, BiPlus, BiTrash } from "react-icons/bi";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure } from '@chakra-ui/react'
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds } from '../../services/content';
 import { Link } from 'react-router-dom';
+import AdvertiserLinkModal from '../AdvertiserLinkModal';
 
 
 
@@ -22,8 +23,11 @@ const ManageContent = () => {
     const [seriesAdmin, setSeriesAdmin] = useState([]);
     const [episodesAdmin, setEpisodesAdmin] = useState([]);
     const [advertisersAdmin, setAdvertisersAdmin] = useState([]);
+    const [adsAdmin, setAdsAdmin] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null);
+    const [selectedAdvertiser, setSelectedAdvertiser] = useState(null);
     const { isOpen: isOpenEpisode, onOpen: onOpenEpisode, onClose: onCloseEpisode } = useDisclosure();
+    const { isOpen: isOpenAdvertiser, onOpen: onOpenAdvertiser, onClose: onCloseAdvertiser } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
 
@@ -91,6 +95,12 @@ const ManageContent = () => {
         }
     }
 
+    const getDataAdvertiserAds = async (advertiserCode) => {
+        const data = await getAdvertiserAds(advertiserCode);
+        if (data.ok) {
+            setAdsAdmin(data.ads)
+        }
+    }
 
 
     const addMovie = async (movie) => {
@@ -412,7 +422,12 @@ const ManageContent = () => {
                         {
                             advertisersAdmin.map((element, index) => (
                                 <Tr key={index}>
-                                    <Td> {element.advertiserCode} </Td>
+                                    <Td>
+                                        <a href='#' onClick={() => {
+                                            setSelectedAdvertiser(element.advertiserCode)
+                                            getDataAdvertiserAds(element.advertiserCode)
+                                        }}>{element.advertiserCode}</a>
+                                    </Td>
                                     <Td> {element.name} </Td>
                                     <Td>
                                         <BiPencil cursor={'pointer'} onClick={() => {
@@ -420,6 +435,9 @@ const ManageContent = () => {
                                             setDefaultContent(element);
 
                                         }} />
+                                    </Td>
+                                    <Td>
+                                        <BiPlus cursor={'pointer'} onClick={onOpenAdvertiser} />
                                     </Td>
                                     <Td>
                                         <BiTrash cursor={'pointer'} onClick={() => deleteAdvertiser(element.advertiserCode)} />
@@ -474,7 +492,7 @@ const ManageContent = () => {
                         <div style={styles.infoContainer}>
                             <div style={styles.titleContainer}>
                                 <Heading as='h4' size='md'>
-                                    Añadir una pelicula
+                                    Añadir anunciante
                                 </Heading>
                             </div>
                             <ModificationForm option={'advertisers'} defaultContent={{}} onSend={(data) => { addAdvertiser(data) }} />
@@ -499,6 +517,7 @@ const ManageContent = () => {
                             onClick={() => {
                                 setOption('serie');
                                 setSelectedSeries(null);
+                                setSelectedAdvertiser(null);
                                 getDataSeries();
                             }}>
                             Administrar series
@@ -507,6 +526,7 @@ const ManageContent = () => {
                             onClick={() => {
                                 setOption('movie');
                                 setSelectedSeries(null);
+                                setSelectedAdvertiser(null);
                                 getDataMovies();
                             }}>
                             Administrar peliculas
@@ -516,6 +536,8 @@ const ManageContent = () => {
                             onClick={() => {
                                 setOption('advertisers');
                                 getDataAdvertisers();
+                                setSelectedSeries(null);
+                                setSelectedAdvertiser(null);
                             }}>
                             Administrar anunciantes
                         </MenuItem>
@@ -524,6 +546,7 @@ const ManageContent = () => {
                             onClick={() => {
                                 setOption('addMovie');
                                 setSelectedSeries(null);
+                                setSelectedAdvertiser(null);
                             }}>
                             Añadir pelicula
                         </MenuItem>
@@ -531,6 +554,7 @@ const ManageContent = () => {
                             onClick={() => {
                                 setOption('addSerie');
                                 setSelectedSeries(null);
+                                setSelectedAdvertiser(null);
                             }}>
                             Añadir serie
                         </MenuItem>
@@ -577,6 +601,35 @@ const ManageContent = () => {
                         </ModalContent>
                     </Modal> : ''
                 }
+
+                {
+                    isOpenAdvertiser ? <Modal isOpen={isOpenAdvertiser} onClose={onCloseAdvertiser}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>
+                                <Heading as='h4' size='md'>
+                                    Modificando {defaultContent.title}
+                                </Heading>
+                            </ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <AdvertiserLinkModal
+                                    onSend={
+                                        (data) => {
+                                            if (data.type === 'movie') {
+
+                                            } else {
+
+                                            }
+                                        }
+                                    }
+
+                                />
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal> : ''
+                }
+
                 {selectedSeries ?
                     <>
                         <Modal isOpen={isOpenEpisode} onClose={onCloseEpisode}>
@@ -635,6 +688,35 @@ const ManageContent = () => {
                         </Table>
                     </>
                     : ''}
+
+                {
+                    selectedAdvertiser ? <>
+                        <Heading marginTop={24}>Anuncios</Heading>
+                        <Table>
+                            <Thead>
+                                <Tr>
+                                    <Th>Titulo</Th>
+                                    <Th>url</Th>
+                                    <Th></Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {
+                                    adsAdmin.map(ad => {
+                                        return (<Tr key={ad.adCode}>
+                                            <Td>{ad.title}</Td>
+                                            <Td>{ad.url}</Td>
+                                            <Td>
+                                                <BiPlus cursor={'pointer'} onClick={onOpenAdvertiser} />
+                                            </Td>
+                                            {/* <BiTrash cursor={'pointer'} onClick={() => deleteEpisode(episode.episodeCode)} /> */}
+                                        </Tr>);
+                                    })
+                                }
+                            </Tbody>
+                        </Table>
+                    </> : ''
+                }
 
             </div>
 
