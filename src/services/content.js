@@ -85,6 +85,7 @@ export const addFavoriteMovies = async (profileCode, movieCode) => {
  * @param {number} seriesCode
  */
 export const removeFavoriteSeries = async (profileCode, seriesCode) => {
+    console.log(profileCode, seriesCode)
     const URL = `http://localhost:8080/api/content/series/${profileCode}/favorites`;
     let body = {
         seriesCode
@@ -293,6 +294,30 @@ export const createMovie = async (movie) => {
         body: JSON.stringify(body),
     }
     const res = await fetch(`http://localhost:8080/api/content/movies`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+export const createEpisode = async (seriesCode, episode) => {
+    let body = {
+        ...episode
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/series/${seriesCode}/episodes`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+export const removeEpisode = async (seriesCode, episodeCode) => {
+    const otherPram = {
+        method: "DELETE",
+        headers: headers(),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/series/${seriesCode}/episodes/${episodeCode}`, otherPram);
     const data = await res.json();
     return data;
 }

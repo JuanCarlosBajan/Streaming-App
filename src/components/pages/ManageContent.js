@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Table, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
+import { Table, Tbody, Tr, Td, TableContainer, Thead, Th } from '@chakra-ui/react'
 import TableHeader from "../TableHeader"
 import ModificationForm from "../ModificationForm"
 import { BiPencil, BiTrash } from "react-icons/bi";
@@ -9,7 +9,8 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode } from '../../services/content';
+import { Link } from 'react-router-dom';
 
 
 
@@ -19,7 +20,11 @@ const ManageContent = () => {
     const toast = useToast();
     const [moviesAdmin, setMoviesAdmin] = useState([]);
     const [seriesAdmin, setSeriesAdmin] = useState([]);
+    const [episodesAdmin, setEpisodesAdmin] = useState([]);
+    const [selectedSeries, setSelectedSeries] = useState(null);
+    const { isOpen: isOpenEpisode, onOpen: onOpenEpisode, onClose: onCloseEpisode } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
+
 
     const [defaultContent, setDefaultContent] = useState({});
 
@@ -174,11 +179,10 @@ const ManageContent = () => {
         }
     }
 
-    const getDataSeries = async () => {
-        const data = await getSeriesAdmin();
+    const deleteEpisode = async (episodeCode) => {
+        const data = await removeEpisode(selectedSeries, episodeCode);
         if (data.ok) {
-            setSeriesAdmin(data.series);
-            console.log(moviesAdmin);
+            getSeriesInfo(selectedSeries);
         }
         else {
             data.errors.forEach(element => {
@@ -192,6 +196,31 @@ const ManageContent = () => {
         }
     }
 
+    const getDataSeries = async () => {
+        const data = await getSeriesAdmin();
+        if (data.ok) {
+            setSeriesAdmin(data.series);
+
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+
+    const getSeriesInfo = async (seriesCode) => {
+        const data = await getSeries(seriesCode);
+        if (data.ok) {
+            setEpisodesAdmin(data.series.episodes)
+        }
+    }
+
     const deleteMovie = (movieCode) => {
         deleteMoviesAdmin(movieCode);
         setMoviesAdmin(moviesAdmin.filter((element) => element.movieCode !== movieCode))
@@ -201,6 +230,29 @@ const ManageContent = () => {
     const deleteSerie = (seriesCode) => {
         deleteSeriesAdmin(seriesCode);
         setSeriesAdmin(seriesAdmin.filter((element) => element.seriesCode !== seriesCode))
+    }
+
+    const addEpsiode = async (episode) => {
+        const data = await createEpisode(selectedSeries, episode);
+        if (data.ok) {
+            toast({
+                title: "Has creado un episodio",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+            await getSeriesInfo(selectedSeries);
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
     }
 
 
@@ -249,7 +301,10 @@ const ManageContent = () => {
                         <Tbody>
                             {seriesAdmin.map((element, index) => (
                                 <Tr key={index}>
-                                    <Td> {element.seriesCode} </Td>
+                                    <Td> <a href='#' onClick={() => {
+                                        setSelectedSeries(element.seriesCode)
+                                        getSeriesInfo(element.seriesCode);
+                                    }}>{element.seriesCode}</a>  </Td>
                                     <Td> {element.title} </Td>
                                     <Td> {element.studioCode} </Td>
                                     <Td> {element.publishedAt} </Td>
@@ -326,6 +381,7 @@ const ManageContent = () => {
                         <MenuItem
                             onClick={() => {
                                 setOption('serie');
+                                setSelectedSeries(null);
                                 getDataSeries();
                             }}>
                             Administrar series
@@ -333,6 +389,7 @@ const ManageContent = () => {
                         <MenuItem
                             onClick={() => {
                                 setOption('movie');
+                                setSelectedSeries(null);
                                 getDataMovies();
                             }}>
                             Administrar peliculas
@@ -341,12 +398,14 @@ const ManageContent = () => {
                         <MenuItem
                             onClick={() => {
                                 setOption('addMovie');
+                                setSelectedSeries(null);
                             }}>
                             Añadir pelicula
                         </MenuItem>
                         <MenuItem
                             onClick={() => {
                                 setOption('addSerie');
+                                setSelectedSeries(null);
                             }}>
                             Añadir serie
                         </MenuItem>
@@ -376,6 +435,65 @@ const ManageContent = () => {
                         </ModalContent>
                     </Modal> : ''
                 }
+                {selectedSeries ?
+                    <>
+                        <Modal isOpen={isOpenEpisode} onClose={onCloseEpisode}>
+                            <ModalOverlay /> {/*filter o volver a traer toda y actualizar con setmovies*/}
+                            <ModalContent>
+                                <ModalHeader>
+                                    <Heading as='h4' size='md'>
+                                        Agregar Episodio
+                                    </Heading>
+                                </ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                    <ModificationForm
+                                        onSend={(data) => { addEpsiode(data) }}
+                                        option={"addEpisode"}
+                                        defaultContent={{}}
+                                    />
+                                </ModalBody>
+                            </ModalContent>
+                        </Modal>
+                        <Heading marginTop={24}>Episodios</Heading>
+                        <Button
+                            marginTop={8}
+                            marginBottom={8}
+                            onClick={() => {
+                                onOpenEpisode()
+
+                            }
+                            }>
+                            Agregar episodio
+                        </Button>
+                        <Table>
+                            <Thead>
+                                <Tr>
+                                    <Th>Titulo</Th>
+                                    <Th>Fecha Publicacion</Th>
+                                    <Th>Temporada</Th>
+                                    <Th>Duracion</Th>
+                                    <Th>url</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {
+                                    episodesAdmin.map(episode => {
+                                        return (<Tr key={episode.episodeCode}>
+                                            <Td>{episode.name}</Td>
+                                            <Td>{(new Date(episode.datePublished)).toLocaleDateString()}</Td>
+                                            <Td>{episode.season}</Td>
+                                            <Td>{episode.duration}</Td>
+                                            <Td>{episode.url}</Td>
+                                            <BiTrash cursor={'pointer'} onClick={() => deleteEpisode(episode.episodeCode)} />
+                                        </Tr>);
+                                    })
+                                }
+                            </Tbody>
+                        </Table>
+                    </>
+                    : ''}
+
             </div>
 
         </>
