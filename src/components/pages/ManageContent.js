@@ -368,11 +368,7 @@ const ManageContent = () => {
                                     <Td> {element.advertiserCode} </Td>
                                     <Td> {element.name} </Td>
                                     <Td>
-                                        <BiPencil cursor={'pointer'} onClick={() => {
-                                            onOpen()
-                                            setDefaultContent(element);
-                                            setOption("serie");
-                                        }} />
+                                        <BiPencil cursor={'pointer'} />
                                     </Td>
                                     <Td>
                                         <BiTrash cursor={'pointer'} onClick={() => deleteAdvertiser(element.advertiserCode)} />
