@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 
 
@@ -21,6 +21,7 @@ const ManageContent = () => {
     const [moviesAdmin, setMoviesAdmin] = useState([]);
     const [seriesAdmin, setSeriesAdmin] = useState([]);
     const [episodesAdmin, setEpisodesAdmin] = useState([]);
+    const [advertisersAdmin, setAdvertisersAdmin] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null);
     const { isOpen: isOpenEpisode, onOpen: onOpenEpisode, onClose: onCloseEpisode } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -257,6 +258,24 @@ const ManageContent = () => {
         }
     }
 
+    const getDataAdvertisers = async () => {
+        const data = await getAdvertisersAdmin();
+        if (data.ok) {
+            setAdvertisersAdmin(data.advertisers);
+            console.log(data.advertisers);
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+
 
 
     const show = () => {
@@ -333,6 +352,24 @@ const ManageContent = () => {
                     </Table>
                 </TableContainer>)
         }
+        if (option === 'advertisers') {
+            return (<TableContainer>
+                <Table variant='simple'>
+                    <TableHeader option={'advertisers'} />
+                    <Tbody>
+                        {
+                            advertisersAdmin.map((element, index) => (
+                                <Tr key={index}>
+                                    <Td> {element.advertiserCode} </Td>
+                                    <Td> {element.name} </Td>
+                                </Tr>
+                            ))}
+
+                    </Tbody>
+                </Table>
+            </TableContainer>)
+        }
+
         if (option === 'addSerie') {
             return (
                 <div style={styles.provisionalBackgorund}>
@@ -400,7 +437,7 @@ const ManageContent = () => {
                         <MenuItem
                             onClick={() => {
                                 setOption('advertisers');
-                                
+                                getDataAdvertisers();
                             }}>
                             Administrar anunciantes
                         </MenuItem>

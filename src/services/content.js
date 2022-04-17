@@ -31,7 +31,7 @@ export const getSeriesAdmin = async () => {
 }
 
 export const getAdvertisersAdmin = async () => {
-    const res = await fetch(`http://localhost:8080/api/ads/advertisers`)
+    const res = await fetch(`http://localhost:8080/api/ads/advertisers`);
     const data = await res.json();
     return data;
 }
