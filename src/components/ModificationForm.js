@@ -53,7 +53,7 @@ const ModificationForm = ({
         if (defaultContent.url) setUrl(defaultContent.url);
         if (defaultContent.season) setSeason(defaultContent.season);
         if (defaultContent.categories) setCategory(defaultContent.categories);
-        if (defaultContent.duraiton) { setDuration(defaultContent.duraiton); };
+        if (defaultContent.duration) { setDuration(defaultContent.duration); };
         if (defaultContent.episodeCount) { setEpisodeCount(defaultContent.episodeCount); };
         if (defaultContent.seasonCount) { setSeasonCount(defaultContent.seasonCount); };
     }, []);
