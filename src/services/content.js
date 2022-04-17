@@ -16,7 +16,7 @@ export const getAllSeries = async () => {
 
 export const getResult = async (userInput) => {
     const res = await fetch(`http://localhost:8080/api/content/${userInput}/search`);
-                            //api/content/f/search
+    //api/content/f/search
     const data = await res.json();
     return data
 }
@@ -256,6 +256,42 @@ export const markSeriesAsStarted = async (episodeCode, profileCode) => {
  */
 export const getInProgressSeries = async (profileCode) => {
     const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/in-progress`);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Add a movie
+ */
+export const createMovie = async (movie) => {
+    let body = {
+        ...movie
+    };
+    console.log(body);
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/movies`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Add series
+ */
+export const createSeries = async (movie) => {
+    let body = {
+        ...movie
+    };
+    console.log(body);
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/series`, otherPram);
     const data = await res.json();
     return data;
 }
