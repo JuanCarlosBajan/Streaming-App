@@ -10,6 +10,10 @@ export const getMoviesAdmin = async () => {
     return data
 }
 
+export const deleteMoviesAdmin = async (movieCode) => {
+    await fetch(`http://localhost:8080/api/content/movies/${movieCode}`, {method: 'DELETE'})
+}
+
 /**
  * Get all series from the system
  * @returns 
@@ -26,9 +30,12 @@ export const getSeriesAdmin = async () => {
     return data
 }
 
+export const deleteSeriesAdmin = async (seriesCode) => {
+    await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, {method: 'DELETE'})
+}
+
 export const getResult = async (userInput) => {
     const res = await fetch(`http://localhost:8080/api/content/${userInput}/search`);
-                            //api/content/f/search
     const data = await res.json();
     return data
 }

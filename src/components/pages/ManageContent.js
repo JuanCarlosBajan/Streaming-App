@@ -7,7 +7,7 @@ import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure} from '@chakra-ui/react'
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
-import { getMoviesAdmin, getSeriesAdmin } from '../../services/content';
+import { getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin } from '../../services/content';
 
 
 
@@ -100,11 +100,13 @@ const ManageContent = () => {
     }
 
     const deleteMovie = (movieCode) => {
+        deleteMoviesAdmin(movieCode);
         setMoviesAdmin(moviesAdmin.filter((element) => element.movieCode !== movieCode))
     }
 
 
     const deleteSerie = (seriesCode) => {
+        deleteSeriesAdmin(seriesCode);
         setSeriesAdmin(seriesAdmin.filter((element) => element.seriesCode !== seriesCode))
     }
 
