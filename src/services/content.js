@@ -40,6 +40,10 @@ export const deleteSeriesAdmin = async (seriesCode) => {
     await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, { method: 'DELETE' })
 }
 
+export const deleteAdvertisersAdmin = async (advertisersCode) => {
+    await fetch(`http://localhost:8080/api/ads/advertisers/${advertisersCode}`, { method: 'DELETE' })
+}
+
 export const getResult = async (userInput) => {
     const res = await fetch(`http://localhost:8080/api/content/${userInput}/search`);
     const data = await res.json();

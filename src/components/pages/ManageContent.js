@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 
 
@@ -235,6 +235,11 @@ const ManageContent = () => {
         setSeriesAdmin(seriesAdmin.filter((element) => element.seriesCode !== seriesCode))
     }
 
+    const deleteAdvertiser = (advertiserCode) => {
+        deleteAdvertisersAdmin(advertiserCode);
+        setAdvertisersAdmin(advertisersAdmin.filter((element) => element.advertiserCode !== advertiserCode))
+    }
+
     const addEpsiode = async (episode) => {
         const data = await createEpisode(selectedSeries, episode);
         if (data.ok) {
@@ -362,6 +367,16 @@ const ManageContent = () => {
                                 <Tr key={index}>
                                     <Td> {element.advertiserCode} </Td>
                                     <Td> {element.name} </Td>
+                                    <Td>
+                                        <BiPencil cursor={'pointer'} onClick={() => {
+                                            onOpen()
+                                            setDefaultContent(element);
+                                            setOption("serie");
+                                        }} />
+                                    </Td>
+                                    <Td>
+                                        <BiTrash cursor={'pointer'} onClick={() => deleteAdvertiser(element.advertiserCode)} />
+                                    </Td>
                                 </Tr>
                             ))}
 
@@ -492,7 +507,7 @@ const ManageContent = () => {
                 {selectedSeries ?
                     <>
                         <Modal isOpen={isOpenEpisode} onClose={onCloseEpisode}>
-                            <ModalOverlay /> {/*filter o volver a traer toda y actualizar con setmovies*/}
+                            <ModalOverlay /> 
                             <ModalContent>
                                 <ModalHeader>
                                     <Heading as='h4' size='md'>
