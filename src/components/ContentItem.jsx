@@ -14,7 +14,6 @@ function ContentItem({
   toggleFavorite,
   contentCode,
   search
-  //poner otro parametro pa ver si se muestra o no lo de fav
 }) {
 
   const favFunct = () => {
@@ -54,7 +53,7 @@ function ContentItem({
         className="content-item__image"
       />
       <HStack>
-        <h2>{title}</h2> {/*  */}
+        <h2>{title}</h2> 
         
         {search ? '' : favFunct()}
       </HStack>

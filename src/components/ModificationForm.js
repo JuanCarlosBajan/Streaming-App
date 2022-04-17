@@ -3,15 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 const ModificationForm = ({
     option,
-    defaultTitle,
-    defaultStudio,
-    defaultPublishedAt,
-    defaultGenre,
-    defaultDirector,
-    defaultDescription,
-    defaultImage,
-    defaultCategory,
-    defaultDuration,
+    defaultContent,
     onSend
 }) => {
 
@@ -42,18 +34,19 @@ const ModificationForm = ({
     const [description, setDescription] = useState('');
     const [coverUrl, setCoverUrl] = useState('');
     const [category, setCategory] = useState('');
-    const [duration, setDuration] = useState('');
+    const [duration, setDuration] = useState(0);
 
     useEffect(() => {
-        if (defaultTitle) setTitle(defaultTitle);
-        if (defaultStudio) setStudio(defaultStudio);
-        if (defaultPublishedAt) setPublishedAt(defaultPublishedAt);
-        if (defaultGenre) setGenre(defaultGenre);
-        if (defaultDirector) setDirector(defaultDirector);
-        if (defaultDescription) setDescription(defaultDescription);
-        if (defaultImage) setCoverUrl(defaultImage);
-        if (defaultCategory) setCategory(defaultCategory);
-        if (defaultDuration) setDuration(defaultDuration);
+        console.log(defaultContent)
+        if (defaultContent.title) { setTitle(defaultContent.title) };
+        if (defaultContent.studioCode) setStudio(defaultContent.studioCode);
+        if (defaultContent.publishedAt) setPublishedAt(defaultContent.publishedAt);
+        if (defaultContent.genre) setGenre(defaultContent.genre);
+        if (defaultContent.directorCode) setDirector(defaultContent.directorCode);
+        if (defaultContent.description) setDescription(defaultContent.description);
+        if (defaultContent.coverUrl) setCoverUrl(defaultContent.coverUrl);
+        if (defaultContent.categories) setCategory(defaultContent.categories);
+        if (defaultContent.duraiton) { setDuration(defaultContent.duraiton); };
     }, []);
 
 
@@ -63,6 +56,7 @@ const ModificationForm = ({
     const sendForm = async () => {
         if (option === 'movie') {
             await onSend({
+                movieCode: defaultContent.movieCode ?? '',
                 title,
                 studioCode: Number.parseInt(studio),
                 genre,
@@ -84,7 +78,7 @@ const ModificationForm = ({
                 <FormLabel color={colors.primary}>Titulo </FormLabel>
                 <Input
                     focusBorderColor={colors.primary}
-                    defaultValue={defaultTitle}
+                    defaultValue={defaultContent.title}
                     placeholder='Ingrese titulo'
                     onChange={(e) => { setTitle(e.target.value) }} />
             </div>
@@ -92,6 +86,7 @@ const ModificationForm = ({
             <div style={styles.outerContainer}>
                 <FormLabel color={colors.primary}>Estudio de grabación</FormLabel>
                 <Input focusBorderColor={colors.primary}
+                    defaultValue={defaultContent.studioCode}
                     placeholder='Ingrese el estudio de grabación'
                     onChange={(e) => { setStudio(e.target.value) }} />
             </div>
@@ -99,6 +94,7 @@ const ModificationForm = ({
             <div style={styles.outerContainer}>
                 <FormLabel color={colors.primary}>Fecha de publicación</FormLabel>
                 <Input focusBorderColor={colors.primary}
+                    defaultValue={defaultContent.publishedAt}
                     placeholder='Ingrese la fecha de publicación'
                     onChange={(e) => { setPublishedAt(e.target.value) }} />
             </div>
@@ -107,6 +103,7 @@ const ModificationForm = ({
                 <FormLabel color={colors.primary}>Género</FormLabel>
                 <Input focusBorderColor={colors.primary}
                     placeholder='Ingrese género '
+                    defaultValue={defaultContent.genre}
                     onChange={(e) => { setGenre(e.target.value) }}
                 />
             </div>
@@ -115,6 +112,7 @@ const ModificationForm = ({
                 <FormLabel color={colors.primary}>Director</FormLabel>
                 <Input focusBorderColor={colors.primary}
                     placeholder='Ingrese director'
+                    defaultValue={defaultContent.directorCode}
                     onChange={(e) => { setDirector(e.target.value) }}
                 />
             </div>
@@ -123,13 +121,16 @@ const ModificationForm = ({
                 <FormLabel color={colors.primary}>Descripción</FormLabel>
                 <Input focusBorderColor={colors.primary}
                     placeholder='Ingrese descripción '
+                    defaultValue={defaultContent.description}
                     onChange={(e) => { setDescription(e.target.value) }} />
             </div>
+
 
             <div style={styles.outerContainer}>
                 <FormLabel color={colors.primary}>Link de la imagen de la portada</FormLabel>
                 <Input focusBorderColor={colors.primary}
                     placeholder='Ingrese link de portada'
+                    defaultValue={defaultContent.coverUrl}
                     onChange={(e) => { setCoverUrl(e.target.value) }}
                 />
             </div>
@@ -138,6 +139,7 @@ const ModificationForm = ({
                 <FormLabel color={colors.primary}>Categoria</FormLabel>
                 <Input focusBorderColor={colors.primary}
                     placeholder='Ingrese categoria'
+                    defaultValue={defaultContent.categories}
                     onChange={(e) => { setCategory(e.target.value) }}
                 />
             </div>
@@ -146,6 +148,7 @@ const ModificationForm = ({
                 <div style={styles.outerContainer}>
                     <FormLabel color={colors.primary}>Duracion</FormLabel>
                     <Input focusBorderColor={colors.primary}
+                        defaultValue={defaultContent.duration}
                         type="number"
                         placeholder='Ingrese duracion'
                         onChange={(e) => { setDuration(e.target.value) }}
