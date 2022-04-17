@@ -30,8 +30,18 @@ export const getSeriesAdmin = async () => {
     return data
 }
 
+export const getAdvertisersAdmin = async () => {
+    const res = await fetch(`http://localhost:8080/api/ads/advertisers`);
+    const data = await res.json();
+    return data;
+}
+
 export const deleteSeriesAdmin = async (seriesCode) => {
     await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, { method: 'DELETE' })
+}
+
+export const deleteAdvertisersAdmin = async (advertisersCode) => {
+    await fetch(`http://localhost:8080/api/ads/advertisers/${advertisersCode}`, { method: 'DELETE' })
 }
 
 export const getResult = async (userInput) => {
@@ -39,9 +49,6 @@ export const getResult = async (userInput) => {
     const data = await res.json();
     return data
 }
-
-
-//addFavoriteMovies, getAllMovies, getFavoriteMovies, removeFavoriteMovies
 
 /**
  * Add a favorite series on the system
