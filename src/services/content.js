@@ -11,7 +11,7 @@ export const getMoviesAdmin = async () => {
 }
 
 export const deleteMoviesAdmin = async (movieCode) => {
-    await fetch(`http://localhost:8080/api/content/movies/${movieCode}`, {method: 'DELETE'})
+    await fetch(`http://localhost:8080/api/content/movies/${movieCode}`, { method: 'DELETE' })
 }
 
 /**
@@ -31,7 +31,7 @@ export const getSeriesAdmin = async () => {
 }
 
 export const deleteSeriesAdmin = async (seriesCode) => {
-    await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, {method: 'DELETE'})
+    await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, { method: 'DELETE' })
 }
 
 export const getResult = async (userInput) => {
@@ -276,6 +276,76 @@ export const markSeriesAsStarted = async (episodeCode, profileCode) => {
  */
 export const getInProgressSeries = async (profileCode) => {
     const res = await fetch(`http://localhost:8080/api/content/series/${profileCode}/in-progress`);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Add a movie
+ */
+export const createMovie = async (movie) => {
+    let body = {
+        ...movie
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/movies`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+
+/**
+ * Add a movie
+ */
+export const modifyMovie = async (movieCode, movie) => {
+    let body = {
+        ...movie
+    };
+    const otherPram = {
+        method: "PUT",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/movies/${movieCode}`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Modify a series
+ */
+export const modifySeries = async (seriesCode, series) => {
+    let body = {
+        ...series
+    };
+    const otherPram = {
+        method: "PUT",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Add series
+ */
+export const createSeries = async (series) => {
+    let body = {
+        ...series
+    };
+    console.log(body);
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/content/series`, otherPram);
     const data = await res.json();
     return data;
 }
