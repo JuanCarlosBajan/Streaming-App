@@ -16,6 +16,7 @@ const ManageContent = () => {
     const [option, setOption] = useState('');
     const toast = useToast();
     const [moviesAdmin, setMoviesAdmin] = useState([]);
+    const [seriesAdmin, setSeriesAdmin] = useState([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const colors = {
@@ -61,19 +62,12 @@ const ManageContent = () => {
         }
     };
 
-    useEffect(() => {
-        
-        //getData();   
-        //console.log(moviesAdmin);
-   
-    }, []);
 
-    const getData = async () => {  
+    const getDataMovies = async () => {  
         const data = await getMoviesAdmin();
         if (data.ok) {
           setMoviesAdmin(data.movies);
           console.log(moviesAdmin);  
-          //console.log(moviesAdmin);
         }
         else {
             data.errors.forEach(element => {
@@ -85,7 +79,24 @@ const ManageContent = () => {
                 })
             });
         }
-      
+    }
+
+    const getDataSeries = async () => {  
+        const data = await getSeriesAdmin();
+        if (data.ok) {
+          setSeriesAdmin(data.series);
+          console.log(moviesAdmin);  
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
     }
 
     
@@ -94,12 +105,12 @@ const ManageContent = () => {
         if (option === 'movie'){
             return(<TableContainer> 
             <Table variant='simple'>
-                <TableHeader />
+                <TableHeader option={'movie'}/>
                 <Tbody>
-                    <Tr>
+                    
                         {
                             moviesAdmin.map((element, index) => (
-                                <>
+                                <Tr>
                                 <Td> {element.movieCode} </Td>
                                 <Td> {element.title} </Td>
                                 <Td> {element.studioCode} </Td>
@@ -110,85 +121,83 @@ const ManageContent = () => {
                                 <Td> {element.description} </Td>
                                 <Td> {element.coverUrl} </Td>
                                 <Td> {element.categories} </Td>
-                                </>
+                                <Td>  
+                                    <BiPencil cursor={'pointer'} onClick={onOpen}/>  
+                                    <Modal isOpen={isOpen} onClose={onClose}>
+                                        <ModalOverlay /> {/*filter o volver a traer toda y actualizar con setmovies*/}
+                                        <ModalContent>
+                                        <ModalHeader>
+                                            <Heading as='h4' size='md'>
+                                                Añada una pelicula
+                                            </Heading>
+                                        </ModalHeader>
+                                        <ModalCloseButton /> 
+                                        <ModalBody>
+                                            <ModificationForm option={'movie'} />
+                                        </ModalBody>
+                                        <ModalFooter>
+                                            <Button color= {colors.primary}>Modificar</Button>
+                                        </ModalFooter>
+                                        </ModalContent>
+                                    </Modal>
+
+                                </Td>
+                                <Td>  
+                                    <BiTrash cursor={'pointer'} onClick={() => {console.log('borrando ...')}}/> 
+                                </Td>
+                                </Tr>
                         ))}
 
-                        <Td>  
-                            <BiPencil cursor={'pointer'} onClick={onOpen}/>  
-                            <Modal isOpen={isOpen} onClose={onClose}>
-                                <ModalOverlay />
-                                <ModalContent>
-                                <ModalHeader>
-                                    <Heading as='h4' size='md'>
-                                        Añada una pelicula
-                                    </Heading>
-                                </ModalHeader>
-                                <ModalCloseButton /> 
-                                <ModalBody>
-                                    <ModificationForm />
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color= {colors.primary}>Modificar</Button>
-                                </ModalFooter>
-                                </ModalContent>
-                            </Modal>
-
-                        </Td>
-                        <Td>  
-                            <BiTrash cursor={'pointer'} onClick={() => {console.log('borrando ...')}}/> 
-                        </Td>
-                    </Tr>
                 </Tbody>
             </Table>
         </TableContainer>)}
         if(option === 'serie') {
-            return(<TableContainer> 
+            return(
+            <TableContainer> 
             <Table variant='simple' size='md'>
                 <TableHeader option={'serie'} />
                 <Tbody>
-                    <Tr>
-                        {/* <Td> The Big Bang Theory  </Td>
-                        <Td> Walt Disney Pictures</Td>
-                        <Td> 2010-10-10T06:00:00.000Z </Td>
-                        <Td> Comedy </Td>
-                        <Td> Unkrich </Td>
-                        <Td> Lee </Td>
-                        <Td> test </Td>
-                        <Td> https://es.web.img3.acsta.net/medias/nmedia/18/84/50/16/20084857.jpg </Td>
-                        <Td> pg </Td>
-                        <Td> 279 </Td>
-                        <Td> 12 </Td>
-                        <Td> Infoo </Td> */}
+                        {seriesAdmin.map((element, index) => (
+                                <Tr key={index}>
+                                    <Td> {element.seriesCode} </Td>
+                                    <Td> {element.title} </Td>
+                                    <Td> {element.studioCode} </Td>
+                                    <Td> {element.publishedAt} </Td>
+                                    <Td> {element.genre} </Td>
+                                    <Td> {element.directorCode} </Td>
+                                    <Td> {element.description} </Td>
+                                    <Td> {element.coverUrl} </Td>
+                                    <Td> {element.categories} </Td>
+                                    <Td> {element.episodeCount} </Td>
+                                    <Td> {element.seasonCount} </Td>
+                                    <Td>  
+                                        <BiPencil cursor={'pointer'} onClick={onOpen}/>  
+                                        <Modal isOpen={isOpen} onClose={onClose}>
+                                            <ModalOverlay />
+                                            <ModalContent>
+                                            <ModalHeader> 
+                                                <Heading as='h4' size='md'>
+                                                    Modificar serie
+                                                </Heading>
+                                            </ModalHeader>
+                                            <ModalCloseButton /> 
+                                            <ModalBody>
+                                                <ModificationForm option={'serie'}/>
+                                            </ModalBody>
+                                            <ModalFooter>         
+                                                <Button color= {colors.primary}>Modificar</Button>
+                                            </ModalFooter> 
+                                            </ModalContent>
+                                        </Modal>
+                                    </Td>
+                                    <Td>    
+                                        <BiTrash cursor={'pointer'} onClick={() => {console.log('borrando ...')}}/> 
+                                    </Td>
+                                </Tr>
+                        ))}
 
-                        {/*
-                            moviesAdmin.map((element, index) => (
-                                <Td> element.title </Td>
-                            ))
-                            */}
-                        <Td>  
-                            <BiPencil cursor={'pointer'} onClick={onOpen}/>  
-                            <Modal isOpen={isOpen} onClose={onClose}>
-                                <ModalOverlay />
-                                <ModalContent>
-                                <ModalHeader> 
-                                    <Heading as='h4' size='md'>
-                                        Modificar serie
-                                    </Heading>
-                                </ModalHeader>
-                                <ModalCloseButton /> 
-                                <ModalBody>
-                                    <ModificationForm option={'serie'}/>
-                                </ModalBody>
-                                <ModalFooter>         
-                                    <Button color= {colors.primary}>Modificar</Button>
-                                </ModalFooter>
-                                </ModalContent>
-                            </Modal>
-                        </Td>
-                        <Td>    
-                            <BiTrash cursor={'pointer'} onClick={() => {console.log('borrando ...')}}/> 
-                        </Td>
-                    </Tr>
+                        
+                    
                 </Tbody>
             </Table>
         </TableContainer>)}
@@ -232,7 +241,6 @@ const ManageContent = () => {
         )}
         if(option === 'addMovie'){
             return(
-                
                 <div style={styles.provisionalBackgorund}>
             <div style={styles.outerContainer} className='container'>
                 <div style={styles.infoContainer}>
@@ -266,11 +274,8 @@ const ManageContent = () => {
                     </div>
                 </div>
             </div>
-        </div> )}
-
-
-
-    }
+        </div> 
+        )}}
 
   return (
     <>
@@ -285,13 +290,14 @@ const ManageContent = () => {
             <MenuItem 
             onClick={() => {
                 setOption('serie');
+                getDataSeries();
               }}>
                 Administrar series
             </MenuItem>
             <MenuItem 
             onClick={() => {
             setOption('movie');
-            getData();
+            getDataMovies();
             }}>
                 Administrar peliculas
             </MenuItem>
