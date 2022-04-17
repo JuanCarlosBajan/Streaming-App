@@ -311,6 +311,13 @@ const ManageContent = () => {
 
             <MenuItem 
             onClick={() => {
+            setOption('advertisers');
+            }}>
+                Administrar anunciantes
+            </MenuItem>
+
+            <MenuItem 
+            onClick={() => {
             setOption('addSerie');
             }}>
                 Añadir serie
@@ -321,6 +328,13 @@ const ManageContent = () => {
             setOption('addMovie');
             }}>
                 Añadir pelicula
+            </MenuItem>
+
+            <MenuItem 
+            onClick={() => {
+            setOption('AddAdvertiser');
+            }}>
+                Añadir anunciante
             </MenuItem>
 
           </MenuList>
