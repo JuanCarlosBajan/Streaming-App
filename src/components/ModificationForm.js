@@ -35,6 +35,8 @@ const ModificationForm = ({
     const [coverUrl, setCoverUrl] = useState('');
     const [category, setCategory] = useState('');
     const [duration, setDuration] = useState(0);
+    const [episodeCount, setEpisodeCount] = useState(0);
+    const [seasonCount, setSeasonCount] = useState(0);
 
     useEffect(() => {
         console.log(defaultContent)
@@ -47,6 +49,8 @@ const ModificationForm = ({
         if (defaultContent.coverUrl) setCoverUrl(defaultContent.coverUrl);
         if (defaultContent.categories) setCategory(defaultContent.categories);
         if (defaultContent.duraiton) { setDuration(defaultContent.duraiton); };
+        if (defaultContent.episodeCount) { setEpisodeCount(defaultContent.episodeCount); };
+        if (defaultContent.seasonCount) { setSeasonCount(defaultContent.seasonCount); };
     }, []);
 
 
@@ -56,17 +60,32 @@ const ModificationForm = ({
     const sendForm = async () => {
         if (option === 'movie') {
             await onSend({
-                movieCode: defaultContent.movieCode ?? '',
+                movieCode: defaultContent.movieCode ?? undefined,
                 title,
                 studioCode: Number.parseInt(studio),
                 genre,
                 publishedAt,
                 description,
-                url: 'fds',
+                url: '',
                 directorCode: Number.parseInt(director),
                 coverUrl,
                 categories: category,
                 duration: Number.parseInt(duration),
+                rating: 5
+            });
+        } else if (option === 'serie') {
+            await onSend({
+                seriesCode: defaultContent.seriesCode ?? undefined,
+                title,
+                studioCode: Number.parseInt(studio),
+                genre,
+                publishedAt,
+                description,
+                directorCode: Number.parseInt(director),
+                coverUrl,
+                categories: category,
+                episodeCount: episodeCount,
+                seasonCount: seasonCount,
                 rating: 5
             });
         }
@@ -163,17 +182,17 @@ const ModificationForm = ({
                     <>
                         <div style={styles.outerContainer}>
                             <FormLabel color={colors.primary}>Cantidad de episodios</FormLabel>
-                            <Input focusBorderColor={colors.primary} placeholder='Ingrese cantidad de episodios' />
+                            <Input focusBorderColor={colors.primary}
+                                placeholder='Ingrese cantidad de episodios'
+                                defaultValue={defaultContent.episodeCount}
+                                onChange={(e) => { setEpisodeCount(e.target.value); }} />
                         </div>
 
                         <div style={styles.outerContainer}>
                             <FormLabel color={colors.primary}>Cantidad de temporadas</FormLabel>
-                            <Input focusBorderColor={colors.primary} placeholder='Ingrese cantidad de temporadas' />
-                        </div>
-
-                        <div style={styles.outerContainer}>
-                            <FormLabel color={colors.primary}>Info de episodios</FormLabel>
-                            <Input focusBorderColor={colors.primary} placeholder='Info de episodios' />
+                            <Input focusBorderColor={colors.primary} placeholder='Ingrese cantidad de temporadas'
+                                defaultValue={defaultContent.seasonCount}
+                                onChange={(e) => { setSeasonCount(e.target.value) }} />
                         </div>
 
                     </>) : ''

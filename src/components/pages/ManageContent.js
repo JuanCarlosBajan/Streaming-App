@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries } from '../../services/content';
 
 
 
@@ -107,13 +107,55 @@ const ManageContent = () => {
             });
         }
     }
+    const addSeries = async (series) => {
+        const data = await createSeries(series);
+        if (data.ok) {
+            toast({
+                title: "Has creado una serie",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
 
     const updateMovie = async (movie) => {
-        console.log(movie)
         const data = await modifyMovie(movie.movieCode, movie);
         if (data.ok) {
             toast({
                 title: "Has modificado la pelicula",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+            getDataMovies();
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+    const updateSeries = async (series) => {
+        const data = await modifySeries(series.seriesCode, series);
+        if (data.ok) {
+            toast({
+                title: "Has modificado la serie",
                 position: "top",
                 status: "success",
                 isClosable: true
@@ -244,7 +286,7 @@ const ManageContent = () => {
                                     Añadir una serie
                                 </Heading>
                             </div>
-                            <ModificationForm option={'serie'} />
+                            <ModificationForm option={'serie'} defaultContent={{}} onSend={(data) => { addSeries(data) }} />
 
 
                         </div>
@@ -263,7 +305,7 @@ const ManageContent = () => {
                                     Añadir una pelicula
                                 </Heading>
                             </div>
-                            <ModificationForm option={'movie'} onSend={(data) => { addMovie(data) }} />
+                            <ModificationForm option={'movie'} defaultContent={{}} onSend={(data) => { addMovie(data) }} />
                         </div>
                     </div>
                 </div>
@@ -302,6 +344,12 @@ const ManageContent = () => {
                             }}>
                             Añadir pelicula
                         </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                setOption('addSerie');
+                            }}>
+                            Añadir serie
+                        </MenuItem>
 
                     </MenuList>
                 </Menu>
@@ -320,7 +368,7 @@ const ManageContent = () => {
                             <ModalCloseButton />
                             <ModalBody>
                                 <ModificationForm
-                                    onSend={updateMovie}
+                                    onSend={option === 'movie' ? updateMovie : updateSeries}
                                     option={option}
                                     defaultContent={defaultContent}
                                 />
