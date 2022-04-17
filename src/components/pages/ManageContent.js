@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Table, Tbody, Tr, Td, TableContainer} from '@chakra-ui/react'
 import TableHeader from "../TableHeader"
 import ModificationForm from "../ModificationForm"
@@ -7,14 +7,15 @@ import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure} from '@chakra-ui/react'
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
-import InputInfo from '../InputInfo'
-import Inputs from '../Inputs'
+import { getMoviesAdmin, getSeriesAdmin } from '../../services/content';
 
 
 
 const ManageContent = () => {
     
     const [option, setOption] = useState('');
+    const toast = useToast();
+    const [moviesAdmin, setMoviesAdmin] = useState([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const colors = {
@@ -60,6 +61,33 @@ const ManageContent = () => {
         }
     };
 
+    useEffect(() => {
+        
+        //getData();   
+        //console.log(moviesAdmin);
+   
+    }, []);
+
+    const getData = async () => {  
+        const data = await getMoviesAdmin();
+        if (data.ok) {
+          setMoviesAdmin(data.movies);
+          console.log(moviesAdmin);  
+          //console.log(moviesAdmin);
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+      
+    }
+
     
 
     const show = () => {
@@ -69,15 +97,22 @@ const ManageContent = () => {
                 <TableHeader />
                 <Tbody>
                     <Tr>
-                        <Td> Amazing Spiderman </Td>
-                        <Td>Walt Disney Pictures</Td>
-                        <Td> 2010-10-10T06:00:00.000Z </Td>
-                        <Td> Action </Td>
-                        <Td> Unkrich </Td>
-                        <Td> Lee </Td>
-                        <Td> test </Td>
-                        <Td> https://es.web.img3.acsta.net/medias/nmedia/18/84/50/16/20084857.jpg </Td>
-                        <Td> pg </Td>
+                        {
+                            moviesAdmin.map((element, index) => (
+                                <>
+                                <Td> {element.movieCode} </Td>
+                                <Td> {element.title} </Td>
+                                <Td> {element.studioCode} </Td>
+                                <Td> {element.duration} minutos </Td>
+                                <Td> {element.publishedAt} </Td>
+                                <Td> {element.genre} </Td>
+                                <Td> {element.directorCode} </Td>
+                                <Td> {element.description} </Td>
+                                <Td> {element.coverUrl} </Td>
+                                <Td> {element.categories} </Td>
+                                </>
+                        ))}
+
                         <Td>  
                             <BiPencil cursor={'pointer'} onClick={onOpen}/>  
                             <Modal isOpen={isOpen} onClose={onClose}>
@@ -112,7 +147,7 @@ const ManageContent = () => {
                 <TableHeader option={'serie'} />
                 <Tbody>
                     <Tr>
-                        <Td> The Big Bang Theory  </Td>
+                        {/* <Td> The Big Bang Theory  </Td>
                         <Td> Walt Disney Pictures</Td>
                         <Td> 2010-10-10T06:00:00.000Z </Td>
                         <Td> Comedy </Td>
@@ -123,7 +158,13 @@ const ManageContent = () => {
                         <Td> pg </Td>
                         <Td> 279 </Td>
                         <Td> 12 </Td>
-                        <Td> Infoo </Td>
+                        <Td> Infoo </Td> */}
+
+                        {/*
+                            moviesAdmin.map((element, index) => (
+                                <Td> element.title </Td>
+                            ))
+                            */}
                         <Td>  
                             <BiPencil cursor={'pointer'} onClick={onOpen}/>  
                             <Modal isOpen={isOpen} onClose={onClose}>
@@ -223,7 +264,6 @@ const ManageContent = () => {
                             Aceptar
                         </Button>
                     </div>
-
                 </div>
             </div>
         </div> )}
@@ -251,6 +291,7 @@ const ManageContent = () => {
             <MenuItem 
             onClick={() => {
             setOption('movie');
+            getData();
             }}>
                 Administrar peliculas
             </MenuItem>

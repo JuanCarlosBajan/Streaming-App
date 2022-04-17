@@ -9,12 +9,13 @@ const TableHeader = ({option}) => {
     <>
         <Thead>
             <Tr>    
+                <Th> Codigo pelicula </Th>
                 <Th> {(option === 'serie') ? 'Serie' : 'Pelicula'} </Th>
-                <Th> Estudio </Th>
+                <Th> Codigo estudio </Th>
+                <Th> Duracion</Th>
                 <Th> Fecha de publicacion </Th>
                 <Th> Genero </Th>
-                <Th> Nombre(s) director </Th>
-                <Th> Apellidos director </Th>
+                <Th> Codigo director </Th>
                 <Th> Descripcion </Th>
                 <Th> Link para imagen </Th>
                 <Th> Categoria </Th>   
