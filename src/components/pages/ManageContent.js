@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getAdvertisersAdmin } from '../../services/content';
 
 
 
@@ -84,6 +84,8 @@ const ManageContent = () => {
             });
         }
     }
+
+    
 
     const addMovie = async (movie) => {
 
@@ -340,6 +342,14 @@ const ManageContent = () => {
 
                         <MenuItem
                             onClick={() => {
+                                setOption('advertisers');
+                                
+                            }}>
+                            Administrar anunciantes
+                        </MenuItem>
+
+                        <MenuItem
+                            onClick={() => {
                                 setOption('addMovie');
                             }}>
                             Añadir pelicula
@@ -351,6 +361,13 @@ const ManageContent = () => {
                             Añadir serie
                         </MenuItem>
 
+                        <MenuItem
+                            onClick={() => {
+                                setOption('addAdvertisers');
+                            }}>
+                            Añadir anunciante
+                        </MenuItem>
+
                     </MenuList>
                 </Menu>
                 <br></br>
@@ -358,7 +375,7 @@ const ManageContent = () => {
                 {show()}
                 {
                     isOpen ? <Modal isOpen={isOpen} onClose={onClose}>
-                        <ModalOverlay /> {/*filter o volver a traer toda y actualizar con setmovies*/}
+                        <ModalOverlay /> 
                         <ModalContent>
                             <ModalHeader>
                                 <Heading as='h4' size='md'>
