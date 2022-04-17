@@ -107,10 +107,9 @@ const ManageContent = () => {
             <Table variant='simple'>
                 <TableHeader option={'movie'}/>
                 <Tbody>
-                    
                         {
                             moviesAdmin.map((element, index) => (
-                                <Tr>
+                                <Tr key={index}>
                                 <Td> {element.movieCode} </Td>
                                 <Td> {element.title} </Td>
                                 <Td> {element.studioCode} </Td>
