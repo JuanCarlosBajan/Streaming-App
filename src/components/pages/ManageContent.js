@@ -99,6 +99,15 @@ const ManageContent = () => {
         }
     }
 
+    const deleteMovie = (movieCode) => {
+        setMoviesAdmin(moviesAdmin.filter((element) => element.movieCode !== movieCode))
+    }
+
+
+    const deleteSerie = (seriesCode) => {
+        setSeriesAdmin(seriesAdmin.filter((element) => element.seriesCode !== seriesCode))
+    }
+
     
 
     const show = () => {
@@ -142,7 +151,7 @@ const ManageContent = () => {
 
                                 </Td>
                                 <Td>  
-                                    <BiTrash cursor={'pointer'} onClick={() => {console.log('borrando ...')}}/> 
+                                    <BiTrash cursor={'pointer'} onClick={() => deleteMovie(element.movieCode)}/> 
                                 </Td>
                                 </Tr>
                         ))}
@@ -190,13 +199,10 @@ const ManageContent = () => {
                                         </Modal>
                                     </Td>
                                     <Td>    
-                                        <BiTrash cursor={'pointer'} onClick={() => {console.log('borrando ...')}}/> 
+                                        <BiTrash cursor={'pointer'} onClick={() => deleteSerie(element.seriesCode)}/> 
                                     </Td>
                                 </Tr>
-                        ))}
-
-                        
-                    
+                        ))}         
                 </Tbody>
             </Table>
         </TableContainer>)}
