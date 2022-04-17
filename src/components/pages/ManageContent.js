@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 
 
@@ -91,7 +91,7 @@ const ManageContent = () => {
         }
     }
 
-    
+
 
     const addMovie = async (movie) => {
 
@@ -115,6 +115,53 @@ const ManageContent = () => {
             });
         }
     }
+
+    const addAdvertiser = async (advertiser) => {
+        const data = await postAdvertisersAdmin(advertiser);
+        if (data.ok) {
+            toast({
+                title: "Has creado un anunciante",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+            await getDataAdvertisers();
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+    const updateAdvertiser = async (advertiser) => {
+        const data = await modifyAdvertiserAdmin(advertiser.advertiserCode, advertiser);
+        if (data.ok) {
+            toast({
+                title: "Has creado un anunciante",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+            await getDataAdvertisers();
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+
+
     const addSeries = async (series) => {
         const data = await createSeries(series);
         if (data.ok) {
@@ -368,7 +415,11 @@ const ManageContent = () => {
                                     <Td> {element.advertiserCode} </Td>
                                     <Td> {element.name} </Td>
                                     <Td>
-                                        <BiPencil cursor={'pointer'} />
+                                        <BiPencil cursor={'pointer'} onClick={() => {
+                                            onOpen()
+                                            setDefaultContent(element);
+
+                                        }} />
                                     </Td>
                                     <Td>
                                         <BiTrash cursor={'pointer'} onClick={() => deleteAdvertiser(element.advertiserCode)} />
@@ -411,6 +462,22 @@ const ManageContent = () => {
                                 </Heading>
                             </div>
                             <ModificationForm option={'movie'} defaultContent={{}} onSend={(data) => { addMovie(data) }} />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        if (option === "addAdvertisers") {
+            return (
+                <div style={styles.provisionalBackgorund}>
+                    <div style={styles.outerContainer} className='container'>
+                        <div style={styles.infoContainer}>
+                            <div style={styles.titleContainer}>
+                                <Heading as='h4' size='md'>
+                                    Añadir una pelicula
+                                </Heading>
+                            </div>
+                            <ModificationForm option={'advertisers'} defaultContent={{}} onSend={(data) => { addAdvertiser(data) }} />
                         </div>
                     </div>
                 </div>
@@ -482,7 +549,7 @@ const ManageContent = () => {
                 {show()}
                 {
                     isOpen ? <Modal isOpen={isOpen} onClose={onClose}>
-                        <ModalOverlay /> 
+                        <ModalOverlay />
                         <ModalContent>
                             <ModalHeader>
                                 <Heading as='h4' size='md'>
@@ -492,7 +559,17 @@ const ManageContent = () => {
                             <ModalCloseButton />
                             <ModalBody>
                                 <ModificationForm
-                                    onSend={option === 'movie' ? updateMovie : updateSeries}
+                                    onSend={
+                                        (data) => {
+                                            if (option === 'movie') {
+                                                updateMovie(data)
+                                            } else if (option === 'series') {
+                                                updateSeries(data)
+                                            } else if (option === 'advertisers') {
+                                                updateAdvertiser(data)
+                                            }
+                                        }
+                                    }
                                     option={option}
                                     defaultContent={defaultContent}
                                 />
@@ -503,7 +580,7 @@ const ManageContent = () => {
                 {selectedSeries ?
                     <>
                         <Modal isOpen={isOpenEpisode} onClose={onCloseEpisode}>
-                            <ModalOverlay /> 
+                            <ModalOverlay />
                             <ModalContent>
                                 <ModalHeader>
                                     <Heading as='h4' size='md'>

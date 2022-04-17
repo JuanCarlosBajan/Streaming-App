@@ -42,6 +42,7 @@ const ModificationForm = ({
 
     useEffect(() => {
 
+        if (defaultContent.name) { setTitle(defaultContent.name) };
         if (defaultContent.title) { setTitle(defaultContent.title) };
         if (defaultContent.studioCode) setStudio(defaultContent.studioCode);
         if (defaultContent.datePublished) setPublishedAt(defaultContent.datePublished);
@@ -102,11 +103,32 @@ const ModificationForm = ({
                 duration: Number.parseInt(duration),
                 season
             });
+        } else if (option === "advertisers") {
+            await onSend({
+                advertiserCode: defaultContent.advertiserCode,
+                name: title,
+            });
         }
     }
 
     return (
         <>
+
+            {
+                option === 'advertisers' ?
+                    <>
+                        <div style={styles.outerContainer}>
+                            <FormLabel color={colors.primary}>Nombre </FormLabel>
+                            <Input
+                                focusBorderColor={colors.primary}
+                                defaultValue={defaultContent.name}
+                                placeholder='Ingrese nombre del anunciante'
+                                onChange={(e) => { setTitle(e.target.value) }} />
+                        </div>
+                    </>
+                    : ''
+            }
+
             {option === 'addEpisode' ?
                 <>
                     <div style={styles.outerContainer}>

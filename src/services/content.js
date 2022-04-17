@@ -36,6 +36,36 @@ export const getAdvertisersAdmin = async () => {
     return data;
 }
 
+export const postAdvertisersAdmin = async (advertiser) => {
+    const URL = `http://localhost:8080/api/ads/advertisers`;
+    let bodyData = {
+        ...advertiser
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(bodyData),
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+export const modifyAdvertiserAdmin = async (advertiserCode, advertiser) => {
+    const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}`;
+    let bodyData = {
+        ...advertiser
+    };
+    const otherPram = {
+        method: "PUT",
+        headers: headers(),
+        body: JSON.stringify(bodyData),
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+
 export const deleteSeriesAdmin = async (seriesCode) => {
     await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, { method: 'DELETE' })
 }
