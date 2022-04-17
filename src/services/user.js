@@ -115,6 +115,22 @@ export const downgrade = async (userCode) => {
     return data;
 }
 
+/**
+ * Deactivates a profile
+ * @param {number} userCode 
+ * @returns 
+ */
+ export const addFailedLog = async (userCode) => {
+    const URL = `http://localhost:8080/api/users/downgrade/${userCode}`;
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+
 
 const headers = () => {
     return {

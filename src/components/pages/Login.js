@@ -83,6 +83,7 @@ const Login = ({ onSuccess }) => {
 
     const postUser = () => {
         const URL = 'http://localhost:8080/api/auth/login';
+        const failedLogURL = 'http://localhost:8080/api/admin/failed/log'
 
         let Data = {
             email: email,
@@ -110,6 +111,7 @@ const Login = ({ onSuccess }) => {
                     });
                     onSuccess(data.user[0], data.token)
                 } else {
+                    fetch(failedLogURL,otherPram)
                     data.errors.forEach(element => {
                         toast({
                             title: element,
