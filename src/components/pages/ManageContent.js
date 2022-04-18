@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds, createAd, linkAdAdmin } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds, createAd, linkAdAdmin, removeAdAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 import AdvertiserLinkModal from '../AdvertiserLinkModal';
 
@@ -301,6 +301,14 @@ const ManageContent = () => {
                     isClosable: true,
                 })
             });
+        }
+    }
+
+    const removeAd = async (adCode) => {
+        console.log('rem')
+        const data = await removeAdAdmin(selectedAdvertiser, adCode);
+        if (data.ok) {
+            getDataAdvertiserAds(selectedAdvertiser)
         }
     }
 
@@ -788,6 +796,12 @@ const ManageContent = () => {
                                                 <BiPlus cursor={'pointer'} onClick={() => {
                                                     setSelectedAd(ad.adCode)
                                                     onOpenAdvertiser()
+                                                }} />
+                                            </Td>
+                                            <Td>
+                                                <BiTrash cursor={'pointer'} onClick={() => {
+                                                    setSelectedAd(ad.adCode)
+                                                    removeAd(ad.adCode)
                                                 }} />
                                             </Td>
                                             {/* <BiTrash cursor={'pointer'} onClick={() => deleteEpisode(episode.episodeCode)} /> */}

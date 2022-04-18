@@ -71,6 +71,19 @@ export const createAd = async (advertiserCode, ad) => {
     const data = await res.json();
     return data;
 }
+
+export const removeAdAdmin = async (advertiserCode, adCode) => {
+    const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}/ads/${adCode}`;
+    const otherPram = {
+        method: "DELETE",
+        headers: headers(),
+
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+
 export const linkAdAdmin = async (ad) => {
     const URL = `http://localhost:8080/api/ads/link`;
     let bodyData = {
