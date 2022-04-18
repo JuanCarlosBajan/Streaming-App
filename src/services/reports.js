@@ -15,6 +15,16 @@ export const getReport5 = async (date) => {
     const data = await res.json();
     return data
 }
+export const getReport3Director = async () => {
+    const res = await fetch(`http://localhost:8080/api/reports/3/director`);
+    const data = await res.json();
+    return data
+}
+export const getReport3Actors = async () => {
+    const res = await fetch(`http://localhost:8080/api/reports/3/actores`);
+    const data = await res.json();
+    return data
+}
 
 
 
