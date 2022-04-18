@@ -12,7 +12,7 @@ const TableHeader = ({option}) => {
           <Tr>
             <Th> Codigo Pelicula </Th>
             <Th> Nombre Pelicula </Th>
-            <Th> Codigo estudio </Th>
+            <Th> Estudio </Th>
             <Th> Duracion </Th> 
             <Th> Fecha de publicacion </Th>
             <Th> Genero </Th>

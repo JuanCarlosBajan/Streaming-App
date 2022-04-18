@@ -276,29 +276,29 @@ const ManageContent = () => {
             })
             getDataAdvertiserAds(selectedAdvertiser);
         }
-            else {
-                data.errors.forEach(element => {
-                    toast({
-                        title: element,
-                        position: 'top',
-                        status: 'error',
-                        isClosable: true,
-                    })
-                });
-            }
-        }
-        const updateUser = async (user) => {
-            const userCode = user.userCode;
-            delete user.userCode;
-            const data = await modifyUser(userCode,user)
-    
-            if (data.ok) {
+        else {
+            data.errors.forEach(element => {
                 toast({
-                    title: "Has modificado el usuario",
-                    position: "top",
-                    status: "success",
-                    isClosable: true
-                        })
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+    const updateUser = async (user) => {
+        const userCode = user.userCode;
+        delete user.userCode;
+        const data = await modifyUser(userCode, user)
+
+        if (data.ok) {
+            toast({
+                title: "Has modificado el usuario",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
             getUsersInfo();
         }
         else {
@@ -383,7 +383,7 @@ const ManageContent = () => {
 
     const deleteUser = (userCode) => {
         deleteUserAdmin(userCode);
-        getUsersInfo();
+        setUsersAdmin(usersAdmin.filter((user) => user.userCode !== userCode))
     }
 
     const deleteAdvertiser = (advertiserCode) => {
@@ -445,7 +445,7 @@ const ManageContent = () => {
                                 <Tr key={index}>
                                     <Td> {element.movieCode} </Td>
                                     <Td> {element.title} </Td>
-                                    <Td> {element.studioCode} </Td>
+                                    <Td> {element.studio} </Td>
                                     <Td> {element.duration} minutos </Td>
                                     <Td> {element.publishedAt} </Td>
                                     <Td> {element.genre} </Td>
@@ -483,7 +483,7 @@ const ManageContent = () => {
                                         getSeriesInfo(element.seriesCode);
                                     }}>{element.seriesCode}</a>  </Td>
                                     <Td> {element.title} </Td>
-                                    <Td> {element.studioCode} </Td>
+                                    <Td> {element.studio} </Td>
                                     <Td> {element.publishedAt} </Td>
                                     <Td> {element.genre} </Td>
                                     <Td> {element.director} </Td>
@@ -494,6 +494,7 @@ const ManageContent = () => {
                                     <Td> {element.seasonCount} </Td>
                                     <Td>
                                         <BiPencil cursor={'pointer'} onClick={() => {
+                                            console.log('open series')
                                             setDefaultContent(element);
                                             setOption("serie");
                                             onOpen()
@@ -706,12 +707,12 @@ const ManageContent = () => {
                 <br></br>
                 {show()}
                 {
-                    isOpen ?  option === 'movie'? <Modal isOpen={isOpen} onClose={onClose}>
+                    isOpen ? <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent>
                             <ModalHeader>
                                 <Heading as='h4' size='md'>
-                                    Modificando {defaultContent.title}
+                                    Modificando
                                 </Heading>
                             </ModalHeader>
                             <ModalCloseButton />
@@ -727,35 +728,6 @@ const ManageContent = () => {
                                                 updateSeries(data)
                                             } else if (option === 'advertisers') {
                                                 updateAdvertiser(data)
-                                            } 
-                                        }
-                                    }
-                                    option={option}
-                                    defaultContent={defaultContent}
-                                />
-                            </ModalBody>
-                        </ModalContent>
-                    </Modal> : 
-                    option === 'users'? 
-                    <Modal isOpen={isOpen} onClose={onClose}>
-                        <ModalOverlay />
-                        <ModalContent>
-                            <ModalHeader>
-                                <Heading as='h4' size='md'>
-                                    Modificando {defaultContent.user}
-                                </Heading>
-                            </ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                                <ModificationForm
-                                    onSend={
-                                        (data) => {
-                                            if (option === 'movie') {
-                                                updateMovie(data)
-                                            } else if (option === 'series') {
-                                                updateSeries(data)
-                                            } else if (option === 'advertisers') {
-                                                updateAdvertiser(data)
                                             } else if (option === 'users') {
                                                 updateUser(data)
                                             }
@@ -766,7 +738,7 @@ const ManageContent = () => {
                                 />
                             </ModalBody>
                         </ModalContent>
-                    </Modal> : '' : ''
+                    </Modal> : ''
                 }
 
                 {

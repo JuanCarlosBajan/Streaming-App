@@ -68,7 +68,7 @@ function ContentReproduction() {
         setEpisodes(data.series.episodes);
         setPublishedAt(new Date(data.series.publishedAt).toLocaleDateString());
         setDirector(data.series.director);
-        setStudio(data.series.studio.name);
+        setStudio(data.series.studio);
       } else {
         goBack();
       }
@@ -93,7 +93,7 @@ function ContentReproduction() {
         setTitle(data.movie.title);
         setDescription(data.movie.description);
         setPublishedAt(new Date(data.movie.publishedAt).toLocaleDateString());
-        setStudio(data.movie.studio.name);
+        setStudio(data.movie.studio);
         setSrc(data.movie.url);
         setActors(data.movie.actors);
         setDirector(data.movie.director);
