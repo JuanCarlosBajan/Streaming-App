@@ -190,7 +190,7 @@ export const Register = ({ onSuccess }) => {
                     <InputInfo title='Correo' type='email' fun={returnEmail} />
                     <InputInfo title='Contraseña' type='password' fun={returnPassword} />
                     <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword} />
-                    <div style={styles.outerContainer2}>
+                    {/* <div style={styles.outerContainer2}>
                         <FormLabel color={colors.primary}>Rol</FormLabel>
                         <Select placeholder='Selecciona un Rol' onChange={(e) => {
                             setRole(e.target.value)
@@ -200,7 +200,7 @@ export const Register = ({ onSuccess }) => {
                             <option value='user'>Usuario</option>
                         </Select>
 
-                    </div>
+                    </div> */}
                     <div className='divPlan' style={styles.divPlan}>
                         <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
                         <PlanOption style={styles.divPlan} fun={returnPlan} />
