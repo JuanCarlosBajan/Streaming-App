@@ -71,16 +71,6 @@ const Login = ({ onSuccess }) => {
 
     const toast = useToast();
 
-    const getUsers = () => {
-        const URL = 'http://localhost:8080/api/users';
-        const otherPram = {
-            method: "GET"
-        }
-        fetch(URL, otherPram)
-            .then(response => console.log(response.json()))
-            .then(error => { console.log(error); })
-    }
-
     const postUser = () => {
         const URL = 'http://localhost:8080/api/auth/login';
 

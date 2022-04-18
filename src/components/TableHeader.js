@@ -62,6 +62,23 @@ const TableHeader = ({option}) => {
         </Thead>
       )
     }
+    if(option === 'users'){
+      return(
+        <Thead>
+          <Tr>
+            <Th> Codigo de Usuario </Th>
+            <Th> Usuario </Th>
+            <Th> Correo </Th>
+            <Th> Password </Th>
+            <Th> Nombre </Th>
+            <Th> Apellido </Th>
+            <Th> Activo </Th>
+            <Th> Plan </Th>
+            <Th> Rol </Th>
+          </Tr>
+        </Thead>
+      )
+    }
   }
 
   return (

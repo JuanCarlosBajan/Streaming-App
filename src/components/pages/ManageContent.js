@@ -9,8 +9,9 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, modifyUser, deleteUserAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
+import { getUsers } from '../../services/user';
 
 
 
@@ -25,6 +26,7 @@ const ManageContent = () => {
     const [selectedSeries, setSelectedSeries] = useState(null);
     const { isOpen: isOpenEpisode, onOpen: onOpenEpisode, onClose: onCloseEpisode } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [usersAdmin, setUsersAdmin] = useState([]);
 
 
     const [defaultContent, setDefaultContent] = useState({});
@@ -77,7 +79,6 @@ const ManageContent = () => {
         const data = await getMoviesAdmin();
         if (data.ok) {
             setMoviesAdmin(data.movies);
-            console.log(moviesAdmin);
         }
         else {
             data.errors.forEach(element => {
@@ -215,7 +216,33 @@ const ManageContent = () => {
                 status: "success",
                 isClosable: true
             })
-            getDataMovies();
+            getSeriesInfo();
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+
+    const updateUser = async (user) => {
+        const userCode = user.userCode;
+        delete user.userCode;
+        const data = await modifyUser(userCode,user)
+
+        if (data.ok) {
+            toast({
+                title: "Has modificado el usuario",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+            getUsersInfo();
         }
         else {
             data.errors.forEach(element => {
@@ -271,6 +298,13 @@ const ManageContent = () => {
         }
     }
 
+    const getUsersInfo = async () => {
+        const data = await getUsers();
+        if (data.ok) {
+            setUsersAdmin(data.users);
+        }
+    }
+
     const deleteMovie = (movieCode) => {
         deleteMoviesAdmin(movieCode);
         setMoviesAdmin(moviesAdmin.filter((element) => element.movieCode !== movieCode))
@@ -280,6 +314,11 @@ const ManageContent = () => {
     const deleteSerie = (seriesCode) => {
         deleteSeriesAdmin(seriesCode);
         setSeriesAdmin(seriesAdmin.filter((element) => element.seriesCode !== seriesCode))
+    }
+
+    const deleteUser = (userCode) => {
+        deleteUserAdmin(userCode);
+        getUsersInfo();
     }
 
     const deleteAdvertiser = (advertiserCode) => {
@@ -390,13 +429,46 @@ const ManageContent = () => {
                                     <Td> {element.seasonCount} </Td>
                                     <Td>
                                         <BiPencil cursor={'pointer'} onClick={() => {
-                                            onOpen()
                                             setDefaultContent(element);
                                             setOption("serie");
+                                            onOpen()
                                         }} />
                                     </Td>
                                     <Td>
                                         <BiTrash cursor={'pointer'} onClick={() => deleteSerie(element.seriesCode)} />
+                                    </Td>
+                                </Tr>
+                            ))}
+                        </Tbody>
+                    </Table>
+                </TableContainer>)
+        }
+        if (option === 'users') {
+            return (
+                <TableContainer>
+                    <Table variant='simple' size='md'>
+                        <TableHeader option={'users'} />
+                        <Tbody>
+                            {usersAdmin.map((element, index) => (
+                                <Tr key={index}>
+                                    <Td> {element.userCode} </Td>
+                                    <Td> {element.user} </Td>
+                                    <Td> {element.email} </Td>
+                                    <Td> {element.password} </Td>
+                                    <Td> {element.name} </Td>
+                                    <Td> {element.lastName} </Td>
+                                    <Td> {String(element.active)} </Td>
+                                    <Td> {element.plan} </Td>
+                                    <Td> {element.role} </Td>
+                                    <Td>
+                                        <BiPencil cursor={'pointer'} onClick={() => {
+                                            setDefaultContent(element);
+                                            setOption("users");
+                                            onOpen()
+                                        }} />
+                                    </Td>
+                                    <Td>
+                                        <BiTrash cursor={'pointer'} onClick={() => deleteUser(element.userCode)} />
                                     </Td>
                                 </Tr>
                             ))}
@@ -522,6 +594,15 @@ const ManageContent = () => {
 
                         <MenuItem
                             onClick={() => {
+                                setOption('users');
+                                getUsersInfo();
+                                setSelectedSeries(null);
+                            }}>
+                            Administrar Usuarios
+                        </MenuItem>
+
+                        <MenuItem
+                            onClick={() => {
                                 setOption('addMovie');
                                 setSelectedSeries(null);
                             }}>
@@ -548,7 +629,7 @@ const ManageContent = () => {
                 <br></br>
                 {show()}
                 {
-                    isOpen ? <Modal isOpen={isOpen} onClose={onClose}>
+                    isOpen ?  option === 'movie'? <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent>
                             <ModalHeader>
@@ -567,6 +648,37 @@ const ManageContent = () => {
                                                 updateSeries(data)
                                             } else if (option === 'advertisers') {
                                                 updateAdvertiser(data)
+                                            } 
+                                        }
+                                    }
+                                    option={option}
+                                    defaultContent={defaultContent}
+                                />
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal> : 
+                    option === 'users'? 
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>
+                                <Heading as='h4' size='md'>
+                                    Modificando {defaultContent.user}
+                                </Heading>
+                            </ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <ModificationForm
+                                    onSend={
+                                        (data) => {
+                                            if (option === 'movie') {
+                                                updateMovie(data)
+                                            } else if (option === 'series') {
+                                                updateSeries(data)
+                                            } else if (option === 'advertisers') {
+                                                updateAdvertiser(data)
+                                            } else if (option === 'users') {
+                                                updateUser(data)
                                             }
                                         }
                                     }
@@ -575,7 +687,7 @@ const ManageContent = () => {
                                 />
                             </ModalBody>
                         </ModalContent>
-                    </Modal> : ''
+                    </Modal> : '' : ''
                 }
                 {selectedSeries ?
                     <>
