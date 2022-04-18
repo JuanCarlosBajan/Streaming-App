@@ -16,7 +16,7 @@ const TableHeader = ({option}) => {
             <Th> Duracion </Th> 
             <Th> Fecha de publicacion </Th>
             <Th> Genero </Th>
-            <Th> Codigo director </Th>
+            <Th> Director </Th>
             <Th> Descripcion </Th>
             <Th> Link portada </Th>
             <Th> Categoria </Th>
@@ -36,7 +36,7 @@ const TableHeader = ({option}) => {
             <Th> Codigo estudio </Th>
             <Th> Fecha de publicacion </Th>
             <Th> Genero </Th>
-            <Th> Codigo director </Th>
+            <Th> Director </Th>
             <Th> Descripcion </Th>
             <Th> Link portada </Th>
             <Th> Categoria </Th>

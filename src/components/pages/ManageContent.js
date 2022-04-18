@@ -449,7 +449,7 @@ const ManageContent = () => {
                                     <Td> {element.duration} minutos </Td>
                                     <Td> {element.publishedAt} </Td>
                                     <Td> {element.genre} </Td>
-                                    <Td> {element.directorCode} </Td>
+                                    <Td> {element.director} </Td>
                                     <Td> {element.description}  </Td>
                                     <Td> {element.coverUrl} </Td>
                                     <Td> {element.categories} </Td>
@@ -486,7 +486,7 @@ const ManageContent = () => {
                                     <Td> {element.studioCode} </Td>
                                     <Td> {element.publishedAt} </Td>
                                     <Td> {element.genre} </Td>
-                                    <Td> {element.directorCode} </Td>
+                                    <Td> {element.director} </Td>
                                     <Td> {element.description} </Td>
                                     <Td> {element.coverUrl} </Td>
                                     <Td> {element.categories} </Td>
