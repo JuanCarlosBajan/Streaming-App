@@ -215,7 +215,7 @@ const ModificationForm = ({
                     <div style={styles.outerContainer}>
                         <FormLabel color={colors.primary}>Estudio de grabación</FormLabel>
                         <Input focusBorderColor={colors.primary}
-                            defaultValue={defaultContent.studioCode}
+                            defaultValue={defaultContent.studio}
                             placeholder='Ingrese el estudio de grabación'
                             onChange={(e) => { setStudio(e.target.value) }} />
                     </div>

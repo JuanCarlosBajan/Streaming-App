@@ -1,4 +1,4 @@
-import { FormLabel, useToast } from '@chakra-ui/react';
+import { Box, FormLabel, useToast } from '@chakra-ui/react';
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
@@ -142,7 +142,7 @@ export const Movies = () => {
 
 
     return (
-        <>
+        <Box padding={10}>
 
             {
                 favorites.length > 0 ? <>
@@ -290,7 +290,7 @@ export const Movies = () => {
                     </div>
                 )
             })}
-        </>
+        </Box>
 
 
     );
