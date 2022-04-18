@@ -1,11 +1,23 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { unlockProfile } from "../services/user";
+import {
+  getCurrentUser,
+  getCurrentUserRole,
+  unlockProfile,
+} from "../services/user";
 
 function NavMenu() {
   const navigate = useNavigate();
+  const [role, setRole] = useState();
+
+  useEffect(() => {
+    const userRole = getCurrentUserRole();
+    setRole(userRole.role);
+  }, []);
 
   /**
    * Trigger that runs when the use has logged out
@@ -36,19 +48,25 @@ function NavMenu() {
         <li className="nav__option">
           <Link to={"/search"}>Busqueda</Link>
         </li>
-        <li className="nav__option">
-          <Link to={"/manageContent"}> Administrar </Link>
-        </li>
+        {role === "admin" ? (
+          <li className="nav__option">
+            <Link to={"/manageContent"}> Administrar </Link>
+          </li>
+        ) : (
+          ""
+        )}
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
             Opciones
           </MenuButton>
           <MenuList zIndex={10000}>
             <MenuItem
-            onClick={() => {
-              navigate("/cuenta");
-            }}
-            >Cuenta</MenuItem>
+              onClick={() => {
+                navigate("/cuenta");
+              }}
+            >
+              Cuenta
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 navigate("/profiles");

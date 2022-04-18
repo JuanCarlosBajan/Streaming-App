@@ -15,6 +15,18 @@ export const getCurrentUser = () => {
     return { userCode };
 }
 
+export const getCurrentUserRole = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        return null;
+    }
+    const role = decodeToken(token).role;
+    if (!role) {
+        return null;
+    }
+    return { role };
+}
+
 /*
 fds
 */
@@ -120,7 +132,7 @@ export const downgrade = async (userCode) => {
  * @param {number} userCode 
  * @returns 
  */
- export const addFailedLog = async (userCode) => {
+export const addFailedLog = async (userCode) => {
     const URL = `http://localhost:8080/api/users/downgrade/${userCode}`;
     const otherPram = {
         method: "POST",
