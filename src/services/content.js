@@ -57,6 +57,35 @@ export const getAdvertiserAds = async (advertiserCode) => {
     return data
 }
 
+export const createAd = async (advertiserCode, ad) => {
+    const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}/ads`;
+    let bodyData = {
+        ...ad
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(bodyData),
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+export const linkAdAdmin = async (ad) => {
+    const URL = `http://localhost:8080/api/ads/link`;
+    let bodyData = {
+        ...ad
+    };
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(bodyData),
+    }
+    const res = await fetch(URL, otherPram);
+    const data = await res.json();
+    return data;
+}
+
 export const modifyAdvertiserAdmin = async (advertiserCode, advertiser) => {
     const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}`;
     let bodyData = {

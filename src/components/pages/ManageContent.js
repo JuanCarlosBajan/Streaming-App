@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds, createAd, linkAdAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 import AdvertiserLinkModal from '../AdvertiserLinkModal';
 
@@ -25,9 +25,11 @@ const ManageContent = () => {
     const [advertisersAdmin, setAdvertisersAdmin] = useState([]);
     const [adsAdmin, setAdsAdmin] = useState([]);
     const [selectedSeries, setSelectedSeries] = useState(null);
+    const [selectedAd, setSelectedAd] = useState(null);
     const [selectedAdvertiser, setSelectedAdvertiser] = useState(null);
     const { isOpen: isOpenEpisode, onOpen: onOpenEpisode, onClose: onCloseEpisode } = useDisclosure();
     const { isOpen: isOpenAdvertiser, onOpen: onOpenAdvertiser, onClose: onCloseAdvertiser } = useDisclosure();
+    const { isOpen: isOpenAd, onOpen: onOpenAd, onClose: onCloseAd } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
 
@@ -99,6 +101,28 @@ const ManageContent = () => {
         const data = await getAdvertiserAds(advertiserCode);
         if (data.ok) {
             setAdsAdmin(data.ads)
+        }
+    }
+
+    const linkAd = async (ad) => {
+        const data = await linkAdAdmin(ad);
+        if (data.ok) {
+            toast({
+                title: "Has enlazado un anuncio",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
         }
     }
 
@@ -226,6 +250,30 @@ const ManageContent = () => {
                 isClosable: true
             })
             getDataMovies();
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+
+    const insertAd = async (ad) => {
+
+        const data = await createAd(selectedAdvertiser, ad);
+        if (data.ok) {
+            toast({
+                title: "Has creado un anuncio",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+            getDataAdvertiserAds(selectedAdvertiser);
         }
         else {
             data.errors.forEach(element => {
@@ -436,9 +484,7 @@ const ManageContent = () => {
 
                                         }} />
                                     </Td>
-                                    <Td>
-                                        <BiPlus cursor={'pointer'} onClick={onOpenAdvertiser} />
-                                    </Td>
+
                                     <Td>
                                         <BiTrash cursor={'pointer'} onClick={() => deleteAdvertiser(element.advertiserCode)} />
                                     </Td>
@@ -614,13 +660,35 @@ const ManageContent = () => {
                             <ModalCloseButton />
                             <ModalBody>
                                 <AdvertiserLinkModal
+                                    action="link"
                                     onSend={
                                         (data) => {
-                                            if (data.type === 'movie') {
+                                            data.adCode = selectedAd;
+                                            linkAd(data)
+                                        }
+                                    }
 
-                                            } else {
-
-                                            }
+                                />
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal> : ''
+                }
+                {
+                    isOpenAd ? <Modal isOpen={isOpenAd} onClose={onCloseAd}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>
+                                <Heading as='h4' size='md'>
+                                    Agrega un anuncio
+                                </Heading>
+                            </ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <AdvertiserLinkModal
+                                    action="add"
+                                    onSend={
+                                        (data) => {
+                                            insertAd(data);
                                         }
                                     }
 
@@ -692,6 +760,14 @@ const ManageContent = () => {
                 {
                     selectedAdvertiser ? <>
                         <Heading marginTop={24}>Anuncios</Heading>
+                        <Button
+                            marginTop={8}
+                            marginBottom={8}
+                            onClick={() => {
+                                onOpenAd()
+                            }}>
+                            Agregar Anuncio
+                        </Button>
                         <Table>
                             <Thead>
                                 <Tr>
@@ -707,7 +783,10 @@ const ManageContent = () => {
                                             <Td>{ad.title}</Td>
                                             <Td>{ad.url}</Td>
                                             <Td>
-                                                <BiPlus cursor={'pointer'} onClick={onOpenAdvertiser} />
+                                                <BiPlus cursor={'pointer'} onClick={() => {
+                                                    setSelectedAd(ad.adCode)
+                                                    onOpenAdvertiser()
+                                                }} />
                                             </Td>
                                             {/* <BiTrash cursor={'pointer'} onClick={() => deleteEpisode(episode.episodeCode)} /> */}
                                         </Tr>);
