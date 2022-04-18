@@ -17,7 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import DatePicker from "react-datepicker";
 import React, { useState } from "react";
-import { getReport1, getReport3Actors, getReport3Director, getReport4, getReport5 } from "../../services/reports";
+import { getReport1, getReport2, getReport3Actors, getReport3Director, getReport4, getReport5 } from "../../services/reports";
 import { useEffect } from "react";
 
 function Reports() {
@@ -25,6 +25,7 @@ function Reports() {
   const [date, setDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [report1, setReport1] = useState([]);
+  const [report2, setReport2] = useState([]);
   const [report4, setReport4] = useState(0);
   const [report5, setReport5] = useState([]);
   const [report3Directors, setReport3Directors] = useState([]);
@@ -75,6 +76,25 @@ function Reports() {
     const data = await getReport5(date.toISOString());
     if (data.ok) {
       setReport5(data.report);
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  };
+
+  const getReport2Data = async () => {
+    const data = await getReport2(
+      startDate.toISOString(),
+      endDate.toISOString()
+    );
+    if (data.ok) {
+      setReport2(data.report);
     } else {
       data.errors.forEach((element) => {
         toast({
@@ -174,20 +194,27 @@ function Reports() {
               onChange={(date) => setEndDate(date)}
             />
           </div>
-          <Button>Generar Reporte</Button>
+          <Button onClick={getReport2Data}>Generar Reporte</Button>
         </Box>
         <Table marginTop={12}>
           <Thead>
             <Tr>
-              <Th>Género</Th>
-              <Th>Minutos Consumidos</Th>
+              <Th>Categoria</Th>
+              <Th>Plan</Th>
+              <Th>Vistas</Th>
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>action</Td>
-              <Td>10</Td>
-            </Tr>
+          {
+              report2.map((element,index) => (
+                <Tr key={index}>
+                  <Td> {element.category} </Td>
+                  <Td> {element.plan} </Td>
+                  <Td> {element.views} </Td>
+                </Tr>
+              ))
+
+            }
           </Tbody>
         </Table>
       </Box>
