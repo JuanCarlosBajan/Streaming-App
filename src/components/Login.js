@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import InputInfo from './InputInfo'
-import { Heading, Button, useToast } from '@chakra-ui/react'
+import { Heading, Button, useToast, Link } from '@chakra-ui/react'
 
 // Login View
 
@@ -158,6 +158,7 @@ const Login = ({ onSuccess }) => {
                             Entrar
                         </Button>
                     </div>
+
                 </div>
             </div>
         </div>

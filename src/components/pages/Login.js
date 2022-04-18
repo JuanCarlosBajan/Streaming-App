@@ -101,7 +101,7 @@ const Login = ({ onSuccess }) => {
                     });
                     onSuccess(data.user[0], data.token)
                 } else {
-                    fetch(failedLogURL,otherPram)
+                    fetch(failedLogURL, otherPram)
                     data.errors.forEach(element => {
                         toast({
                             title: element,
@@ -149,6 +149,12 @@ const Login = ({ onSuccess }) => {
                             Entrar
                         </Button>
                     </div>
+                    <a href='/register' style={{
+                        color: '#5E2BFF',
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        marginTop: 10
+                    }}>Crea tu cuenta</a>
                 </div>
             </div>
         </div>
