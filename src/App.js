@@ -9,6 +9,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser, lockProfile, unlockProfile } from './services/user';
 import Search from './components/pages/Search';
 import { Series } from './components/pages/Series';
+import ManageContent from './components/pages/ManageContent';
 import ContentReproduction from './components/pages/ContentReproduction';
 import UserConfig from './components/pages/userConfig';
 import NavMenu from './components/NavMenu';
@@ -102,10 +103,17 @@ function App() {
       <Route path='/cuenta' element={
         <>
           <NavMenu />
-          <UserConfig user={user}/>
+          <UserConfig user={user} />
+        </>
+      }>
+      </Route>
+      <Route path='/manageContent' element={
+        <>
+          <NavMenu />
+          <ManageContent />
         </>
       }></Route>
-    </Routes>
+    </Routes >
   );
 }
 
