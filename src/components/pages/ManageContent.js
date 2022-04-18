@@ -383,7 +383,7 @@ const ManageContent = () => {
 
     const deleteUser = (userCode) => {
         deleteUserAdmin(userCode);
-        getUsersInfo();
+        setUsersAdmin(usersAdmin.filter((user) => user.userCode !== userCode))
     }
 
     const deleteAdvertiser = (advertiserCode) => {
@@ -494,6 +494,7 @@ const ManageContent = () => {
                                     <Td> {element.seasonCount} </Td>
                                     <Td>
                                         <BiPencil cursor={'pointer'} onClick={() => {
+                                            console.log('open series')
                                             setDefaultContent(element);
                                             setOption("serie");
                                             onOpen()
@@ -706,12 +707,12 @@ const ManageContent = () => {
                 <br></br>
                 {show()}
                 {
-                    isOpen ? option === 'movie' ? <Modal isOpen={isOpen} onClose={onClose}>
+                    isOpen ? <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent>
                             <ModalHeader>
                                 <Heading as='h4' size='md'>
-                                    Modificando {defaultContent.title}
+                                    Modificando
                                 </Heading>
                             </ModalHeader>
                             <ModalCloseButton />
@@ -727,6 +728,8 @@ const ManageContent = () => {
                                                 updateSeries(data)
                                             } else if (option === 'advertisers') {
                                                 updateAdvertiser(data)
+                                            } else if (option === 'users') {
+                                                updateUser(data)
                                             }
                                         }
                                     }
@@ -735,38 +738,7 @@ const ManageContent = () => {
                                 />
                             </ModalBody>
                         </ModalContent>
-                    </Modal> :
-                        option === 'users' ?
-                            <Modal isOpen={isOpen} onClose={onClose}>
-                                <ModalOverlay />
-                                <ModalContent>
-                                    <ModalHeader>
-                                        <Heading as='h4' size='md'>
-                                            Modificando {defaultContent.user}
-                                        </Heading>
-                                    </ModalHeader>
-                                    <ModalCloseButton />
-                                    <ModalBody>
-                                        <ModificationForm
-                                            onSend={
-                                                (data) => {
-                                                    if (option === 'movie') {
-                                                        updateMovie(data)
-                                                    } else if (option === 'series') {
-                                                        updateSeries(data)
-                                                    } else if (option === 'advertisers') {
-                                                        updateAdvertiser(data)
-                                                    } else if (option === 'users') {
-                                                        updateUser(data)
-                                                    }
-                                                }
-                                            }
-                                            option={option}
-                                            defaultContent={defaultContent}
-                                        />
-                                    </ModalBody>
-                                </ModalContent>
-                            </Modal> : '' : ''
+                    </Modal> : ''
                 }
 
                 {
