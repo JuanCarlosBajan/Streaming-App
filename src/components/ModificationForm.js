@@ -44,11 +44,11 @@ const ModificationForm = ({
 
     const [user, setUser] = useState('');
     const [email, setEmail] = useState('');
-    const [name,setName] = useState('');
-    const [lastName,setLastName] = useState('');
+    const [name, setName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [active, setActive] = useState(true);
     const [plan, setPlan] = useState('');
-    const [role,setRole] = useState('');
+    const [role, setRole] = useState('');
 
 
     useEffect(() => {
@@ -59,7 +59,7 @@ const ModificationForm = ({
         if (defaultContent.datePublished) setPublishedAt(defaultContent.datePublished);
         if (defaultContent.publishedAt) setPublishedAt(defaultContent.publishedAt);
         if (defaultContent.genre) setGenre(defaultContent.genre);
-        if (defaultContent.directorCode) setDirector(defaultContent.directorCode);
+        if (defaultContent.director) setDirector(defaultContent.director);
         if (defaultContent.description) setDescription(defaultContent.description);
         if (defaultContent.coverUrl) setCoverUrl(defaultContent.coverUrl);
         if (defaultContent.url) setUrl(defaultContent.url);
@@ -91,7 +91,7 @@ const ModificationForm = ({
                 publishedAt,
                 description,
                 url,
-                directorCode: Number.parseInt(director),
+                director,
                 coverUrl,
                 categories: category,
                 duration: Number.parseInt(duration),
@@ -105,7 +105,7 @@ const ModificationForm = ({
                 genre,
                 publishedAt,
                 description,
-                directorCode: Number.parseInt(director),
+                director,
                 coverUrl,
                 categories: category,
                 episodeCount: episodeCount,
@@ -135,7 +135,7 @@ const ModificationForm = ({
                 active,
                 plan,
                 role,
-                userCode : defaultContent.userCode,
+                userCode: defaultContent.userCode,
             });
         }
     }
@@ -241,7 +241,7 @@ const ModificationForm = ({
                         <FormLabel color={colors.primary}>Director</FormLabel>
                         <Input focusBorderColor={colors.primary}
                             placeholder='Ingrese director'
-                            defaultValue={defaultContent.directorCode}
+                            defaultValue={defaultContent.director}
                             onChange={(e) => { setDirector(e.target.value) }}
                         />
                     </div>
@@ -300,72 +300,72 @@ const ModificationForm = ({
 
             ) : ''}
 
-            {option === 'users'? (<>
-            
+            {option === 'users' ? (<>
+
                 <div style={styles.outerContainer}>
-                        <FormLabel color={colors.primary}>Usuario </FormLabel>
-                        <Input
-                            focusBorderColor={colors.primary}
-                            defaultValue={defaultContent.user}
-                            placeholder='Ingrese Usuario'
-                            onChange={(e) => { setUser(e.target.value) }} />
-                    </div>
-                    <div style={styles.outerContainer}>
-                        <FormLabel color={colors.primary}>Correo </FormLabel>
-                        <Input
-                            focusBorderColor={colors.primary}
-                            defaultValue={defaultContent.email}
-                            placeholder='Ingrese Correo'
-                            onChange={(e) => { setEmail(e.target.value) }} />
-                    </div>
-                    <div style={styles.outerContainer}>
-                        <FormLabel color={colors.primary}>Nombre</FormLabel>
-                        <Input focusBorderColor={colors.primary}
-                            defaultValue={defaultContent.name}
-                            placeholder='Ingrese Nombre'
-                            onChange={(e) => { setName(e.target.value) }}
-                        />
-                    </div>
-                    <div style={styles.outerContainer}>
-                        <FormLabel color={colors.primary}>Apellido</FormLabel>
-                        <Input focusBorderColor={colors.primary}
-                            defaultValue={defaultContent.lastName}
-                            placeholder='Ingrese Apellido'
-                            onChange={(e) => { setLastName(e.target.value) }} />
-                    </div>
-                    <div style={styles.outerContainer}>
-                        <FormLabel color={colors.primary}>Activo</FormLabel>
-                        <Select
+                    <FormLabel color={colors.primary}>Usuario </FormLabel>
+                    <Input
+                        focusBorderColor={colors.primary}
+                        defaultValue={defaultContent.user}
+                        placeholder='Ingrese Usuario'
+                        onChange={(e) => { setUser(e.target.value) }} />
+                </div>
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Correo </FormLabel>
+                    <Input
+                        focusBorderColor={colors.primary}
+                        defaultValue={defaultContent.email}
+                        placeholder='Ingrese Correo'
+                        onChange={(e) => { setEmail(e.target.value) }} />
+                </div>
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Nombre</FormLabel>
+                    <Input focusBorderColor={colors.primary}
+                        defaultValue={defaultContent.name}
+                        placeholder='Ingrese Nombre'
+                        onChange={(e) => { setName(e.target.value) }}
+                    />
+                </div>
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Apellido</FormLabel>
+                    <Input focusBorderColor={colors.primary}
+                        defaultValue={defaultContent.lastName}
+                        placeholder='Ingrese Apellido'
+                        onChange={(e) => { setLastName(e.target.value) }} />
+                </div>
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Activo</FormLabel>
+                    <Select
                         value={active}
-                        onChange={(e) => { setActive(e.target.value)}}
-                        >
+                        onChange={(e) => { setActive(e.target.value) }}
+                    >
                         <option value={true}>Activo</option>
-                        <option value={false}>No Activo</option> 
-                        </Select>
-                    </div>
-                    <div style={styles.outerContainer}>
-                        <FormLabel color={colors.primary}>Plan</FormLabel>
-                        <Select
+                        <option value={false}>No Activo</option>
+                    </Select>
+                </div>
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Plan</FormLabel>
+                    <Select
                         value={plan}
-                        onChange={(e) => { setPlan(e.target.value)}}
-                        >
+                        onChange={(e) => { setPlan(e.target.value) }}
+                    >
                         <option value={'basic'}>Basico</option>
-                        <option value={'standard'}>Estandard</option> 
-                        <option value={'advanced'}>Avanzado</option> 
-                        </Select>
-                    </div>
-                    <div style={styles.outerContainer}>
-                        <FormLabel color={colors.primary}>Rol</FormLabel>
-                        <Select
+                        <option value={'standard'}>Estandard</option>
+                        <option value={'advanced'}>Avanzado</option>
+                    </Select>
+                </div>
+                <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Rol</FormLabel>
+                    <Select
                         value={role}
-                        onChange={(e) => { setRole(e.target.value)}}
-                        >
+                        onChange={(e) => { setRole(e.target.value) }}
+                    >
                         <option value={'user'}>Usuario</option>
-                        <option value={'advertiser'}>Advertiser</option> 
-                        <option value={'admin'}>Administrador</option> 
-                        </Select>
-                    </div>
-            
+                        <option value={'advertiser'}>Advertiser</option>
+                        <option value={'admin'}>Administrador</option>
+                    </Select>
+                </div>
+
             </>) : ''}
 
 
