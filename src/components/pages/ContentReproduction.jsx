@@ -34,7 +34,7 @@ function ContentReproduction() {
   const [actors, setActors] = useState([]);
   const [director, setDirector] = useState();
   const [awards, setAwards] = useState([]);
-  
+
   const [episodes, setEpisodes] = useState([]);
 
   const [adTime, setAdTime] = useState();
@@ -67,6 +67,7 @@ function ContentReproduction() {
         setDescription(data.series.description);
         setEpisodes(data.series.episodes);
         setPublishedAt(new Date(data.series.publishedAt).toLocaleDateString());
+        setDirector(data.series.director);
         setStudio(data.series.studio.name);
       } else {
         goBack();
@@ -164,7 +165,7 @@ function ContentReproduction() {
         <Text textAlign={"justify"}>{description}</Text>
         <HStack>
           <Text fontWeight={"bold"}>Director</Text>
-          <Text>{director? (director.name + ' ' + director.lastName): ''}</Text>
+          <Text>{director}</Text>
         </HStack>
         <HStack>
           <Text fontWeight={"bold"}>Estudio</Text>
@@ -172,13 +173,24 @@ function ContentReproduction() {
         </HStack>
         <HStack>
           <Text fontWeight={"bold"}>Actores</Text>
-          <Text>{actors.map((value,index) => {
-            return value.name + ' ' + value.lastName + (index === actors.length-1? '. ': ', ')})}</Text>
+          <Text>
+            {actors.map((value, index) => {
+              return (
+                value.name +
+                " " +
+                value.lastName +
+                (index === actors.length - 1 ? ". " : ", ")
+              );
+            })}
+          </Text>
         </HStack>
         <HStack>
           <Text fontWeight={"bold"}>Premios</Text>
-          <Text>{awards.map((value,index) => {
-            return value.name  + (index === awards.length-1? '. ': ', ')})}</Text>
+          <Text>
+            {awards.map((value, index) => {
+              return value.name + (index === awards.length - 1 ? ". " : ", ");
+            })}
+          </Text>
         </HStack>
         <HStack>
           <Text fontWeight={"bold"}>Fecha de estreno</Text>
