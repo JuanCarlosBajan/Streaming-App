@@ -139,3 +139,19 @@ p {
 .content-item__image:hover {
   cursor: pointer;
 }
+
+.pickers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.pickers > react-datepicker-wrapper {
+  background-color: red;
+}
+
+.react-datepicker__input-container input {
+  border: 1px solid #5e2bff;
+  border-radius: 5px;
+}
