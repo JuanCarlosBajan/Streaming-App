@@ -249,7 +249,7 @@ const ManageContent = () => {
                 status: "success",
                 isClosable: true
             })
-            getDataMovies();
+            getDataSeries();
         }
         else {
             data.errors.forEach(element => {
@@ -631,9 +631,11 @@ const ManageContent = () => {
                                 <ModificationForm
                                     onSend={
                                         (data) => {
+                                            console.log(data, option);
                                             if (option === 'movie') {
                                                 updateMovie(data)
-                                            } else if (option === 'series') {
+                                            } else if (option === 'serie') {
+
                                                 updateSeries(data)
                                             } else if (option === 'advertisers') {
                                                 updateAdvertiser(data)
