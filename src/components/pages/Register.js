@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
 import PlanOption from '../PlanOption'
+import RolOption from '../RolOption'
 import { Heading, Button, useToast, FormLabel } from '@chakra-ui/react'
 
 export const Register = ({ onSuccess }) => {
@@ -13,6 +14,7 @@ export const Register = ({ onSuccess }) => {
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
     const [plan, setPlan] = useState('basic');
+    const [role, setRole] = useState('user');
     let info
 
     const colors = {
@@ -92,6 +94,9 @@ export const Register = ({ onSuccess }) => {
     const returnPlan = (data) => {
         setPlan(data)
     }
+    const returnRole = (data) => {
+        setRole(data)
+    }
 
 
     const toast = useToast()
@@ -106,6 +111,7 @@ export const Register = ({ onSuccess }) => {
             email: email,
             password: password,
             plan: plan,
+            role: role,
         };
 
 
@@ -180,6 +186,10 @@ export const Register = ({ onSuccess }) => {
                     <div className='divPlan' style={styles.divPlan}>
                         <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
                         <PlanOption style={styles.divPlan} fun={returnPlan} />
+                    </div>
+                    <div className='divPlan' style={styles.divPlan}>
+                        <FormLabel color="#5E2BFF"> Eligir un Rol </FormLabel>
+                        <RolOption style={styles.divPlan} fun={returnRole} />
                     </div>
                     <div style={styles.innerContainer}>
                         <Button
