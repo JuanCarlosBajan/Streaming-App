@@ -6,7 +6,7 @@ import { Profiles } from './components/pages/SelectProfiles';
 
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { getCurrentUser, lockProfile, unlockProfile } from './services/user';
+import { getCurrentUser, getCurrentUserRole, lockProfile, unlockProfile } from './services/user';
 import Search from './components/pages/Search';
 import { Series } from './components/pages/Series';
 import ManageContent from './components/pages/ManageContent';
@@ -37,6 +37,12 @@ function App() {
       navigate('/profiles', { replace: true }); // Navigate to the profiles
     } else if (((location.pathname !== '/profiles') && !profileCode && currentUser)) {
       navigate('/profiles', { replace: true }); // Navigate to the profiles
+    }
+
+
+    if (location.pathname === '/manageContent' && !getCurrentUserRole().role !== 'admin') {
+      console.log('nope')
+      navigate('/');
     }
 
 

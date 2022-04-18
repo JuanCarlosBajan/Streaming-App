@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
 import PlanOption from '../PlanOption'
-import { Heading, Button, useToast, FormLabel } from '@chakra-ui/react'
+import { Heading, Button, useToast, FormLabel, Select } from '@chakra-ui/react'
 
 export const Register = ({ onSuccess }) => {
 
@@ -12,6 +12,7 @@ export const Register = ({ onSuccess }) => {
     const [repeatPassword, setRepeatPassword] = useState('');
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
+    const [role, setRole] = useState('');
     const [plan, setPlan] = useState('basic');
     let info
 
@@ -33,6 +34,12 @@ export const Register = ({ onSuccess }) => {
             padding: '30px',
             backgroundColor: colors.white,
             overflowY: 'scroll',
+        },
+        outerContainer2: {
+            width: '100%',
+            height: 'auto',
+            padding: '10px',
+            borderRadius: '10px',
         },
         innerContainer: {
             padding: '10px',
@@ -98,7 +105,7 @@ export const Register = ({ onSuccess }) => {
 
     const postUser = () => {
         const URL = 'http://localhost:8080/api/auth/register';
-
+        console.log(role)
         let Data = {
             name: name,
             lastName: lastName,
@@ -106,6 +113,7 @@ export const Register = ({ onSuccess }) => {
             email: email,
             password: password,
             plan: plan,
+            role
         };
 
 
@@ -149,6 +157,7 @@ export const Register = ({ onSuccess }) => {
                     });
                     onSuccess(info, data.token);
                 } else {
+                    console.log(data.errors)
                     data.errors.forEach(element => {
                         toast({
                             title: element,
@@ -177,6 +186,17 @@ export const Register = ({ onSuccess }) => {
                     <InputInfo title='Correo' type='email' fun={returnEmail} />
                     <InputInfo title='Contraseña' type='password' fun={returnPassword} />
                     <InputInfo title='Confirmar contraseña' type='password' fun={returnRepeatPassword} />
+                    <div style={styles.outerContainer2}>
+                        <FormLabel color={colors.primary}>Rol</FormLabel>
+                        <Select placeholder='Selecciona un Rol' onChange={(e) => {
+                            setRole(e.target.value)
+
+                        }}>
+                            <option value='admin'>Admin</option>
+                            <option value='user'>Usuario</option>
+                        </Select>
+
+                    </div>
                     <div className='divPlan' style={styles.divPlan}>
                         <FormLabel color="#5E2BFF"> Eligir un plan </FormLabel>
                         <PlanOption style={styles.divPlan} fun={returnPlan} />
