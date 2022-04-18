@@ -1,9 +1,7 @@
-
 .swiper {
   width: 100%;
   height: 100%;
 }
-
 
 .swiper-slide {
   text-align: center;
@@ -24,34 +22,21 @@
   align-items: center;
 }
 
-.swiper-slide img {
-  display: block;
-  width: 200px;
-  height: 100%;
-  object-fit: cover;
-}
-
-.container img {
-    max-width: 100%;
-    height: auto;
-}
-
-:root{
-    --swiper-theme-color: #fff;
+:root {
+  --swiper-theme-color: #fff;
 }
 
 .container .swiper-wrapper {
-    padding: 20px 0;
-    padding-bottom: 0;
-    padding-top: 0;
+  padding: 20px 0;
+  padding-bottom: 0;
+  padding-top: 0;
 }
 
 .container .swiper-slide {
-    transition: 250ms all;
+  transition: 250ms all;
 }
 
 .container .swiper-slide :hover {
-    transform: scale(1.2);
-    z-index: 1;
+  transform: scale(1.2);
+  z-index: 1;
 }
-
