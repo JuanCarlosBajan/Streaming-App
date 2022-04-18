@@ -14,6 +14,7 @@ import ContentReproduction from './components/pages/ContentReproduction';
 import UserConfig from './components/pages/userConfig';
 import NavMenu from './components/NavMenu';
 import { useToast } from '@chakra-ui/react';
+import Reports from './components/pages/Reports';
 
 //App View
 
@@ -117,6 +118,12 @@ function App() {
         <>
           <NavMenu />
           <ManageContent />
+        </>
+      }></Route>
+      <Route path='/reports' element={
+        <>
+          <NavMenu />
+          <Reports />
         </>
       }></Route>
     </Routes >

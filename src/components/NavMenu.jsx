@@ -55,6 +55,13 @@ function NavMenu() {
         ) : (
           ""
         )}
+        {role === "admin" ? (
+          <li className="nav__option">
+            <Link to={"/reports"}> Reportes </Link>
+          </li>
+        ) : (
+          ""
+        )}
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
             Opciones
