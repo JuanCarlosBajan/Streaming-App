@@ -40,7 +40,7 @@ function App() {
     }
 
 
-    if (location.pathname === '/manageContent' && !getCurrentUserRole().role !== 'admin') {
+    if (location.pathname === '/manageContent' && getCurrentUserRole().role !== 'admin') {
       console.log('nope')
       navigate('/');
     }
