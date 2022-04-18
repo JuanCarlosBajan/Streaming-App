@@ -17,7 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import DatePicker from "react-datepicker";
 import React, { useState } from "react";
-import { getReport1, getReport4, getReport5 } from "../../services/reports";
+import { getReport1, getReport3Actors, getReport3Director, getReport4, getReport5 } from "../../services/reports";
 import { useEffect } from "react";
 
 function Reports() {
@@ -27,6 +27,8 @@ function Reports() {
   const [report1, setReport1] = useState([]);
   const [report4, setReport4] = useState(0);
   const [report5, setReport5] = useState([]);
+  const [report3Directors, setReport3Directors] = useState([]);
+  const [report3Actors, setReport3Actors] = useState([]);
   const toast = useToast();
 
   useEffect(() => {
@@ -48,6 +50,8 @@ function Reports() {
     };
     getReport4Data();
   }, []);
+
+  
 
   const getReport1Data = async () => {
     const data = await getReport1(
@@ -71,6 +75,38 @@ function Reports() {
     const data = await getReport5(date.toISOString());
     if (data.ok) {
       setReport5(data.report);
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  };
+
+  const getReport3DataDirectors = async () => {
+    const data = await getReport3Director();
+    if (data.ok) {
+      setReport3Directors(data.report);
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  };
+
+  const getReport3DataDActors = async () => {
+    const data = await getReport3Actors();
+    if (data.ok) {
+      setReport3Actors(data.report);
     } else {
       data.errors.forEach((element) => {
         toast({
@@ -157,17 +193,48 @@ function Reports() {
       </Box>
       {/* Reporte 3 */}
       <Box padding={12}>
-        <Heading>Top 10 de directores para cuentas estándar</Heading>
+        <Heading>Top 10 de directores para cuentas estándar y avanzadas</Heading>
+        <Button onClick={getReport3DataDirectors}>Generar Reporte</Button>
         <Table marginTop={12}>
           <Thead>
             <Tr>
               <Th>Nombre director</Th>
+              <Th>Visitas</Th>
             </Tr>
           </Thead>
           <Tbody>
+            {
+              report3Directors.map((element,index) => (
+                <Tr key={index}>
+                  <Td> {element.name} </Td>
+                  <Td> {element.visitas} </Td>
+                </Tr>
+              ))
+
+            }
+          </Tbody>
+        </Table>
+      </Box>
+      <Box padding={12}>
+        <Heading>Top 10 de actores para cuentas estándar y avanzadas</Heading>
+        <Button onClick={getReport3DataDActors}>Generar Reporte</Button>
+        <Table marginTop={12}>
+          <Thead>
             <Tr>
-              <Td>Nombre</Td>
+              <Th>Nombre Actor</Th>
+              <Th>Visitas</Th>
             </Tr>
+          </Thead>
+          <Tbody>
+            {
+              report3Actors.map((element,index) => (
+                <Tr key={index}>
+                  <Td> {element.name} </Td>
+                  <Td> {element.visitas} </Td>
+                </Tr>
+              ))
+
+            }
           </Tbody>
         </Table>
       </Box>
