@@ -86,7 +86,7 @@ const ModificationForm = ({
             await onSend({
                 movieCode: defaultContent.movieCode ?? undefined,
                 title,
-                studioCode: Number.parseInt(studio),
+                studio: studio,
                 genre,
                 publishedAt,
                 description,
@@ -101,7 +101,7 @@ const ModificationForm = ({
             await onSend({
                 seriesCode: defaultContent.seriesCode ?? undefined,
                 title,
-                studioCode: Number.parseInt(studio),
+                studio: studio,
                 genre,
                 publishedAt,
                 description,
