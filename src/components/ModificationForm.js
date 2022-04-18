@@ -1,4 +1,4 @@
-import { Button, FormLabel, Input, InputGroup } from "@chakra-ui/react";
+import { Button, FormLabel, Input, InputGroup, Select } from "@chakra-ui/react";
 import React, { useEffect, useState } from 'react'
 
 const ModificationForm = ({
@@ -40,6 +40,17 @@ const ModificationForm = ({
     const [episodeCount, setEpisodeCount] = useState(0);
     const [seasonCount, setSeasonCount] = useState(0);
 
+    // VARIABLES PARA USUARIOS
+
+    const [user, setUser] = useState('');
+    const [email, setEmail] = useState('');
+    const [name,setName] = useState('');
+    const [lastName,setLastName] = useState('');
+    const [active, setActive] = useState(true);
+    const [plan, setPlan] = useState('');
+    const [role,setRole] = useState('');
+
+
     useEffect(() => {
 
         if (defaultContent.name) { setTitle(defaultContent.name) };
@@ -57,6 +68,13 @@ const ModificationForm = ({
         if (defaultContent.duration) { setDuration(defaultContent.duration); };
         if (defaultContent.episodeCount) { setEpisodeCount(defaultContent.episodeCount); };
         if (defaultContent.seasonCount) { setSeasonCount(defaultContent.seasonCount); };
+        if (defaultContent.user) { setUser(defaultContent.user); };
+        if (defaultContent.email) { setEmail(defaultContent.email); };
+        if (defaultContent.name) { setName(defaultContent.name); };
+        if (defaultContent.lastName) { setLastName(defaultContent.lastName); };
+        if (defaultContent.active) { setActive(defaultContent.active); };
+        if (defaultContent.plan) { setPlan(defaultContent.plan); };
+        if (defaultContent.role) { setRole(defaultContent.role); };
     }, []);
 
 
@@ -107,6 +125,17 @@ const ModificationForm = ({
             await onSend({
                 advertiserCode: defaultContent.advertiserCode,
                 name: title,
+            });
+        } else if (option === "users") {
+            await onSend({
+                user,
+                email,
+                name,
+                lastName,
+                active,
+                plan,
+                role,
+                userCode : defaultContent.userCode,
             });
         }
     }
@@ -270,6 +299,74 @@ const ModificationForm = ({
 
 
             ) : ''}
+
+            {option === 'users'? (<>
+            
+                <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Usuario </FormLabel>
+                        <Input
+                            focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.user}
+                            placeholder='Ingrese Usuario'
+                            onChange={(e) => { setUser(e.target.value) }} />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Correo </FormLabel>
+                        <Input
+                            focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.email}
+                            placeholder='Ingrese Correo'
+                            onChange={(e) => { setEmail(e.target.value) }} />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Nombre</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.name}
+                            placeholder='Ingrese Nombre'
+                            onChange={(e) => { setName(e.target.value) }}
+                        />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Apellido</FormLabel>
+                        <Input focusBorderColor={colors.primary}
+                            defaultValue={defaultContent.lastName}
+                            placeholder='Ingrese Apellido'
+                            onChange={(e) => { setLastName(e.target.value) }} />
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Activo</FormLabel>
+                        <Select
+                        value={active}
+                        onChange={(e) => { setActive(e.target.value)}}
+                        >
+                        <option value={true}>Activo</option>
+                        <option value={false}>No Activo</option> 
+                        </Select>
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Plan</FormLabel>
+                        <Select
+                        value={plan}
+                        onChange={(e) => { setPlan(e.target.value)}}
+                        >
+                        <option value={'basic'}>Basico</option>
+                        <option value={'standard'}>Estandard</option> 
+                        <option value={'advanced'}>Avanzado</option> 
+                        </Select>
+                    </div>
+                    <div style={styles.outerContainer}>
+                        <FormLabel color={colors.primary}>Rol</FormLabel>
+                        <Select
+                        value={role}
+                        onChange={(e) => { setRole(e.target.value)}}
+                        >
+                        <option value={'user'}>Usuario</option>
+                        <option value={'advertiser'}>Advertiser</option> 
+                        <option value={'admin'}>Administrador</option> 
+                        </Select>
+                    </div>
+            
+            </>) : ''}
 
 
             {

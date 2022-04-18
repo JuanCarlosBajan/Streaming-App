@@ -118,6 +118,10 @@ export const deleteSeriesAdmin = async (seriesCode) => {
     await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, { method: 'DELETE' })
 }
 
+export const deleteUserAdmin = async (userCode) => {
+    await fetch(`http://localhost:8080/api/users/${userCode}`, { method: 'DELETE' })
+}
+
 export const deleteAdvertisersAdmin = async (advertisersCode) => {
     await fetch(`http://localhost:8080/api/ads/advertisers/${advertisersCode}`, { method: 'DELETE' })
 }
@@ -461,6 +465,21 @@ export const modifySeries = async (seriesCode, series) => {
         body: JSON.stringify(body),
     }
     const res = await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+export const modifyUser = async (userCode, user) => {
+    let body = {
+        ...user
+    };
+
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/users/${userCode}`, otherPram);
     const data = await res.json();
     return data;
 }
