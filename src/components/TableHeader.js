@@ -79,6 +79,20 @@ const TableHeader = ({option}) => {
         </Thead>
       )
     }
+    if(option === 'events'){
+      return(
+        <Thead>
+          <Tr>
+            <Th> Nombre de Tabla </Th>
+            <Th> Id Admin </Th>
+            <Th> Nombre Admin </Th>
+            <Th> Operacion </Th>
+            <Th> Fecha Operacion </Th>
+            <Th> Id Elemento </Th>
+          </Tr>
+        </Thead>
+      )
+    }
   }
 
   return (

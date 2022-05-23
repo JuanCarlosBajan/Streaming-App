@@ -152,7 +152,7 @@ const ManageContent = () => {
     }
 
     const addAdvertiser = async (advertiser) => {
-        const data = await postAdvertisersAdmin(advertiser);
+        const data = await postAdvertisersAdmin(advertiser,getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado un anunciante",
@@ -174,7 +174,7 @@ const ManageContent = () => {
         }
     }
     const updateAdvertiser = async (advertiser) => {
-        const data = await modifyAdvertiserAdmin(advertiser.advertiserCode, advertiser);
+        const data = await modifyAdvertiserAdmin(advertiser.advertiserCode, advertiser,getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado un anunciante",
@@ -266,7 +266,7 @@ const ManageContent = () => {
 
     const insertAd = async (ad) => {
 
-        const data = await createAd(selectedAdvertiser, ad);
+        const data = await createAd(selectedAdvertiser, ad, getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado un anuncio",
@@ -290,7 +290,7 @@ const ManageContent = () => {
     const updateUser = async (user) => {
         const userCode = user.userCode;
         delete user.userCode;
-        const data = await modifyUser(userCode, user)
+        const data = await modifyUser(userCode, user,getCurrentUser())
 
         if (data.ok) {
             toast({
@@ -331,8 +331,7 @@ const ManageContent = () => {
     }
 
     const removeAd = async (adCode) => {
-        console.log('rem')
-        const data = await removeAdAdmin(selectedAdvertiser, adCode);
+        const data = await removeAdAdmin(selectedAdvertiser, adCode,getCurrentUser());
         if (data.ok) {
             getDataAdvertiserAds(selectedAdvertiser)
         }
@@ -382,12 +381,12 @@ const ManageContent = () => {
     }
 
     const deleteUser = (userCode) => {
-        deleteUserAdmin(userCode);
+        deleteUserAdmin(userCode,getCurrentUser());
         setUsersAdmin(usersAdmin.filter((user) => user.userCode !== userCode))
     }
 
     const deleteAdvertiser = (advertiserCode) => {
-        deleteAdvertisersAdmin(advertiserCode);
+        deleteAdvertisersAdmin(advertiserCode,getCurrentUser());
         setAdvertisersAdmin(advertisersAdmin.filter((element) => element.advertiserCode !== advertiserCode))
     }
 
