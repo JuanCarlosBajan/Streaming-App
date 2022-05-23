@@ -483,6 +483,22 @@ export const modifyUser = async (userCode, user) => {
     const data = await res.json();
     return data;
 }
+export const postUserAdmin = async (user) => {
+    let body = {
+        ...user
+    };
+
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/users`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+
 
 /**
  * Add series
