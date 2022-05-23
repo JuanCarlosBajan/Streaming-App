@@ -12,7 +12,7 @@ import Inputs from '../Inputs'
 import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds, createAd, linkAdAdmin, removeAdAdmin, modifyUser, deleteUserAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 import AdvertiserLinkModal from '../AdvertiserLinkModal';
-import { getUsers } from '../../services/user';
+import { getCurrentUser, getUsers } from '../../services/user';
 
 
 
@@ -130,7 +130,7 @@ const ManageContent = () => {
 
     const addMovie = async (movie) => {
 
-        const data = await createMovie(movie);
+        const data = await createMovie(movie,getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado una pelicula",
@@ -220,7 +220,7 @@ const ManageContent = () => {
     }
 
     const updateMovie = async (movie) => {
-        const data = await modifyMovie(movie.movieCode, movie);
+        const data = await modifyMovie(movie.movieCode, movie, getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has modificado la pelicula",
@@ -370,8 +370,8 @@ const ManageContent = () => {
         }
     }
 
-    const deleteMovie = (movieCode) => {
-        deleteMoviesAdmin(movieCode);
+    const deleteMovie = (movieCode,adminId) => {
+        deleteMoviesAdmin(movieCode,adminId);
         setMoviesAdmin(moviesAdmin.filter((element) => element.movieCode !== movieCode))
     }
 
@@ -461,7 +461,7 @@ const ManageContent = () => {
                                         }} />
                                     </Td>
                                     <Td>
-                                        <BiTrash cursor={'pointer'} onClick={() => deleteMovie(element.movieCode)} />
+                                        <BiTrash cursor={'pointer'} onClick={() => deleteMovie(element.movieCode,getCurrentUser())} />
                                     </Td>
                                 </Tr>
                             ))}

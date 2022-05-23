@@ -10,8 +10,8 @@ export const getMoviesAdmin = async () => {
     return data
 }
 
-export const deleteMoviesAdmin = async (movieCode) => {
-    await fetch(`http://localhost:8080/api/content/movies/${movieCode}`, { method: 'DELETE' })
+export const deleteMoviesAdmin = async (movieCode,adminId) => {
+    await fetch(`http://localhost:8080/api/content/movies/${movieCode}/${adminId}`, { method: 'DELETE' })
 }
 
 /**
@@ -386,7 +386,7 @@ export const getFeaturedMovies = async (profileCode) => {
  * @param {*} movie 
  * @returns 
  */
-export const createMovie = async (movie) => {
+export const createMovie = async (movie,adminId) => {
     let body = {
         ...movie
     };
@@ -395,7 +395,7 @@ export const createMovie = async (movie) => {
         headers: headers(),
         body: JSON.stringify(body),
     }
-    const res = await fetch(`http://localhost:8080/api/content/movies`, otherPram);
+    const res = await fetch(`http://localhost:8080/api/content/movies/${adminId}`, otherPram);
     const data = await res.json();
     return data;
 }
@@ -438,7 +438,7 @@ export const removeEpisode = async (seriesCode, episodeCode) => {
 /**
  * Add a movie
  */
-export const modifyMovie = async (movieCode, movie) => {
+export const modifyMovie = async (movieCode, movie,adminId) => {
     let body = {
         ...movie
     };
@@ -447,7 +447,7 @@ export const modifyMovie = async (movieCode, movie) => {
         headers: headers(),
         body: JSON.stringify(body),
     }
-    const res = await fetch(`http://localhost:8080/api/content/movies/${movieCode}`, otherPram);
+    const res = await fetch(`http://localhost:8080/api/content/movies/${movieCode}/${adminId}`, otherPram);
     const data = await res.json();
     return data;
 }
