@@ -6,10 +6,12 @@ import {
   HStack,
   Input,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { useState } from "react";
 import { BiPlay, BiPlayCircle } from "react-icons/bi";
+import { simulateMovieViews } from "../../services/content";
 import { colors } from "../../utils/colors";
 
 /**
@@ -19,6 +21,7 @@ import { colors } from "../../utils/colors";
 function Simulation() {
   const [simulationDate, setSimulationDate] = useState("");
   const [quantity, setQuantity] = useState(0);
+  const toast = useToast();
   const styles = {
     outerContainer: {
       width: "500px",
@@ -54,7 +57,26 @@ function Simulation() {
   /**
    *  Runs the simulation for the number of movies
    */
-  const runViewSimulation = async () => {};
+  const runViewSimulation = async () => {
+    const data = await simulateMovieViews(quantity, simulationDate);
+    if (data.ok) {
+      toast({
+        title: data.data.message,
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  };
 
   return (
     <div style={styles.tableContainer}>
