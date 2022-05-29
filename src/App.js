@@ -15,6 +15,7 @@ import UserConfig from './components/pages/userConfig';
 import NavMenu from './components/NavMenu';
 import { useToast } from '@chakra-ui/react';
 import Reports from './components/pages/Reports';
+import Simulation from './components/pages/Simulation';
 
 //App View
 
@@ -124,6 +125,12 @@ function App() {
         <>
           <NavMenu />
           <Reports />
+        </>
+      }></Route>
+      <Route path="/simulation" element={
+        <>
+          <NavMenu />
+          <Simulation />
         </>
       }></Route>
     </Routes >
