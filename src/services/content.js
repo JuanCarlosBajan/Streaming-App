@@ -507,13 +507,33 @@ export const createSeries = async (series) => {
     let body = {
         ...series
     };
-    console.log(body);
+
     const otherPram = {
         method: "POST",
         headers: headers(),
         body: JSON.stringify(body),
     }
     const res = await fetch(`http://localhost:8080/api/content/series`, otherPram);
+    const data = await res.json();
+    return data;
+}
+
+/**
+ * Simulates views for movies
+ * @param {number} quantity 
+ * @param {string} date 
+ */
+export const simulateMovieViews = async (quantity, date) => {
+    let body = {
+        quantity,
+        date
+    }
+    const otherPram = {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(body),
+    }
+    const res = await fetch(`http://localhost:8080/api/simulation`, otherPram);
     const data = await res.json();
     return data;
 }
