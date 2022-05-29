@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Heading, useToast, FormLabel } from '@chakra-ui/react'
 import InputInfo from '../InputInfo'
 import Inputs from '../Inputs'
-import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds, createAd, linkAdAdmin, removeAdAdmin, modifyUser, deleteUserAdmin } from '../../services/content';
+import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds, createAd, linkAdAdmin, removeAdAdmin, modifyUser, deleteUserAdmin, postUserAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 import AdvertiserLinkModal from '../AdvertiserLinkModal';
 import { getUsers } from '../../services/user';
@@ -156,6 +156,29 @@ const ManageContent = () => {
         if (data.ok) {
             toast({
                 title: "Has creado un anunciante",
+                position: "top",
+                status: "success",
+                isClosable: true
+            })
+            await getDataAdvertisers();
+        }
+        else {
+            data.errors.forEach(element => {
+                toast({
+                    title: element,
+                    position: 'top',
+                    status: 'error',
+                    isClosable: true,
+                })
+            });
+        }
+    }
+    const addUser = async (user) => {
+        console.log(user);
+        const data = await postUserAdmin(user);
+        if (data.ok) {
+            toast({
+                title: "Has creado un usuario",
                 position: "top",
                 status: "success",
                 isClosable: true
@@ -627,6 +650,23 @@ const ManageContent = () => {
                 </div>
             )
         }
+        if (option === "addUser") {
+            return (
+                <div style={styles.provisionalBackgorund}>
+                    <div style={styles.outerContainer} className='container'>
+                        <div style={styles.infoContainer}>
+                            <div style={styles.titleContainer}>
+                                <Heading as='h4' size='md'>
+                                    Añadir Usuario
+                                </Heading>
+                            </div>
+                            <ModificationForm defaultContent={{ plan: 'basic', role: 'user' }} isCreatingUser={true} option={'users'} onSend={(data) => { addUser(data) }} />
+                        </div>
+                    </div>
+                </div>
+            )
+
+        }
     }
 
     return (
@@ -699,6 +739,13 @@ const ManageContent = () => {
                                 setOption('addAdvertisers');
                             }}>
                             Añadir anunciante
+                        </MenuItem>
+
+                        <MenuItem
+                            onClick={() => {
+                                setOption('addUser');
+                            }}>
+                            Añadir Usuario
                         </MenuItem>
 
                     </MenuList>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 const ModificationForm = ({
     option,
+    isCreatingUser = false,
     defaultContent,
     onSend
 }) => {
@@ -44,6 +45,7 @@ const ModificationForm = ({
 
     const [user, setUser] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
     const [active, setActive] = useState(true);
@@ -135,6 +137,7 @@ const ModificationForm = ({
                 active,
                 plan,
                 role,
+                password,
                 userCode: defaultContent.userCode,
             });
         }
@@ -318,6 +321,15 @@ const ModificationForm = ({
                         placeholder='Ingrese Correo'
                         onChange={(e) => { setEmail(e.target.value) }} />
                 </div>
+                {isCreatingUser ? <div style={styles.outerContainer}>
+                    <FormLabel color={colors.primary}>Contraseña </FormLabel>
+                    <Input
+                        focusBorderColor={colors.primary}
+                        placeholder='Ingrese Contraseña'
+                        onChange={(e) => { setPassword(e.target.value) }} />
+                </div> : ''}
+
+
                 <div style={styles.outerContainer}>
                     <FormLabel color={colors.primary}>Nombre</FormLabel>
                     <Input focusBorderColor={colors.primary}
