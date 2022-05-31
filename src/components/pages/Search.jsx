@@ -3,7 +3,7 @@ import { Input, InputGroup, InputLeftElement, VStack } from "@chakra-ui/react";
 import ContentItem from "../ContentItem";
 
 import { FormLabel, useToast } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 
@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import { getResult } from "../../services/content";
 import { useNavigate } from "react-router-dom";
 import NavMenu from "../NavMenu";
+import debounce from "lodash.debounce";
 
 function Search() {
   const toast = useToast();
@@ -19,27 +20,26 @@ function Search() {
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState("");
 
-  useEffect(() => {
-    const getData = async () => {
-      if (userInput.length > 0) {
-        const data = await getResult(userInput);
-        if (data.ok) {
-          setInfo(data.content);
-        } else {
-          data.errors.forEach((element) => {
-            toast({
-              title: element,
-              position: "top",
-              status: "error",
-              isClosable: true,
-            });
+  const getData = async (input) => {
+    setUserInput(input.target.value);
+    if (input.target.value.length > 0) {
+      const data = await getResult(input.target.value);
+      console.log(data);
+      if (data.ok) {
+        setInfo(data.content);
+      } else {
+        data.errors.forEach((element) => {
+          toast({
+            title: element,
+            position: "top",
+            status: "error",
+            isClosable: true,
           });
-        }
+        });
       }
-    };
-    getData();
-    console.log(info);
-  }, [userInput]);
+    }
+  };
+  const debouncedChangeHandler = useCallback(debounce(getData, 500), []);
 
   const reproduceMovie = (element) => {
     if (element.movieCode) {
@@ -76,8 +76,7 @@ function Search() {
           <Input
             focusBorderColor={"#5E2BFF"}
             placeholder="Busca por título, género, actor o director"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
+            onChange={debouncedChangeHandler}
           ></Input>
         </InputGroup>
       </div>
