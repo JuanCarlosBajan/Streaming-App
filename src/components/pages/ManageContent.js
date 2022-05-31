@@ -12,7 +12,7 @@ import Inputs from '../Inputs'
 import { createMovie, getMoviesAdmin, getSeriesAdmin, deleteMoviesAdmin, deleteSeriesAdmin, modifyMovie, modifySeries, createSeries, getSeries, createEpisode, removeEpisode, getAdvertisersAdmin, deleteAdvertisersAdmin, postAdvertisersAdmin, modifyAdvertiserAdmin, getAdvertiserAds, createAd, linkAdAdmin, removeAdAdmin, modifyUser, deleteUserAdmin, postUserAdmin } from '../../services/content';
 import { Link } from 'react-router-dom';
 import AdvertiserLinkModal from '../AdvertiserLinkModal';
-import { getUsers } from '../../services/user';
+import { getCurrentUser, getUsers } from '../../services/user';
 
 
 
@@ -130,7 +130,7 @@ const ManageContent = () => {
 
     const addMovie = async (movie) => {
 
-        const data = await createMovie(movie);
+        const data = await createMovie(movie,getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado una pelicula",
@@ -152,7 +152,7 @@ const ManageContent = () => {
     }
 
     const addAdvertiser = async (advertiser) => {
-        const data = await postAdvertisersAdmin(advertiser);
+        const data = await postAdvertisersAdmin(advertiser,getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado un anunciante",
@@ -197,7 +197,7 @@ const ManageContent = () => {
         }
     }
     const updateAdvertiser = async (advertiser) => {
-        const data = await modifyAdvertiserAdmin(advertiser.advertiserCode, advertiser);
+        const data = await modifyAdvertiserAdmin(advertiser.advertiserCode, advertiser,getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado un anunciante",
@@ -243,7 +243,7 @@ const ManageContent = () => {
     }
 
     const updateMovie = async (movie) => {
-        const data = await modifyMovie(movie.movieCode, movie);
+        const data = await modifyMovie(movie.movieCode, movie, getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has modificado la pelicula",
@@ -289,7 +289,7 @@ const ManageContent = () => {
 
     const insertAd = async (ad) => {
 
-        const data = await createAd(selectedAdvertiser, ad);
+        const data = await createAd(selectedAdvertiser, ad, getCurrentUser());
         if (data.ok) {
             toast({
                 title: "Has creado un anuncio",
@@ -313,7 +313,7 @@ const ManageContent = () => {
     const updateUser = async (user) => {
         const userCode = user.userCode;
         delete user.userCode;
-        const data = await modifyUser(userCode, user)
+        const data = await modifyUser(userCode, user,getCurrentUser())
 
         if (data.ok) {
             toast({
@@ -354,8 +354,7 @@ const ManageContent = () => {
     }
 
     const removeAd = async (adCode) => {
-        console.log('rem')
-        const data = await removeAdAdmin(selectedAdvertiser, adCode);
+        const data = await removeAdAdmin(selectedAdvertiser, adCode,getCurrentUser());
         if (data.ok) {
             getDataAdvertiserAds(selectedAdvertiser)
         }
@@ -393,8 +392,8 @@ const ManageContent = () => {
         }
     }
 
-    const deleteMovie = (movieCode) => {
-        deleteMoviesAdmin(movieCode);
+    const deleteMovie = (movieCode,adminId) => {
+        deleteMoviesAdmin(movieCode,adminId);
         setMoviesAdmin(moviesAdmin.filter((element) => element.movieCode !== movieCode))
     }
 
@@ -405,12 +404,12 @@ const ManageContent = () => {
     }
 
     const deleteUser = (userCode) => {
-        deleteUserAdmin(userCode);
+        deleteUserAdmin(userCode,getCurrentUser());
         setUsersAdmin(usersAdmin.filter((user) => user.userCode !== userCode))
     }
 
     const deleteAdvertiser = (advertiserCode) => {
-        deleteAdvertisersAdmin(advertiserCode);
+        deleteAdvertisersAdmin(advertiserCode,getCurrentUser());
         setAdvertisersAdmin(advertisersAdmin.filter((element) => element.advertiserCode !== advertiserCode))
     }
 
@@ -484,7 +483,7 @@ const ManageContent = () => {
                                         }} />
                                     </Td>
                                     <Td>
-                                        <BiTrash cursor={'pointer'} onClick={() => deleteMovie(element.movieCode)} />
+                                        <BiTrash cursor={'pointer'} onClick={() => deleteMovie(element.movieCode,getCurrentUser())} />
                                     </Td>
                                 </Tr>
                             ))}

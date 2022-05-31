@@ -12,12 +12,14 @@ import {
   Tr,
   useToast,
   VStack,
+  TableContainer
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
+import TableHeader from "../TableHeader";
 
 import DatePicker from "react-datepicker";
 import React, { useState } from "react";
-import { getReport1, getReport2, getReport3Actors, getReport3Director, getReport4, getReport5 } from "../../services/reports";
+import { getReport1, getReport2, getReport3Actors, getReport3Director, getReport4, getReport5, getReportEvent } from "../../services/reports";
 import { useEffect } from "react";
 
 function Reports() {
@@ -30,6 +32,7 @@ function Reports() {
   const [report5, setReport5] = useState([]);
   const [report3Directors, setReport3Directors] = useState([]);
   const [report3Actors, setReport3Actors] = useState([]);
+  const [reportEvents, setReportEvents] = useState([]);
   const toast = useToast();
 
   useEffect(() => {
@@ -50,9 +53,26 @@ function Reports() {
       }
     };
     getReport4Data();
+    getReportEvents();
   }, []);
 
   
+  const getReportEvents  = async () => {
+    const data = await getReportEvent()
+    if (data.ok) {
+      setReportEvents(data.report);
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  }
+
 
   const getReport1Data = async () => {
     const data = await getReport1(
@@ -317,6 +337,28 @@ function Reports() {
           </Tbody>
         </Table>
       </Box>
+
+      <Box padding={12}>
+        <Heading>Bitacora</Heading>
+        <TableContainer>
+            <Table variant='simple'>
+                <TableHeader option={'events'} />
+                <Tbody>
+                    {
+                        reportEvents.map((element, index) => (
+                            <Tr key={index}>
+                                <Td> {element.table_name} </Td>
+                                <Td> {element.admin_id} </Td>
+                                <Td> {element.admin_name} </Td>
+                                <Td> {element.operation} </Td>
+                                <Td> {element.operation_date} </Td>
+                                <Td> {element.row_id} </Td>
+                            </Tr>
+                        ))}
+                  </Tbody>
+              </Table>
+          </TableContainer>
+        </Box>
     </>
   );
 }
