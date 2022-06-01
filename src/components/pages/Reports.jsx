@@ -28,6 +28,7 @@ import {
   getReport4,
   getReport5,
   getReport6,
+  getReport7,
   getReportEvent,
 } from "../../services/reports";
 import { useEffect } from "react";
@@ -43,6 +44,7 @@ function Reports() {
   const [report3Directors, setReport3Directors] = useState([]);
   const [report3Actors, setReport3Actors] = useState([]);
   const [report6, setReport6] = useState([]);
+  const [report7, setReport7] = useState([]);
   const [reportEvents, setReportEvents] = useState([]);
   const [userInput, setUserInput] = useState("");
   const toast = useToast();
@@ -65,6 +67,7 @@ function Reports() {
       }
     };
     getReport4Data();
+    getReport7Data();
     getReportEvents();
   }, []);
 
@@ -176,6 +179,26 @@ function Reports() {
     const data = await getReport6(userInput);
     if (data.ok) {
       setReport6(data.report);
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  };
+
+  /**
+   * Reporte 07
+   */
+   const getReport7Data = async () => {
+    const data = await getReport7();
+    if (data.ok) {
+      setReport7(data.report);
+      console.log('hola');
     } else {
       data.errors.forEach((element) => {
         toast({
@@ -412,9 +435,14 @@ function Reports() {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>{report4}</Td>
-            </Tr>
+            {report7.map((r, index) => {
+              return (
+                <Tr key={index}>
+                  <Td>{r.search}</Td>
+                  <Td>{r.search_count}</Td>
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
       </Box>
