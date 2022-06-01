@@ -41,6 +41,12 @@ export const getReport7 = async () => {
     return data
 }
 
+export const getReport8 = async (startDate, endDate) => {
+    const res = await fetch(`http://localhost:8080/api/reports/8?startDate=${startDate}&endDate=${endDate}`);
+    const data = await res.json();
+    return data
+}
+
 export const getReport9 = async (startDate, endDate) => {
     const res = await fetch(`http://localhost:8080/api/reports/9?startDate=${startDate}&endDate=${endDate}`);
     const data = await res.json();

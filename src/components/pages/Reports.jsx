@@ -28,6 +28,7 @@ import {
   getReport4,
   getReport5,
   getReport6,
+  getReport8,
   getReport9,
   getReport7,
   getReportEvent,
@@ -47,6 +48,7 @@ function Reports() {
   const [report6, setReport6] = useState([]);
   const [report9, setReport9] = useState([]);
   const [report7, setReport7] = useState([]);
+  const [report8, setReport8] = useState([]);
   const [reportEvents, setReportEvents] = useState([]);
   const [userInput, setUserInput] = useState("");
   const toast = useToast();
@@ -181,6 +183,28 @@ function Reports() {
     const data = await getReport6(userInput);
     if (data.ok) {
       setReport6(data.report);
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  };
+
+  /**
+   * Reporte 08
+   */
+  const getReport8Data = async () => {
+    const data = await getReport8(
+      startDate.toISOString(),
+      endDate.toISOString()
+    );
+    if (data.ok) {
+      setReport8(data.report);
     } else {
       data.errors.forEach((element) => {
         toast({
@@ -490,7 +514,7 @@ function Reports() {
               onChange={(date) => setEndDate(date)}
             />
           </div>
-          <Button onClick={getReport1Data}>Generar Reporte</Button>
+          <Button onClick={getReport8Data}>Generar Reporte</Button>
         </Box>
         <Table marginTop={12}>
           <Thead>
@@ -501,14 +525,15 @@ function Reports() {
             </Tr>
           </Thead>
           <Tbody>
-            {/*report1.map((r, index) => {
+            {report8.map((r, index) => {
               return (
                 <Tr key={index}>
-                  <Td>{r.genre}</Td>
-                  <Td>{r.total}</Td>
+                  <Td>{r.admincode}</Td>
+                  <Td>{r.ops_quantity}</Td>
+                  <Td>{r.ops_date}</Td>
                 </Tr>
               );
-            })*/}
+            })}
           </Tbody>
         </Table>
       </Box>
