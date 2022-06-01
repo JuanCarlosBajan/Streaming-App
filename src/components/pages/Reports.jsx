@@ -12,7 +12,8 @@ import {
   Tr,
   useToast,
   VStack,
-  TableContainer
+  TableContainer, 
+  Input
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
 import TableHeader from "../TableHeader";
@@ -33,6 +34,7 @@ function Reports() {
   const [report3Directors, setReport3Directors] = useState([]);
   const [report3Actors, setReport3Actors] = useState([]);
   const [reportEvents, setReportEvents] = useState([]);
+  const [userInput, setUserInput] = useState("");
   const toast = useToast();
 
   useEffect(() => {
@@ -338,6 +340,180 @@ function Reports() {
         </Table>
       </Box>
 
+      {/* Reporte 1.2.1 */}
+      <Box padding={12}>
+        <Heading>Top 5 de peliculas vistas cada hora entre 9 a.m. y 1 p.m.</Heading>
+        <Box marginTop={12}>
+          <div className="pickers">
+          <Input
+            focusBorderColor={"#5E2BFF"}
+            placeholder="Ingresa el mes"
+            value={userInput}
+            width='150px'
+            onChange={(e) => setUserInput(e.target.value)}
+          ></Input>
+          </div>
+          <Button onClick={getReport5Data}>Generar Reporte</Button>
+        </Box>
+        <Table marginTop={12}>
+          <Thead>
+            <Tr>
+              <Th>Codigo</Th>
+              <Th>Titulo</Th>
+              <Th>Cantidad de vistas</Th>
+              <Th>Hora</Th>
+              <Th>Hora</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {/*report5.map((r, index) => {
+              return (
+                <Tr key={index}>
+                  <Td>{r.hora}</Td>
+                  <Td>{r.t}</Td>
+                </Tr>
+              );
+            })*/}
+          </Tbody>
+        </Table>
+      </Box>
+
+      {/* Reporte 1.2.2 */}
+      <Box padding={12}>
+        <Heading>Top 5 de series vistas cada hora entre 9 a.m. y 1 p.m.</Heading>
+        <Box marginTop={12}>
+          <div className="pickers">
+          <Input
+            focusBorderColor={"#5E2BFF"}
+            placeholder="Ingresa el mes"
+            value={userInput}
+            width='150px'
+            onChange={(e) => setUserInput(e.target.value)}
+          ></Input>
+          </div>
+          <Button onClick={getReport5Data}>Generar Reporte</Button>
+        </Box>
+        <Table marginTop={12}>
+          <Thead>
+            <Tr>
+              <Th>Codigo</Th>
+              <Th>Titulo</Th>
+              <Th>Cantidad de vistas</Th>
+              <Th>Hora</Th>
+              <Th>Hora</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {/*report5.map((r, index) => {
+              return (
+                <Tr key={index}>
+                  <Td>{r.hora}</Td>
+                  <Td>{r.t}</Td>
+                </Tr>
+              );
+            })*/}
+          </Tbody>
+        </Table>
+      </Box>
+
+      {/* Reporte 2.2 */}
+      <Box padding={12}>
+        <Heading>
+          Top 10 de los términos que los usuarios buscan
+        </Heading>
+
+        <Table marginTop={12}>
+          <Thead>
+            <Tr>
+              <Th>Término</Th>
+              <Th>Cantidad</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td>{report4}</Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </Box>
+
+      {/* Reporte 3.2 */}
+      <Box padding={12}>
+        <Heading>Top 5 de los administradores que más modificaciones realizan en las cuentas de usuario</Heading>
+        <Box marginTop={12}>
+          <div className="pickers">
+            <DatePicker
+              placeholderText="Fecha inicial"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
+            <DatePicker
+              placeholderText="Fecha final"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+            />
+          </div>
+          <Button onClick={getReport1Data}>Generar Reporte</Button>
+        </Box>
+        <Table marginTop={12}>
+          <Thead>
+            <Tr>
+              <Th>Codigo de administrador</Th>
+              <Th>Cantidad de operaciones</Th>
+              <Th>Fecha</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {/*report1.map((r, index) => {
+              return (
+                <Tr key={index}>
+                  <Td>{r.genre}</Td>
+                  <Td>{r.total}</Td>
+                </Tr>
+              );
+            })*/}
+          </Tbody>
+        </Table>
+      </Box>
+
+      {/* Reporte 4.2 */}
+      <Box padding={12}>
+        <Heading>Top 20 de películas que comenzaron a verse pero que llevan más de 20 días sin finalizarse</Heading>
+        <Box marginTop={12}>
+          <div className="pickers">
+            <DatePicker
+              placeholderText="Fecha inicial"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
+            <DatePicker
+              placeholderText="Fecha final"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+            />
+          </div>
+          <Button onClick={getReport1Data}>Generar Reporte</Button>
+        </Box>
+        <Table marginTop={12}>
+          <Thead>
+            <Tr>
+              <Th>Pelicula</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {/*report1.map((r, index) => {
+              return (
+                <Tr key={index}>
+                  <Td>{r.genre}</Td>
+                  <Td>{r.total}</Td>
+                </Tr>
+              );
+            })*/}
+          </Tbody>
+        </Table>
+      </Box>
+
+      {/*Bitacora*/}
       <Box padding={12}>
         <Heading>Bitacora</Heading>
         <TableContainer>
