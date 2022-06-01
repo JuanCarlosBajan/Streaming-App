@@ -519,7 +519,8 @@ function Reports() {
         <Table marginTop={12}>
           <Thead>
             <Tr>
-              <Th>Codigo de administrador</Th>
+              <Th>ID Admin</Th>
+              <Th>Nombre Admin</Th>
               <Th>Cantidad de operaciones</Th>
               <Th>Fecha</Th>
             </Tr>
@@ -529,6 +530,7 @@ function Reports() {
               return (
                 <Tr key={index}>
                   <Td>{r.admincode}</Td>
+                  <Td>{r.adm_name}</Td>
                   <Td>{r.ops_quantity}</Td>
                   <Td>{r.ops_date}</Td>
                 </Tr>
