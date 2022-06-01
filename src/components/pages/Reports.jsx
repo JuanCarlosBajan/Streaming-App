@@ -376,7 +376,7 @@ function Reports() {
         </Table>
       </Box>
 
-      {/* Reporte 1.2.1 */}
+      {/* Reporte 1.2.2 */}
       <Box padding={12}>
         <Heading>Top 5 de series vistas cada hora entre 9 a.m. y 1 p.m.</Heading>
         <Box marginTop={12}>
@@ -408,6 +408,27 @@ function Reports() {
                 </Tr>
               );
             })*/}
+          </Tbody>
+        </Table>
+      </Box>
+
+      {/* Reporte 2.2 */}
+      <Box padding={12}>
+        <Heading>
+          Top 10 de los términos que los usuarios buscan
+        </Heading>
+
+        <Table marginTop={12}>
+          <Thead>
+            <Tr>
+              <Th>Término</Th>
+              <Th>Cantidad</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td>{report4}</Td>
+            </Tr>
           </Tbody>
         </Table>
       </Box>
@@ -450,7 +471,7 @@ function Reports() {
         </Table>
       </Box>
 
-      {/* Reporte 4 */}
+      {/* Reporte 4.2 */}
       <Box padding={12}>
         <Heading>Top 20 de películas que comenzaron a verse pero que llevan más de 20 días sin finalizarse</Heading>
         <Box marginTop={12}>
