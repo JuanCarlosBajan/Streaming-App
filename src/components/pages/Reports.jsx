@@ -28,6 +28,7 @@ import {
   getReport4,
   getReport5,
   getReport6,
+  getReport9,
   getReportEvent,
 } from "../../services/reports";
 import { useEffect } from "react";
@@ -43,6 +44,7 @@ function Reports() {
   const [report3Directors, setReport3Directors] = useState([]);
   const [report3Actors, setReport3Actors] = useState([]);
   const [report6, setReport6] = useState([]);
+  const [report9, setReport9] = useState([]);
   const [reportEvents, setReportEvents] = useState([]);
   const [userInput, setUserInput] = useState("");
   const toast = useToast();
@@ -176,6 +178,29 @@ function Reports() {
     const data = await getReport6(userInput);
     if (data.ok) {
       setReport6(data.report);
+    } else {
+      data.errors.forEach((element) => {
+        toast({
+          title: element,
+          position: "top",
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  };
+
+  /**
+   * Reporte 09
+   */
+  const getReport9Data = async () => {
+    const data = await getReport9(
+      startDate.toISOString(),
+      endDate.toISOString()
+    );
+
+    if (data.ok) {
+      setReport9(data.report);
     } else {
       data.errors.forEach((element) => {
         toast({
@@ -468,23 +493,36 @@ function Reports() {
           días sin finalizarse
         </Heading>
         <Box marginTop={12}>
-          <Button onClick={getReport1Data}>Generar Reporte</Button>
+          <div className="pickers">
+            <DatePicker
+              placeholderText="Fecha inicial"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
+            <DatePicker
+              placeholderText="Fecha final"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+            />
+          </div>
+          <Button onClick={getReport9Data}>Generar Reporte</Button>
         </Box>
         <Table marginTop={12}>
           <Thead>
             <Tr>
               <Th>Pelicula</Th>
+              <Th>Cantidad</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {/*report1.map((r, index) => {
+            {report9.map((r, index) => {
               return (
                 <Tr key={index}>
-                  <Td>{r.genre}</Td>
-                  <Td>{r.total}</Td>
+                  <Td>{r.title}</Td>
+                  <Td>{r.count}</Td>
                 </Tr>
               );
-            })*/}
+            })}
           </Tbody>
         </Table>
       </Box>
