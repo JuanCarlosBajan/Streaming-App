@@ -358,8 +358,10 @@ function Reports() {
         <Table marginTop={12}>
           <Thead>
             <Tr>
+              <Th>Codigo</Th>
               <Th>Titulo</Th>
               <Th>Cantidad de vistas</Th>
+              <Th>Hora</Th>
               <Th>Hora</Th>
             </Tr>
           </Thead>
@@ -394,8 +396,10 @@ function Reports() {
         <Table marginTop={12}>
           <Thead>
             <Tr>
+              <Th>Codigo</Th>
               <Th>Titulo</Th>
               <Th>Cantidad de vistas</Th>
+              <Th>Hora</Th>
               <Th>Hora</Th>
             </Tr>
           </Thead>
@@ -454,8 +458,9 @@ function Reports() {
         <Table marginTop={12}>
           <Thead>
             <Tr>
-              <Th>Administrador</Th>
+              <Th>Codigo de administrador</Th>
               <Th>Cantidad de operaciones</Th>
+              <Th>Fecha</Th>
             </Tr>
           </Thead>
           <Tbody>
