@@ -10,7 +10,7 @@ export const getMoviesAdmin = async () => {
     return data
 }
 
-export const deleteMoviesAdmin = async (movieCode,adminId) => {
+export const deleteMoviesAdmin = async (movieCode, adminId) => {
     await fetch(`http://localhost:8080/api/content/movies/${movieCode}/${adminId.userCode}`, { method: 'DELETE' })
 }
 
@@ -36,7 +36,7 @@ export const getAdvertisersAdmin = async () => {
     return data;
 }
 
-export const postAdvertisersAdmin = async (advertiser,adminId) => {
+export const postAdvertisersAdmin = async (advertiser, adminId) => {
     const URL = `http://localhost:8080/api/ads/advertisers/${adminId.userCode}`;
     let bodyData = {
         ...advertiser
@@ -57,7 +57,7 @@ export const getAdvertiserAds = async (advertiserCode) => {
     return data
 }
 
-export const createAd = async (advertiserCode, ad,adminId) => {
+export const createAd = async (advertiserCode, ad, adminId) => {
     const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}/ads/${adminId.userCode}`;
     let bodyData = {
         ...ad
@@ -72,7 +72,7 @@ export const createAd = async (advertiserCode, ad,adminId) => {
     return data;
 }
 
-export const removeAdAdmin = async (advertiserCode, adCode,adminId) => {
+export const removeAdAdmin = async (advertiserCode, adCode, adminId) => {
     const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}/ads/${adCode}/${adminId.userCode}`;
     const otherPram = {
         method: "DELETE",
@@ -99,7 +99,7 @@ export const linkAdAdmin = async (ad) => {
     return data;
 }
 
-export const modifyAdvertiserAdmin = async (advertiserCode, advertiser,adminId) => {
+export const modifyAdvertiserAdmin = async (advertiserCode, advertiser, adminId) => {
     const URL = `http://localhost:8080/api/ads/advertisers/${advertiserCode}/${adminId.userCode}`;
     let bodyData = {
         ...advertiser
@@ -118,11 +118,11 @@ export const deleteSeriesAdmin = async (seriesCode) => {
     await fetch(`http://localhost:8080/api/content/series/${seriesCode}`, { method: 'DELETE' })
 }
 
-export const deleteUserAdmin = async (userCode,adminId) => {
+export const deleteUserAdmin = async (userCode, adminId) => {
     await fetch(`http://localhost:8080/api/users/${userCode}/${adminId.userCode}`, { method: 'DELETE' })
 }
 
-export const deleteAdvertisersAdmin = async (advertisersCode,adminId) => {
+export const deleteAdvertisersAdmin = async (advertisersCode, adminId) => {
     await fetch(`http://localhost:8080/api/ads/advertisers/${advertisersCode}/${adminId.userCode}`, { method: 'DELETE' })
 }
 
@@ -386,7 +386,7 @@ export const getFeaturedMovies = async (profileCode) => {
  * @param {*} movie 
  * @returns 
  */
-export const createMovie = async (movie,adminId) => {
+export const createMovie = async (movie, adminId) => {
     let body = {
         ...movie
     };
@@ -438,7 +438,7 @@ export const removeEpisode = async (seriesCode, episodeCode) => {
 /**
  * Add a movie
  */
-export const modifyMovie = async (movieCode, movie,adminId) => {
+export const modifyMovie = async (movieCode, movie, adminId) => {
     let body = {
         ...movie
     };
@@ -469,7 +469,7 @@ export const modifySeries = async (seriesCode, series) => {
     return data;
 }
 
-export const modifyUser = async (userCode, user,adminId) => {
+export const modifyUser = async (userCode, user, adminId) => {
     let body = {
         ...user
     };
@@ -483,7 +483,7 @@ export const modifyUser = async (userCode, user,adminId) => {
     const data = await res.json();
     return data;
 }
-export const postUserAdmin = async (user) => {
+export const postUserAdmin = async (user, adminId) => {
     let body = {
         ...user
     };
@@ -493,7 +493,7 @@ export const postUserAdmin = async (user) => {
         headers: headers(),
         body: JSON.stringify(body),
     }
-    const res = await fetch(`http://localhost:8080/api/users`, otherPram);
+    const res = await fetch(`http://localhost:8080/api/users/${adminId.userCode}`, otherPram);
     const data = await res.json();
     return data;
 }
